@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ソフトテニスラボ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8D5A0;--gold-pale:#FDF8EE;--gold-dark:#8B6914;--off-white:#FAFAF7;--warm-gray:#F5F0E8;--text-primary:#1a1a1a;--text-secondary:#666;--text-muted:#aaa;--border:#E8E0D0;--border-gold:#D4B86A;--white:#ffffff;--s1-bg:#EAF4FB;--s1-c:#1a6fa0;--s1-b:#b0d4ec;--s2-bg:#FDF8EE;--s2-c:#9a7520;--s2-b:#ddc878;--s3-bg:#FEF0F0;--s3-c:#b03030;--s3-b:#e8b0b0}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:430px;min-height:100vh;background:var(--off-white);display:flex;flex-direction:column}
+.nav-bar{background:var(--off-white);border-bottom:1px solid var(--border-gold);padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--text-primary);letter-spacing:.08em}
+.nav-logo span{color:var(--gold)}
+.nav-sub{font-size:10px;color:var(--text-muted);margin-top:1px}
+.nav-back{display:none;align-items:center;gap:6px;color:var(--gold-dark);font-size:13px;cursor:pointer;background:none;border:none;font-family:'Noto Sans JP',sans-serif}
+.screen-body{flex:1;overflow-y:auto;padding:14px 14px 100px}
+.search-wrap{position:relative;margin-bottom:14px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none}
+.search-input{width:100%;border:1px solid var(--border-gold);border-radius:10px;padding:10px 12px 10px 34px;font-size:14px;color:var(--text-primary);background:var(--white);font-family:'Noto Sans JP',sans-serif;outline:none}
+.search-input::placeholder{color:var(--text-muted)}
+.cat-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;margin-bottom:7px;font-weight:500}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{background:var(--white);color:var(--text-secondary);font-size:12px;padding:5px 12px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif}
+.chip.active{background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:500}
+.divider{border:none;border-top:.5px solid var(--border);margin:10px 0}
+.result-card{border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;background:var(--white);position:relative;overflow:hidden;cursor:pointer;transition:all .2s}
+.result-card:hover{border-color:var(--gold-light);transform:translateY(-1px)}
+.result-card.featured{border-color:var(--gold)}
+.result-card.featured::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.result-tag{font-size:10px;color:var(--gold-dark);border:.5px solid var(--gold);padding:2px 9px;border-radius:10px;display:inline-block;margin-bottom:6px;background:var(--gold-pale);font-family:'Cormorant Garamond',serif;font-weight:600}
+.result-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:3px}
+.result-sub{font-size:12px;color:var(--text-secondary);margin-bottom:7px}
+.step-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-right:4px;margin-top:2px}
+.s1{background:var(--s1-bg);color:var(--s1-c);border:.5px solid var(--s1-b)}
+.s2{background:var(--s2-bg);color:var(--s2-c);border:.5px solid var(--s2-b)}
+.s3{background:var(--s3-bg);color:var(--s3-c);border:.5px solid var(--s3-b)}
+.detail-view{display:none}
+.kanjo-box{background:var(--gold-pale);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px}
+.kanjo-label{font-size:13px;font-weight:500;color:var(--gold-dark);margin-bottom:8px;font-family:'Cormorant Garamond',serif}
+.kanjo-item{font-size:12px;color:var(--text-secondary);margin-bottom:5px;padding-left:2px;line-height:1.6}
+.section-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;margin-bottom:9px;font-weight:500}
+.step-card{border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;background:var(--white)}
+.step-header{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.step-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.step-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+.step-meta{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.step-body{font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:9px}
+.video-row{display:flex;flex-wrap:wrap;gap:5px}
+.video-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b03030;background:var(--s3-bg);padding:3px 9px;border-radius:6px;border:.5px solid var(--s3-b);cursor:pointer;text-decoration:none}
+.yt-icon{width:13px;height:9px;background:#b03030;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.yt-tri{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid white;margin-left:1px}
+.no-video{font-size:11px;color:var(--text-muted);font-style:italic}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:10px 0 18px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--text-muted);cursor:pointer;padding:0 16px}
+.bnav-item.active{color:var(--gold-dark)}
+.bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
+.bnav-item.active .bnav-dot{background:var(--gold)}
+.note-screen{display:none;padding:16px}
+.note-coming{text-align:center;padding:60px 20px}
+.note-coming-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-dark);margin-bottom:10px}
+.note-coming-sub{font-size:13px;color:var(--text-muted);line-height:1.7}
+.badge-coming{display:inline-block;background:var(--gold-pale);color:var(--gold-dark);border:.5px solid var(--gold-light);font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:18px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .22s ease forwards}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="nav-bar" id="navBar">
+    <div id="navHome">
+      <div class="nav-logo">ソフトテニス<span>ラボ</span></div>
+      <div class="nav-sub">苦手を入力して練習を探す</div>
+    </div>
+    <button class="nav-back" id="navBack" onclick="showHome()">← 戻る</button>
+  </div>
+  <div class="screen-body" id="homeScreen">
+    <div class="search-wrap">
+      <div class="search-icon"></div>
+      <input class="search-input" type="text" placeholder="苦手なプレーを入力…" id="searchInput" oninput="onSearch()">
+    </div>
+    <div id="browseArea">
+      <div class="cat-label">CATEGORY</div>
+      <div class="chip-row" id="catChips">
+        <span class="chip active" onclick="selectCat(this,'all')">すべて</span>
+        <span class="chip" onclick="selectCat(this,'stroke')">ストローク</span>
+        <span class="chip" onclick="selectCat(this,'volley')">ボレー</span>
+        <span class="chip" onclick="selectCat(this,'service')">サービス</span>
+      </div>
+      <div id="subCatArea" style="display:none">
+        <div class="cat-label" id="subCatLabel"></div>
+        <div class="chip-row" id="subCatChips"></div>
+      </div>
+      <div class="divider"></div>
+    </div>
+    <div id="resultList"></div>
+    <div class="empty-state" id="emptyState">🎾 該当する練習メニューが見つかりませんでした</div>
+  </div>
+  <div class="screen-body detail-view" id="detailScreen"></div>
+  <div class="screen-body note-screen" id="noteScreen">
+    <div class="note-coming">
+      <div class="badge-coming">COMING SOON</div>
+      <div class="note-coming-title">テニスノート機能</div>
+      <div class="note-coming-sub">練習日誌・課題管理機能は<br>近日公開予定です。お楽しみに！</div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
+    <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span>ノート</span></div>
+  </div>
+</div>
+<script>
+const YT={
+  fore_top:[{label:'苦手な人に絶対見てほしい！極意',url:'https://www.youtube.com/watch?v=o-690zo93Qw'},{label:'トップ打ちが絶対上手くなりたい人集合',url:'https://www.youtube.com/watch?v=1HbytDKzgak'},{label:'試合前必見！安定するトップ打ち',url:'https://www.youtube.com/watch?v=Ey7Xu0LTNP4'},{label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'},{label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA'}],
+  fore_ground:[{label:'フォアハンドが最速で上達する方法',url:'https://www.youtube.com/watch?v=cC5kDWM9t90'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},{label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},{label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'}],
+  fore_under:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
+  back_top:[{label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'},{label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
+  back_ground:[{label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},{label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},{label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'}],
+  back_under:[{label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
+  course_common:[{label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
+  lob:[{label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
+  midlob:[{label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},{label:'内本隆文 回り込みトップの極意（中ロブ連動）',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'}],
+  shoot:[{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},{label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},{label:'速い×安定ストローク！かっこいいフォームで打つ方法',url:'https://www.youtube.com/live/47BZPe-s1ac'}],
+  twist:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
+  drop:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
+  fore_volley:[{label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
+  back_volley:[{label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},{label:'前衛を変えるバックボレー４つのステップ',url:'https://www.youtube.com/watch?v=iPIU5cd27zM'},{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
+  low_volley:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},{label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'}],
+  high_volley:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},{label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'}],
+  smash:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
+  poach:[{label:'ポーチボレーの足の使い方を全部教えます（船水雄太）',url:'https://www.youtube.com/watch?v=75ZxdTI7_9w'},{label:'試合で即効力発揮！効果的なポーチボレーのコツ',url:'https://www.youtube.com/watch?v=KHSUxeU_RME'},{label:'前衛 試合のポーチボレーを読み解く解説',url:'https://www.youtube.com/watch?v=I_6aueu8fvY'}],
+  normal_serve:[{label:'ファーストサーブ10個のコツ（前衛ドットコム）',url:'https://softtennis-zenei.com/technique/serve-perfect/'}],
+  cut_serve:[{label:'世界チャンピオンのカットサーブ（荻原正人）',url:'https://www.youtube.com/watch?v=dbKWrhyWxZY'},{label:'プロのカットサーブを超スーパースローで（船水雄太）',url:'https://www.youtube.com/watch?v=SUasgNL91yI'}],
+};
+
+const DB=[
+  {id:1,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'トップ打ち',desc:'チャンスボールを決めきれない',featured:true,points:['打点を落とさない — バウンド頂点より少し前・肩の高さかそれより上で捉える','脇を締めてヘッドを遅らせる — 腕だけで打つと力が逃げる','インパクトの瞬間だけ力を入れる — チャンスボールほどリラックス','体の軸を崩さない — 前のめりになると威力が半減'],steps:[{lv:1,label:'Step 1',name:'壁打ち／強バウンドトップ打ち',players:'一人OK',body:'【壁あり】壁に向かって高い打点でトップ打ちを繰り返す。【壁なし】強くバウンドさせて跳ね上がったボールをトップ打ち。',vk:'fore_top'},{lv:2,label:'Step 2a',name:'手出しノーバウンドトップ打ち',players:'2人',body:'コートの同じ側から手出しでノーバウンドでトップ打ち。打点の高さを確実に体感できる。',vk:'fore_top'},{lv:2,label:'Step 2b',name:'ロブ球出しからのトップ打ち',players:'2人',body:'コートの向こう側からロブで球出しをしてもらいトップ打ちで打ち込む。',vk:'fore_top'},{lv:3,label:'Step 3',name:'乱打でのトップ打ち実戦練習',players:'2人',body:'乱打の中でチャンスボールが来たら積極的にトップ打ちで攻める。',vk:'fore_top'}]},
+  {id:2,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'グランドストローク',desc:'ラリーが続かない・安定しない',featured:false,points:['体重移動を使う — 軸足から前足へ、全身でボールを運ぶ','テイクバックを早く — ボールが来る前に引き終わる','ラケット面を横に振り抜く — 体の回転で振る','打点は前足より前 — 詰まると力が入らない','リラックスして、インパクトの瞬間だけ握る'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ち',players:'一人OK',body:'【手出し】自分でボールを出して打点・体重移動を確認。【壁打ち】壁に向かってリズムとフォームを固める。',vk:'fore_ground'},{lv:2,label:'Step 2',name:'手出し球でのグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールを打つ。打点・体重移動・フォームを固める。',vk:'fore_ground'},{lv:3,label:'Step 3',name:'クロス限定乱打',players:'2人',body:'クロスに限定した乱打で安定してラリーを続ける。',vk:'fore_ground'}]},
+  {id:3,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'アンダーストローク',desc:'低いボールをうまく処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま','ラケット面を縦にして下から上へ振り抜く','打点は低くても前で取る','焦らない — 短いボールほど落ち着いて入ることが大事'],steps:[{lv:1,label:'Step 1',name:'自己手出しアンダーストローク',players:'一人OK',body:'低い位置にトスして自分でアンダーストローク。低打点の感覚を繰り返し体感する。',vk:'fore_under'},{lv:2,label:'Step 2',name:'短球手出しからのアンダーストローク',players:'2人',body:'相手にネット前に短く手出しをしてもらい、前に詰めてアンダーストロークで返球。',vk:'fore_under'},{lv:3,label:'Step 3',name:'ショートボール対応の実戦練習',players:'2人',body:'乱打の中で意図的に短いボールを混ぜてもらい、走り込んでアンダーストロークで処理。',vk:'fore_under'}]},
+  {id:4,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'トップ打ち',desc:'バックのトップ打ちが安定しない',featured:false,points:['打点を早めに前で取る — 肩の高さかそれより上がベストな打点','相手に背中を向けるくらい肩をしっかり入れる','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ','肘を伸ばしてインパクト'],steps:[{lv:1,label:'Step 1',name:'壁打ちバックトップ打ち',players:'一人OK',body:'壁に向かってバックのトップ打ちを繰り返す。高い打点での感覚づくり。',vk:'back_top'},{lv:2,label:'Step 2',name:'ロブ球出しからのバックトップ打ち',players:'2人',body:'向こう側からロブで出してもらい、バックでトップ打ち。',vk:'back_top'},{lv:3,label:'Step 3',name:'乱打でのバックトップ打ち実戦',players:'2人',body:'乱打でバック側に来たチャンスボールを積極的にトップ打ちで攻める。',vk:'back_top'}]},
+  {id:5,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'グランドストローク',desc:'バックのラリーが安定しない',featured:false,points:['クローズスタンスで入る — 相手に背中を見せるイメージ','打点は右足（踏み込み足）より前で取る','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ','フォロースルーでラケット面を立てて終わる'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ちバックグランド',players:'一人OK',body:'手出しまたは壁打ちでバックのグランドストロークの感覚をつかむ。',vk:'back_ground'},{lv:2,label:'Step 2',name:'手出し球からのバックグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールをバックで打つ。打点と体の向きを固める。',vk:'back_ground'},{lv:3,label:'Step 3',name:'バック限定クロスラリー',players:'2人',body:'バック側のみに打ち合う限定乱打。安定してラリーを続けることを優先。',vk:'back_ground'}]},
+  {id:6,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'アンダーストローク',desc:'バックの低いボールを処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま','縦面で下から上へ振り抜く','左足から右足へ体重移動し、右足を起点に体を回す','焦らず落ち着いて前で捉える'],steps:[{lv:1,label:'Step 1',name:'自己手出しバックアンダー',players:'一人OK',body:'低い位置にトスして自分でバックアンダーストローク。',vk:'back_under'},{lv:2,label:'Step 2',name:'短球手出しからのバックアンダー',players:'2人',body:'ネット前に短く出してもらい、前に詰めてバックアンダーで返球。',vk:'back_under'},{lv:3,label:'Step 3',name:'左右振り回しからのバックアンダー',players:'2人',body:'左右に振られた後のバックアンダーを想定した実戦練習。',vk:'back_under'}]},
+  {id:7,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'クロス',desc:'クロスに安定して打てない',featured:false,points:['打点を早めに前で取るほどクロスに飛びやすい','ネットの一番低い中央を通す意識でネットミスを減らす'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをクロスへ。クローズ→平行→オープンの順で各スタンスを試す。',vk:'course_common'},{lv:2,label:'Step 2',name:'クロス限定乱打',players:'2人',body:'クロスのみで打ち合い、各スタンスを意識しながらラリーを続ける。',vk:'course_common'},{lv:3,label:'Step 3',name:'クロス→コース変更の実戦練習',players:'2人',body:'クロスラリーから合図でストレートや逆クロスに変える。',vk:'course_common'}]},
+  {id:8,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'逆クロス',desc:'逆クロスに打てない・アウトが多い',featured:false,points:['打点をやや遅らせて体の横で捉える','ネットが高い分、クロスより少し上を狙う意識'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールを逆クロスへ。各スタンスで打点とコースの関係を体感する。',vk:'course_common'},{lv:2,label:'Step 2',name:'逆クロス限定乱打',players:'2人',body:'逆クロスのみで打ち合う。最初はゆっくりのペースで。',vk:'course_common'},{lv:3,label:'Step 3',name:'クロスから逆クロスへの切り替え実戦',players:'2人',body:'クロスラリーの中で逆クロスに変える。',vk:'course_common'}]},
+  {id:9,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'右ストレート',desc:'ストレートに打ち抜けない',featured:false,points:['打点はクロスより遅め・体の横で捉える','前衛がポーチに出てきたときの有効打'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをストレートへ。各スタンスでコースの安定感を確認。',vk:'course_common'},{lv:2,label:'Step 2',name:'クロス→ストレート切り替え練習',players:'2人',body:'クロスに2〜3球打ったあと1球ストレートに変える。',vk:'course_common'},{lv:3,label:'Step 3',name:'前衛ありの実戦でストレート',players:'3〜4人',body:'前衛に動いてもらいながらストレートを打ち抜く実戦練習。',vk:'course_common'}]},
+  {id:10,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'左ストレート',desc:'左ストレートに深く打てない',featured:false,points:['バック側から自然に引っ張る — 体の流れに乗る','深く打てると相手を動かせる'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'バック側への手出しボールを各スタンスで左ストレートへ打つ。',vk:'course_common'},{lv:2,label:'Step 2',name:'左ストレート限定ラリー',players:'2人',body:'左ストレートのみで打ち合い、深いボールを安定して打ち続ける。',vk:'course_common'},{lv:3,label:'Step 3',name:'逆クロス→左ストレート切り替え',players:'2人',body:'逆クロスラリーの中で左ストレートに変える実戦練習。',vk:'course_common'}]},
+  {id:11,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'ロブ',desc:'ロブが浅い・前衛に取られる',featured:false,points:['前衛がジャンプして手を伸ばしても届かない高さ — 身長の2.5〜3倍をイメージ','スピードより高さと深さ優先 — 守り・体勢立て直し・コース変更に使う'],steps:[{lv:1,label:'Step 1',name:'しゃがみ打ちロブ練習',players:'2人',body:'しゃがんだ状態から膝を伸ばしてロブを打つ。下半身の使い方に特化した一本打ち。',vk:'lob'},{lv:2,label:'Step 2',name:'深さ・高さ指定ロブ練習',players:'2人',body:'手出し球を前衛の身長2.5〜3倍の高さ・ベースライン付近の深さを狙って打つ。',vk:'lob'},{lv:3,label:'Step 3',name:'前衛ありの実戦ロブ',players:'3〜4人',body:'前衛を立てた状態でシュートとロブを使い分ける。',vk:'lob'}]},
+  {id:12,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'中ロブ',desc:'中ロブが前衛に取られる',featured:false,points:['前衛の身長の2倍くらいの高さを狙う — 低めに速く落とすパターンもあり','「前衛の頭スレスレにシュートを打つ」イメージで打つ','シュートボールと同じフォームで打つ — 相手にコースを悟られない'],steps:[{lv:1,label:'Step 1',name:'高さ指定の中ロブ練習',players:'2人',body:'手出し球を前衛の身長2倍を目安に打つ。ドライブ回転をかけて速く落とす意識。',vk:'midlob'},{lv:2,label:'Step 2',name:'シュート→中ロブ切り替え乱打',players:'2人',body:'乱打の中でシュートと中ロブを同じフォームで打ち分ける。',vk:'midlob'},{lv:3,label:'Step 3',name:'前衛ありの実戦中ロブ×シュート',players:'3〜4人',body:'前衛を立てた状態でシュートと中ロブを使い分ける実戦パターン。',vk:'midlob'}]},
+  {id:13,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'シュートボール',desc:'シュートボールがネットする・浮く',featured:false,points:['ネット上を低く速く通す — 高さと速さが命','横面でシュート回転をかける','中ロブ・高いロブと組み合わせて高低差で揺さぶる'],steps:[{lv:1,label:'Step 1',name:'壁打ちシュートボール',players:'一人OK',body:'壁に向かって低い軌道のシュートボールを繰り返す。',vk:'shoot'},{lv:2,label:'Step 2',name:'シュートボール限定乱打',players:'2人',body:'シュートのみで打ち合う。ネットより低い位置を通すことを目標に。',vk:'shoot'},{lv:3,label:'Step 3',name:'高低差実戦切り替え',players:'3〜4人',body:'高いロブ・中ロブ・シュートを組み合わせて前衛ありで打ち分ける。',vk:'shoot'}]},
+  {id:14,cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'準回転のショートボール（ツイスト）',desc:'ツイストが打てない・浮く',featured:false,points:['シュートボールと同じフォームで打つ','滞空時間を短く — 低くて速いボールが効果的','早いテンポで打つ','相手がベースライン後方にいるときが狙い目'],steps:[{lv:1,label:'Step 1',name:'手出し球での一本打ち',players:'2人',body:'手出しボールで準回転の短球の感覚をつかむ。低さ・速さを意識。',vk:'twist'},{lv:2,label:'Step 2',name:'シュート→短球切り替え練習',players:'2人',body:'シュートを2〜3球打ったあと短球を混ぜる。同じフォームで打ち分ける。',vk:'twist'},{lv:3,label:'Step 3',name:'実戦切り替え',players:'3〜4人',body:'相手が後ろに下がったタイミングを見計らって短球を打つ実戦練習。',vk:'twist'}]},
+  {id:15,cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'ドロップ',desc:'ドロップが打てない・弾む',featured:false,points:['打点は上がり際・最頂点','カット面にボールを乗せて押し出す感覚 — 切ったり回転をかけようとしない','打つ前にストロークのフォームで構える','主導権を持っているときだけ使う'],steps:[{lv:1,label:'Step 1',name:'手出し球でのドロップ一本打ち',players:'2人',body:'上がり際の高い打点でカット面に乗せて押し出す感覚をつかむ。',vk:'drop'},{lv:2,label:'Step 2a',name:'セカンドサーブへのドロップ練習',players:'2人',body:'セカンドサーブに対してレシーブをドロップで返す実戦パターン。',vk:'drop'},{lv:2,label:'Step 2b',name:'ラリー中からのドロップ練習',players:'2人',body:'ストロークを2〜3球打ったあとドロップを打つ。同じフォームから打ち分けて相手を崩す。',vk:'drop'}]},
+  {id:16,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'フォアボレー',desc:'フォアボレーが安定しない',featured:false,points:['両手で構える — 片手だと無駄な力が入る','ラケットをボールより高い位置にセット','体を回転させない — 横向きのまま押し出す','送り足で体重移動して弾く — 足で飛ばす','インパクトの瞬間だけグリップを握り込む','コンパクトに小指側から押し出す','どこでボレーするかイメージを持ってから動く'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをフォアボレーで弾く。両手で構え、コンパクトに押し出す感覚をつかむ。',vk:'fore_volley'},{lv:2,label:'Step 2',name:'ボレスト（フォア限定）',players:'2人',body:'ストローク側が打つボールをフォアボレーで返し続ける。',vk:'fore_volley'},{lv:3,label:'Step 3',name:'コース打ち分けボレスト',players:'2人',body:'ボレストの中でクロス・ストレートにコースを打ち分ける。',vk:'fore_volley'}]},
+  {id:17,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'バックボレー',desc:'バックボレーが弱い・取れない',featured:false,points:['テイクバックは早めに高く — 先にテイクバックを終わらせる','肩甲骨を入れ替える — 右肩甲骨を前・左肩甲骨を後ろに','インパクトでグリップを握り込む','遠いボールは左肩を後ろに引く','体が正面を向かないようにする'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをバックボレーで弾く。テイクバックの速さと肩甲骨の入れ替えを意識。',vk:'back_volley'},{lv:2,label:'Step 2',name:'ボレスト（バック限定）',players:'2人',body:'ストローク側が打つボールをバックボレーで返し続ける。',vk:'back_volley'},{lv:3,label:'Step 3',name:'フォア・バック交互ボレスト',players:'2人',body:'ランダムなボールに対してフォア・バックを咄嗟に判断して返す。',vk:'back_volley'}]},
+  {id:18,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ローボレー',desc:'ローボレーがネットする・弱い',featured:false,points:['目とボールの距離を縮める — 頭を下げてボールに目を近づける','膝を深く曲げて体全体でボールを飛ばす','肩甲骨の入れ替えでラケットを押し出す','テンポよく素早く準備する','スマッシュ・ハイボレー・ローボレーは肩の内旋動作が共通'],steps:[{lv:1,label:'Step 1',name:'手出し低め球ローボレー',players:'2人',body:'低い位置に手出ししてもらいローボレーで弾く。頭を下げて目線をボールに近づける意識。',vk:'low_volley'},{lv:2,label:'Step 2',name:'ローボレーvsストローク',players:'2人',body:'ストローク側が足元に沈むボールを出し続け、ローボレーで返す。',vk:'low_volley'},{lv:3,label:'Step 3',name:'フォア・バックローボレー交互',players:'2人',body:'フォアとバックのローボレーをランダムに切り替えながら返球する。',vk:'low_volley'}]},
+  {id:19,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ハイボレー',desc:'ハイボレーをミスする・アウトが多い',featured:false,points:['まず足でボールの落下地点に入る','テイクバックを早く・高く','肘を上げてセット','左足をネットと平行に置いてから膝を曲げてタメを作る','タメを一気に解放してインパクト','振り遅れるとバックアウト','中間ポジションでは強打より安定'],steps:[{lv:1,label:'Step 1',name:'手出し高め球ハイボレー',players:'2人',body:'頭より少し上の高さに手出しをしてもらいハイボレーを打つ。左足の置き方と膝のタメを意識。',vk:'high_volley'},{lv:2,label:'Step 2',name:'ロブ上げからのハイボレー',players:'2人',body:'ベースラインからロブを上げてもらいハイボレーで打ち込む。',vk:'high_volley'},{lv:3,label:'Step 3',name:'ハイボレー・スマッシュ判断練習',players:'2〜3人',body:'ランダムなロブに対してハイボレーかスマッシュかを判断して打ち分ける。',vk:'high_volley'}]},
+  {id:20,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'スマッシュ',desc:'スマッシュを空振りする・ミスが多い',featured:false,points:['ロブを早めに判断して素早く下がる','打点はボールの真下より少し前','軸足を決めてから膝を曲げてタメを作る','肩の内旋動作でスイング','コースで勝負','一発で決めようとしない','スマッシュ後はすぐにポジションを戻す'],steps:[{lv:1,label:'Step 1',name:'手出しロブからのスマッシュ',players:'2人',body:'あまり高くないロブを出してもらいスマッシュ。下がり方と打点の位置を固める。',vk:'smash'},{lv:2,label:'Step 2',name:'スマッシュ対ロブ',players:'2人',body:'スマッシュ側とロブ側に分かれてラリー。コースを打ち分けながらつながることを意識。',vk:'smash'},{lv:3,label:'Step 3',name:'スマッシュ＋ハイボレー連続練習',players:'2〜3人',body:'ロブ→スマッシュ→ポジションへ戻る→ハイボレーの流れを繰り返す。',vk:'smash'}]},
+  {id:21,cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（フォア）',desc:'フォアのポーチに出られない・届かない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要','動き出しのタイミングは相手後衛のスイングが始まった瞬間','3歩のフットワーク — 「左足→右足（大きく）→左足」の順','2歩目をかかとから大きく踏み込んでタメを作ってボレー','ラケットは振らない — グリップを握り込むだけ','ボレー後は止まって次のポジションへ','最初はセンターを狙う'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、ポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをポーチでボレー。',vk:'poach'}]},
+  {id:22,cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（バック）',desc:'バックのポーチに出られない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要','3歩のフットワーク — 「右足→左足（大きく）→右足」の順（フォアと逆）','2歩目をかかとから大きく踏み込む','遠いボールは左肩を後ろに引く','バックポーチは正クロス展開での左ストレートボレーが基本','抜かれても積極的に出続ける'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、バックポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをバックポーチでボレー。',vk:'poach'}]},
+  {id:23,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜確率',desc:'サーブが入らない・ダブルフォルトが多い',featured:false,points:['スピードより確率優先 — 5〜7割の力','トスを安定させることが全て — 身長の2倍の高さに毎回同じ位置に','ルーティンを決める','グリップはイースタン','身体の回転をピタッと止めると腕がしなる'],steps:[{lv:1,label:'Step 1',name:'連続サーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。ルーティンを必ず守る。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角のコーンを狙って打つ。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦サーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースを探りながら打つ。',vk:'normal_serve'}]},
+  {id:24,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜コース',desc:'サーブのコースが打ち分けられない',featured:false,points:['まずセンターを狙う — 相手にレシーブの角度をつけさせない','後衛サイドはセンター、前衛サイドは逆クロスが基本','コースはスピードより重要'],steps:[{lv:1,label:'Step 1',name:'コース限定サーブ練習',players:'一人OK',body:'まずセンターのみに絞って打ち続ける。1コースを安定させることを優先。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、センター・ワイド・ボディを打ち分ける。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを狙う。相手の動きを見て判断する。',vk:'normal_serve'}]},
+  {id:25,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜スピード',desc:'サーブのスピードが出ない',featured:false,points:['スイングを止めることで威力が上がる','タメを作ってから一気に解放する','回転をかけすぎるとスピードが落ちる','スピードと確率はトレードオフ'],steps:[{lv:1,label:'Step 1',name:'フルスイング入れ練習',players:'一人OK',body:'思い切り振り抜いてまず入れることを目標に。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てスピードサーブ',players:'一人OK',body:'コーンを狙いながらスピードも意識して打つ。確率とスピードのバランスを探る。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'ファースト・セカンド実戦練習',players:'2人',body:'レシーバーありでファーストをスピード重視、セカンドを確率重視で打つ。',vk:'normal_serve'}]},
+  {id:26,cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜確率',desc:'カットサーブが入らない・ネットが多い',featured:false,points:['グリップはイースタンで短く持つ','テイクバックは小さく腕だけで引く','ボールを極限まで薄くカットする','カット後は手首を返さずに止める','ひざを柔らかく使って軌道を修正する'],steps:[{lv:1,label:'Step 1',name:'カットサーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てカットサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角を狙って打つ。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦カットサーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースと回転量を探る。',vk:'cut_serve'}]},
+  {id:27,cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜コース',desc:'カットサーブのコースが打ち分けられない',featured:false,points:['まず真っ直ぐ狙いで自分のボールがどちらに曲がるか把握する','スタンスの向きでコースを調整する','コースより確率が先'],steps:[{lv:1,label:'Step 1',name:'正クロス・逆クロス交互練習',players:'一人OK',body:'スタンスを変えて正クロス・逆クロスに交互に打ち分けて入れる。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、正クロス・逆クロスを狙い打ち分ける。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを打ち分ける。相手の反応を見て実戦感覚を養う。',vk:'cut_serve'}]},
+];
+
+const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}]};
+
+let currentCat='all',currentSubCat=null;
+renderList(DB);
+
+function renderList(items){
+  const list=document.getElementById('resultList'),empty=document.getElementById('emptyState');
+  if(!items.length){list.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  list.innerHTML=items.map(d=>`<div class="result-card ${d.featured?'featured':''} fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}</div><div class="result-sub">${d.desc}</div><div>${d.steps.length?'<span class="step-pill s1">Step1</span><span class="step-pill s2">Step2</span><span class="step-pill s3">Step3</span>':'<span style="font-size:11px;color:var(--text-muted)">準備中</span>'}</div></div>`).join('');
+}
+
+function selectCat(el,cat){
+  document.querySelectorAll('#catChips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');currentCat=cat;currentSubCat=null;
+  const sub=document.getElementById('subCatArea');
+  if(cat!=='all'&&SUB_CATS[cat]){
+    sub.style.display='block';
+    document.getElementById('subCatLabel').textContent=cat==='stroke'?'STROKE':cat==='volley'?'VOLLEY':'SERVICE';
+    document.getElementById('subCatChips').innerHTML=SUB_CATS[cat].map((s,i)=>`<span class="chip ${i===0?'active':''}" onclick="selectSubCat(this,'${s.key}')">${s.label}</span>`).join('');
+    currentSubCat=SUB_CATS[cat][0].key;
+  }else{sub.style.display='none';}
+  applyFilter();
+}
+
+function selectSubCat(el,sub){document.querySelectorAll('#subCatChips .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentSubCat=sub;applyFilter();}
+
+function applyFilter(){
+  let items=DB;
+  if(currentCat!=='all') items=items.filter(d=>d.cat===currentCat);
+  if(currentSubCat&&!currentSubCat.startsWith('all_')) items=items.filter(d=>d.subCat===currentSubCat);
+  const q=document.getElementById('searchInput').value.trim();
+  if(q) items=items.filter(d=>d.title.includes(q)||d.desc.includes(q)||d.subCatLabel.includes(q));
+  renderList(items);
+}
+
+function onSearch(){applyFilter();}
+
+function showDetail(id){
+  const d=DB.find(x=>x.id===id);if(!d)return;
+  const stepsHTML=d.steps.length?d.steps.map(s=>{
+    const vids=YT[s.vk]||[];
+    return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div></div>`;
+  }).join(''):'<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">準備中</div>';
+  document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in"><div class="kanjo-label">POINT — 勘所</div>${d.points.map(p=>`<div class="kanjo-item">・${p}</div>`).join('')}</div><div class="section-label">PRACTICE MENU</div>${stepsHTML}`;
+  document.getElementById('homeScreen').style.display='none';
+  document.getElementById('detailScreen').style.display='block';
+  document.getElementById('navHome').style.display='none';
+  document.getElementById('navBack').style.display='flex';
+  document.getElementById('navBack').textContent=`← ${d.subCatLabel} › ${d.title}`;
+  document.getElementById('detailScreen').scrollTop=0;
+}
+
+function showHome(){
+  document.getElementById('homeScreen').style.display='block';
+  document.getElementById('detailScreen').style.display='none';
+  document.getElementById('navHome').style.display='block';
+  document.getElementById('navBack').style.display='none';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bnav-'+tab).classList.add('active');
+  document.getElementById('homeScreen').style.display=tab==='search'?'block':'none';
+  document.getElementById('detailScreen').style.display='none';
+  document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
+  document.getElementById('navHome').style.display='block';
+  document.getElementById('navBack').style.display='none';
+}
+</script>
+</body>
+</html>
