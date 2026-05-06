@@ -66,6 +66,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .22s ease forwards}
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7WSDX7965Y');
+</script>
 </head>
 <body>
 <div class="app">
@@ -237,3 +245,14 @@ function switchTab(tab){
 </script>
 </body>
 </html>
+(function(){
+  var el = document.querySelector('.cm-content');
+  var view = el?.cmView?.rootView || el?.cmTile?.view;
+  if(!view){ var k=Object.keys(el||{}).find(k=>el[k]?.state); if(k) view=el[k]; }
+  if(!view){ console.error('editor not found'); return; }
+  var html = view.state.doc.toString();
+  var ga = '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"><\/script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n  gtag(\'config\', \'G-7WSDX7965Y\');\n<\/script>';
+  var newHtml = html.replace('</head>', ga + '\n</head>');
+  view.dispatch({changes:{from:0, to:view.state.doc.length, insert:newHtml}});
+  console.log('GA inserted! Length: '+newHtml.length+', contains GA: '+newHtml.includes('G-7WSDX7965Y'));
+})();
