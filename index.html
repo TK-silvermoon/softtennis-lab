@@ -121,26 +121,86 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 </div>
 <script>
 const YT={
-  fore_top:[{label:'苦手な人に絶対見てほしい！極意',url:'https://www.youtube.com/watch?v=o-690zo93Qw'},{label:'トップ打ちが絶対上手くなりたい人集合',url:'https://www.youtube.com/watch?v=1HbytDKzgak'},{label:'試合前必見！安定するトップ打ち',url:'https://www.youtube.com/watch?v=Ey7Xu0LTNP4'},{label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'},{label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA'}],
-  fore_ground:[{label:'フォアハンドが最速で上達する方法',url:'https://www.youtube.com/watch?v=cC5kDWM9t90'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},{label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},{label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'}],
-  fore_under:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
-  back_top:[{label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'},{label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
-  back_ground:[{label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},{label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},{label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'}],
-  back_under:[{label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
-  course_common:[{label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
-  lob:[{label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'}],
-  midlob:[{label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},{label:'内本隆文 回り込みトップの極意（中ロブ連動）',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA'}],
-  shoot:[{label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},{label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},{label:'速い×安定ストローク！かっこいいフォームで打つ方法',url:'https://www.youtube.com/live/47BZPe-s1ac'}],
+  // minLv: 省略=Step1から表示、3=「極意」「最強」ワードの上級動画のみStep3で表示
+  fore_top:[
+    {label:'苦手な人に絶対見てほしい！極意',url:'https://www.youtube.com/watch?v=o-690zo93Qw',minLv:3},
+    {label:'トップ打ちが絶対上手くなりたい人集合',url:'https://www.youtube.com/watch?v=1HbytDKzgak'},
+    {label:'試合前必見！安定するトップ打ち',url:'https://www.youtube.com/watch?v=Ey7Xu0LTNP4'},
+    {label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA',minLv:3},
+    {label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA',minLv:3},
+  ],
+  fore_ground:[
+    {label:'フォアハンドが最速で上達する方法',url:'https://www.youtube.com/watch?v=cC5kDWM9t90'},
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},
+    {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+    {label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'},
+  ],
+  fore_under:[
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+  ],
+  back_top:[
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'内本隆文 回り込みトップの極意',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA',minLv:3},
+    {label:'内本隆文流回り込みトップ打ちが最強',url:'https://www.youtube.com/watch?v=XjdOuaXTNcA',minLv:3},
+  ],
+  back_ground:[
+    {label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},
+    {label:'ストロークの安定感が爆上がりする方法',url:'https://www.youtube.com/watch?v=YGBlEZJW85Y'},
+    {label:'誰でも安定したストロークが打てる方法',url:'https://www.youtube.com/watch?v=UMM_Qu-0-z4'},
+  ],
+  back_under:[
+    {label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},
+    {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+  ],
+  course_common:[
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
+  ],
+  lob:[
+    {label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},
+    {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+  ],
+  midlob:[
+    {label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},
+    {label:'内本隆文 回り込みトップの極意（中ロブ連動）',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA',minLv:3},
+  ],
+  shoot:[
+    {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+    {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
+    {label:'速い×安定ストローク！かっこいいフォームで打つ方法',url:'https://www.youtube.com/live/47BZPe-s1ac'},
+  ],
   twist:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
   drop:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
-  fore_volley:[{label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
-  back_volley:[{label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},{label:'前衛を変えるバックボレー４つのステップ',url:'https://www.youtube.com/watch?v=iPIU5cd27zM'},{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
-  low_volley:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},{label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'}],
-  high_volley:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},{label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'}],
+  fore_volley:[
+    {label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},
+    {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+  ],
+  back_volley:[
+    {label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},
+    {label:'前衛を変えるバックボレー４つのステップ',url:'https://www.youtube.com/watch?v=iPIU5cd27zM'},
+    {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+  ],
+  low_volley:[
+    {label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},
+    {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+  ],
+  high_volley:[
+    {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+    {label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},
+  ],
   smash:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
-  poach:[{label:'ポーチボレーの足の使い方を全部教えます（船水雄太）',url:'https://www.youtube.com/watch?v=75ZxdTI7_9w'},{label:'試合で即効力発揮！効果的なポーチボレーのコツ',url:'https://www.youtube.com/watch?v=KHSUxeU_RME'},{label:'前衛 試合のポーチボレーを読み解く解説',url:'https://www.youtube.com/watch?v=I_6aueu8fvY'}],
+  poach:[
+    {label:'ポーチボレーの足の使い方を全部教えます（船水雄太）',url:'https://www.youtube.com/watch?v=75ZxdTI7_9w'},
+    {label:'試合で即効力発揮！効果的なポーチボレーのコツ',url:'https://www.youtube.com/watch?v=KHSUxeU_RME'},
+    {label:'前衛 試合のポーチボレーを読み解く解説',url:'https://www.youtube.com/watch?v=I_6aueu8fvY'},
+  ],
   normal_serve:[{label:'ファーストサーブ10個のコツ（前衛ドットコム）',url:'https://softtennis-zenei.com/technique/serve-perfect/'}],
-  cut_serve:[{label:'世界チャンピオンのカットサーブ（荻原正人）',url:'https://www.youtube.com/watch?v=dbKWrhyWxZY'},{label:'プロのカットサーブを超スーパースローで（船水雄太）',url:'https://www.youtube.com/watch?v=SUasgNL91yI'}],
+  cut_serve:[
+    {label:'世界チャンピオンのカットサーブ（荻原正人）',url:'https://www.youtube.com/watch?v=dbKWrhyWxZY'},
+    {label:'プロのカットサーブを超スーパースローで（船水雄太）',url:'https://www.youtube.com/watch?v=SUasgNL91yI'},
+  ],
 };
 
 const DB=[
@@ -214,7 +274,7 @@ function onSearch(){applyFilter();}
 function showDetail(id){
   const d=DB.find(x=>x.id===id);if(!d)return;
   const stepsHTML=d.steps.length?d.steps.map(s=>{
-    const vids=YT[s.vk]||[];
+    const vids=(YT[s.vk]||[]).filter(v=>s.lv>=(v.minLv||1));
     return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div></div>`;
   }).join(''):'<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">準備中</div>';
   document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in"><div class="kanjo-label">POINT — 勘所</div>${d.points.map(p=>`<div class="kanjo-item">・${p}</div>`).join('')}</div><div class="section-label">PRACTICE MENU</div>${stepsHTML}`;
