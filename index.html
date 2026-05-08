@@ -62,9 +62,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .note-coming-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-dark);margin-bottom:10px}
 .note-coming-sub{font-size:13px;color:var(--text-muted);line-height:1.7}
 .badge-coming{display:inline-block;background:var(--gold-pale);color:var(--gold-dark);border:.5px solid var(--gold-light);font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:18px}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;display:none}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;display:none;line-height:1.8}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .22s ease forwards}
+.symptom-group-label{font-size:11px;color:var(--gold-dark);letter-spacing:.08em;font-weight:500;margin:16px 0 8px;padding-left:2px}
+.symptom-desc{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:5px}
+.symptom-menu{font-size:12px;color:var(--gold-dark)}
+.step-crit{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:11.5px;line-height:1.6}
+.step-crit.next{background:rgba(201,168,76,.10);color:#8B6914;border-left:3px solid var(--gold)}
+.step-crit.mastery{background:rgba(60,170,100,.10);color:#2e7d52;border-left:3px solid #4caf7a}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -90,12 +96,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <input class="search-input" type="text" placeholder="苦手なプレーを入力…" id="searchInput" oninput="onSearch()">
     </div>
     <div id="browseArea">
+      <div class="cat-label">POSITION</div>
+      <div class="chip-row" id="posChips">
+        <span class="chip active" onclick="selectPos(this,'all')">すべて</span>
+        <span class="chip" onclick="selectPos(this,'back')">後衛向け</span>
+        <span class="chip" onclick="selectPos(this,'fore')">前衛向け</span>
+      </div>
       <div class="cat-label">CATEGORY</div>
       <div class="chip-row" id="catChips">
         <span class="chip active" onclick="selectCat(this,'all')">すべて</span>
         <span class="chip" onclick="selectCat(this,'stroke')">ストローク</span>
         <span class="chip" onclick="selectCat(this,'volley')">ボレー</span>
         <span class="chip" onclick="selectCat(this,'service')">サービス</span>
+        <span class="chip" onclick="selectCat(this,'receive')">レシーブ</span>
       </div>
       <div id="subCatArea" style="display:none">
         <div class="cat-label" id="subCatLabel"></div>
@@ -104,7 +117,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <div class="divider"></div>
     </div>
     <div id="resultList"></div>
-    <div class="empty-state" id="emptyState">🎾 該当する練習メニューが見つかりませんでした</div>
+    <div class="empty-state" id="emptyState">
+      <div id="emptyMsg">🎾 該当する練習メニューが見つかりませんでした</div>
+    </div>
   </div>
   <div class="screen-body detail-view" id="detailScreen"></div>
   <div class="screen-body note-screen" id="noteScreen">
@@ -114,8 +129,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <div class="note-coming-sub">練習日誌・課題管理機能は<br>近日公開予定です。お楽しみに！</div>
     </div>
   </div>
+  <div class="screen-body" id="symptomScreen" style="display:none">
+    <div id="symptomList"></div>
+  </div>
   <div class="bottom-nav">
     <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
+    <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>悩みから探す</span></div>
     <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span>ノート</span></div>
   </div>
 </div>
@@ -154,8 +173,20 @@ const YT={
     {label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},
     {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
   ],
-  course_common:[
+  cross:[
+    {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
     {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+  ],
+  reverse_cross:[
+    {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+  ],
+  straight_right:[
+    {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
+    {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+  ],
+  straight_left:[
+    {label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
   ],
   lob:[
@@ -171,8 +202,12 @@ const YT={
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
     {label:'速い×安定ストローク！かっこいいフォームで打つ方法',url:'https://www.youtube.com/live/47BZPe-s1ac'},
   ],
-  twist:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
-  drop:[{label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'}],
+  twist:[
+    {label:'ツイスト・ショートクロスの打ち方＆実戦テク',url:'https://www.youtube.com/watch?v=AMqI0zf3trw'},
+    {label:'ツイストで陣形を崩して得点を取る方法',url:'https://www.youtube.com/watch?v=6w43YrGerO0'},
+    {label:'実践で使えるツイストのコツをマスターしよう',url:'https://www.youtube.com/watch?v=4a028bOhWTw'},
+  ],
+  drop:[],
   fore_volley:[
     {label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},
     {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
@@ -190,59 +225,128 @@ const YT={
     {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
     {label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},
   ],
-  smash:[{label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'}],
+  smash:[
+    {label:'元全国3位が教えるスマッシュ講座',url:'https://www.youtube.com/watch?v=It8TwUQ6yQ0'},
+    {label:'試合でスマッシュをミスしない2つのコツ',url:'https://www.youtube.com/watch?v=t2BaJinjseM'},
+    {label:'角度をつけたスマッシュの打ち方（前衛力UP）',url:'https://www.youtube.com/watch?v=BXLNRODCLuQ'},
+  ],
   poach:[
     {label:'ポーチボレーの足の使い方を全部教えます（船水雄太）',url:'https://www.youtube.com/watch?v=75ZxdTI7_9w'},
     {label:'試合で即効力発揮！効果的なポーチボレーのコツ',url:'https://www.youtube.com/watch?v=KHSUxeU_RME'},
     {label:'前衛 試合のポーチボレーを読み解く解説',url:'https://www.youtube.com/watch?v=I_6aueu8fvY'},
   ],
-  normal_serve:[{label:'ファーストサーブ10個のコツ（前衛ドットコム）',url:'https://softtennis-zenei.com/technique/serve-perfect/'}],
+  normal_serve:[
+    {label:'体の使い方のプロが教えるサーブのコツ3選',url:'https://www.youtube.com/watch?v=Aj8cyZJzv00'},
+    {label:'ファーストサーブ超大全・速くて確率の高いサーブ3つのコツ',url:'https://www.youtube.com/watch?v=ySHw2O8hI3A'},
+    {label:'サーブが爆速でうまくなる最強練習メニュー3選',url:'https://www.youtube.com/watch?v=3qAtm0gME-I'},
+    {label:'ファーストサーブ10個のコツ（前衛ドットコム）',url:'https://softtennis-zenei.com/technique/serve-perfect/'},
+  ],
   cut_serve:[
     {label:'世界チャンピオンのカットサーブ（荻原正人）',url:'https://www.youtube.com/watch?v=dbKWrhyWxZY'},
     {label:'プロのカットサーブを超スーパースローで（船水雄太）',url:'https://www.youtube.com/watch?v=SUasgNL91yI'},
   ],
+  normal_receive:[
+    {label:'レシーブ苦手な人必見！たった10分でレシーブが良くなる⁉︎',url:'https://www.youtube.com/watch?v=RG2q_d-actU'},
+    {label:'ソフトテニス後衛レシーブのコツや考え方！',url:'https://www.youtube.com/watch?v=RNP0lVLi5Zc'},
+    {label:'誰でもセカンドレシーブが安定する練習3ステップ！',url:'https://www.youtube.com/watch?v=XUK-o-msu1A',minLv:2},
+  ],
+  cut_receive:[
+    {label:'【返すだけ→攻める】カットサーブを返せるけど攻めれない人の練習法',url:'https://www.youtube.com/watch?v=6mMfeX_T-fU'},
+  ],
 };
 
 const DB=[
-  {id:1,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'トップ打ち',desc:'チャンスボールを決めきれない',featured:true,points:['打点を落とさない — バウンド頂点より少し前・肩の高さかそれより上で捉える','脇を締めてヘッドを遅らせる — 腕だけで打つと力が逃げる','インパクトの瞬間だけ力を入れる — チャンスボールほどリラックス','体の軸を崩さない — 前のめりになると威力が半減'],steps:[{lv:1,label:'Step 1',name:'壁打ち／強バウンドトップ打ち',players:'一人OK',body:'【壁あり】壁に向かって高い打点でトップ打ちを繰り返す。【壁なし】強くバウンドさせて跳ね上がったボールをトップ打ち。',vk:'fore_top'},{lv:2,label:'Step 2a',name:'手出しノーバウンドトップ打ち',players:'2人',body:'コートの同じ側から手出しでノーバウンドでトップ打ち。打点の高さを確実に体感できる。',vk:'fore_top'},{lv:2,label:'Step 2b',name:'ロブ球出しからのトップ打ち',players:'2人',body:'コートの向こう側からロブで球出しをしてもらいトップ打ちで打ち込む。',vk:'fore_top'},{lv:3,label:'Step 3',name:'乱打でのトップ打ち実戦練習',players:'2人',body:'乱打の中でチャンスボールが来たら積極的にトップ打ちで攻める。',vk:'fore_top'}]},
-  {id:2,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'グランドストローク',desc:'ラリーが続かない・安定しない',featured:false,points:['体重移動を使う — 軸足から前足へ、全身でボールを運ぶ','テイクバックを早く — ボールが来る前に引き終わる','ラケット面を横に振り抜く — 体の回転で振る','打点は前足より前 — 詰まると力が入らない','リラックスして、インパクトの瞬間だけ握る'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ち',players:'一人OK',body:'【手出し】自分でボールを出して打点・体重移動を確認。【壁打ち】壁に向かってリズムとフォームを固める。',vk:'fore_ground'},{lv:2,label:'Step 2',name:'手出し球でのグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールを打つ。打点・体重移動・フォームを固める。',vk:'fore_ground'},{lv:3,label:'Step 3',name:'クロス限定乱打',players:'2人',body:'クロスに限定した乱打で安定してラリーを続ける。',vk:'fore_ground'}]},
-  {id:3,cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'アンダーストローク',desc:'低いボールをうまく処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま','ラケット面を縦にして下から上へ振り抜く','打点は低くても前で取る','焦らない — 短いボールほど落ち着いて入ることが大事'],steps:[{lv:1,label:'Step 1',name:'自己手出しアンダーストローク',players:'一人OK',body:'低い位置にトスして自分でアンダーストローク。低打点の感覚を繰り返し体感する。',vk:'fore_under'},{lv:2,label:'Step 2',name:'短球手出しからのアンダーストローク',players:'2人',body:'相手にネット前に短く手出しをしてもらい、前に詰めてアンダーストロークで返球。',vk:'fore_under'},{lv:3,label:'Step 3',name:'ショートボール対応の実戦練習',players:'2人',body:'乱打の中で意図的に短いボールを混ぜてもらい、走り込んでアンダーストロークで処理。',vk:'fore_under'}]},
-  {id:4,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'トップ打ち',desc:'バックのトップ打ちが安定しない',featured:false,points:['打点を早めに前で取る — 肩の高さかそれより上がベストな打点','相手に背中を向けるくらい肩をしっかり入れる','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ','肘を伸ばしてインパクト'],steps:[{lv:1,label:'Step 1',name:'壁打ちバックトップ打ち',players:'一人OK',body:'壁に向かってバックのトップ打ちを繰り返す。高い打点での感覚づくり。',vk:'back_top'},{lv:2,label:'Step 2',name:'ロブ球出しからのバックトップ打ち',players:'2人',body:'向こう側からロブで出してもらい、バックでトップ打ち。',vk:'back_top'},{lv:3,label:'Step 3',name:'乱打でのバックトップ打ち実戦',players:'2人',body:'乱打でバック側に来たチャンスボールを積極的にトップ打ちで攻める。',vk:'back_top'}]},
-  {id:5,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'グランドストローク',desc:'バックのラリーが安定しない',featured:false,points:['クローズスタンスで入る — 相手に背中を見せるイメージ','打点は右足（踏み込み足）より前で取る','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ','フォロースルーでラケット面を立てて終わる'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ちバックグランド',players:'一人OK',body:'手出しまたは壁打ちでバックのグランドストロークの感覚をつかむ。',vk:'back_ground'},{lv:2,label:'Step 2',name:'手出し球からのバックグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールをバックで打つ。打点と体の向きを固める。',vk:'back_ground'},{lv:3,label:'Step 3',name:'バック限定クロスラリー',players:'2人',body:'バック側のみに打ち合う限定乱打。安定してラリーを続けることを優先。',vk:'back_ground'}]},
-  {id:6,cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'アンダーストローク',desc:'バックの低いボールを処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま','縦面で下から上へ振り抜く','左足から右足へ体重移動し、右足を起点に体を回す','焦らず落ち着いて前で捉える'],steps:[{lv:1,label:'Step 1',name:'自己手出しバックアンダー',players:'一人OK',body:'低い位置にトスして自分でバックアンダーストローク。',vk:'back_under'},{lv:2,label:'Step 2',name:'短球手出しからのバックアンダー',players:'2人',body:'ネット前に短く出してもらい、前に詰めてバックアンダーで返球。',vk:'back_under'},{lv:3,label:'Step 3',name:'左右振り回しからのバックアンダー',players:'2人',body:'左右に振られた後のバックアンダーを想定した実戦練習。',vk:'back_under'}]},
-  {id:7,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'クロス',desc:'クロスに安定して打てない',featured:false,points:['打点を早めに前で取るほどクロスに飛びやすい','ネットの一番低い中央を通す意識でネットミスを減らす'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをクロスへ。クローズ→平行→オープンの順で各スタンスを試す。',vk:'course_common'},{lv:2,label:'Step 2',name:'クロス限定乱打',players:'2人',body:'クロスのみで打ち合い、各スタンスを意識しながらラリーを続ける。',vk:'course_common'},{lv:3,label:'Step 3',name:'クロス→コース変更の実戦練習',players:'2人',body:'クロスラリーから合図でストレートや逆クロスに変える。',vk:'course_common'}]},
-  {id:8,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'逆クロス',desc:'逆クロスに打てない・アウトが多い',featured:false,points:['打点をやや遅らせて体の横で捉える','ネットが高い分、クロスより少し上を狙う意識'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールを逆クロスへ。各スタンスで打点とコースの関係を体感する。',vk:'course_common'},{lv:2,label:'Step 2',name:'逆クロス限定乱打',players:'2人',body:'逆クロスのみで打ち合う。最初はゆっくりのペースで。',vk:'course_common'},{lv:3,label:'Step 3',name:'クロスから逆クロスへの切り替え実戦',players:'2人',body:'クロスラリーの中で逆クロスに変える。',vk:'course_common'}]},
-  {id:9,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'右ストレート',desc:'ストレートに打ち抜けない',featured:false,points:['打点はクロスより遅め・体の横で捉える','前衛がポーチに出てきたときの有効打'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをストレートへ。各スタンスでコースの安定感を確認。',vk:'course_common'},{lv:2,label:'Step 2',name:'クロス→ストレート切り替え練習',players:'2人',body:'クロスに2〜3球打ったあと1球ストレートに変える。',vk:'course_common'},{lv:3,label:'Step 3',name:'前衛ありの実戦でストレート',players:'3〜4人',body:'前衛に動いてもらいながらストレートを打ち抜く実戦練習。',vk:'course_common'}]},
-  {id:10,cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'左ストレート',desc:'左ストレートに深く打てない',featured:false,points:['バック側から自然に引っ張る — 体の流れに乗る','深く打てると相手を動かせる'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'バック側への手出しボールを各スタンスで左ストレートへ打つ。',vk:'course_common'},{lv:2,label:'Step 2',name:'左ストレート限定ラリー',players:'2人',body:'左ストレートのみで打ち合い、深いボールを安定して打ち続ける。',vk:'course_common'},{lv:3,label:'Step 3',name:'逆クロス→左ストレート切り替え',players:'2人',body:'逆クロスラリーの中で左ストレートに変える実戦練習。',vk:'course_common'}]},
-  {id:11,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'ロブ',desc:'ロブが浅い・前衛に取られる',featured:false,points:['前衛がジャンプして手を伸ばしても届かない高さ — 身長の2.5〜3倍をイメージ','スピードより高さと深さ優先 — 守り・体勢立て直し・コース変更に使う'],steps:[{lv:1,label:'Step 1',name:'しゃがみ打ちロブ練習',players:'2人',body:'しゃがんだ状態から膝を伸ばしてロブを打つ。下半身の使い方に特化した一本打ち。',vk:'lob'},{lv:2,label:'Step 2',name:'深さ・高さ指定ロブ練習',players:'2人',body:'手出し球を前衛の身長2.5〜3倍の高さ・ベースライン付近の深さを狙って打つ。',vk:'lob'},{lv:3,label:'Step 3',name:'前衛ありの実戦ロブ',players:'3〜4人',body:'前衛を立てた状態でシュートとロブを使い分ける。',vk:'lob'}]},
-  {id:12,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'中ロブ',desc:'中ロブが前衛に取られる',featured:false,points:['前衛の身長の2倍くらいの高さを狙う — 低めに速く落とすパターンもあり','「前衛の頭スレスレにシュートを打つ」イメージで打つ','シュートボールと同じフォームで打つ — 相手にコースを悟られない'],steps:[{lv:1,label:'Step 1',name:'高さ指定の中ロブ練習',players:'2人',body:'手出し球を前衛の身長2倍を目安に打つ。ドライブ回転をかけて速く落とす意識。',vk:'midlob'},{lv:2,label:'Step 2',name:'シュート→中ロブ切り替え乱打',players:'2人',body:'乱打の中でシュートと中ロブを同じフォームで打ち分ける。',vk:'midlob'},{lv:3,label:'Step 3',name:'前衛ありの実戦中ロブ×シュート',players:'3〜4人',body:'前衛を立てた状態でシュートと中ロブを使い分ける実戦パターン。',vk:'midlob'}]},
-  {id:13,cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'シュートボール',desc:'シュートボールがネットする・浮く',featured:false,points:['ネット上を低く速く通す — 高さと速さが命','横面でシュート回転をかける','中ロブ・高いロブと組み合わせて高低差で揺さぶる'],steps:[{lv:1,label:'Step 1',name:'壁打ちシュートボール',players:'一人OK',body:'壁に向かって低い軌道のシュートボールを繰り返す。',vk:'shoot'},{lv:2,label:'Step 2',name:'シュートボール限定乱打',players:'2人',body:'シュートのみで打ち合う。ネットより低い位置を通すことを目標に。',vk:'shoot'},{lv:3,label:'Step 3',name:'高低差実戦切り替え',players:'3〜4人',body:'高いロブ・中ロブ・シュートを組み合わせて前衛ありで打ち分ける。',vk:'shoot'}]},
-  {id:14,cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'準回転のショートボール（ツイスト）',desc:'ツイストが打てない・浮く',featured:false,points:['シュートボールと同じフォームで打つ','滞空時間を短く — 低くて速いボールが効果的','早いテンポで打つ','相手がベースライン後方にいるときが狙い目'],steps:[{lv:1,label:'Step 1',name:'手出し球での一本打ち',players:'2人',body:'手出しボールで準回転の短球の感覚をつかむ。低さ・速さを意識。',vk:'twist'},{lv:2,label:'Step 2',name:'シュート→短球切り替え練習',players:'2人',body:'シュートを2〜3球打ったあと短球を混ぜる。同じフォームで打ち分ける。',vk:'twist'},{lv:3,label:'Step 3',name:'実戦切り替え',players:'3〜4人',body:'相手が後ろに下がったタイミングを見計らって短球を打つ実戦練習。',vk:'twist'}]},
-  {id:15,cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'ドロップ',desc:'ドロップが打てない・弾む',featured:false,points:['打点は上がり際・最頂点','カット面にボールを乗せて押し出す感覚 — 切ったり回転をかけようとしない','打つ前にストロークのフォームで構える','主導権を持っているときだけ使う'],steps:[{lv:1,label:'Step 1',name:'手出し球でのドロップ一本打ち',players:'2人',body:'上がり際の高い打点でカット面に乗せて押し出す感覚をつかむ。',vk:'drop'},{lv:2,label:'Step 2a',name:'セカンドサーブへのドロップ練習',players:'2人',body:'セカンドサーブに対してレシーブをドロップで返す実戦パターン。',vk:'drop'},{lv:2,label:'Step 2b',name:'ラリー中からのドロップ練習',players:'2人',body:'ストロークを2〜3球打ったあとドロップを打つ。同じフォームから打ち分けて相手を崩す。',vk:'drop'}]},
-  {id:16,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'フォアボレー',desc:'フォアボレーが安定しない',featured:false,points:['両手で構える — 片手だと無駄な力が入る','ラケットをボールより高い位置にセット','体を回転させない — 横向きのまま押し出す','送り足で体重移動して弾く — 足で飛ばす','インパクトの瞬間だけグリップを握り込む','コンパクトに小指側から押し出す','どこでボレーするかイメージを持ってから動く'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをフォアボレーで弾く。両手で構え、コンパクトに押し出す感覚をつかむ。',vk:'fore_volley'},{lv:2,label:'Step 2',name:'ボレスト（フォア限定）',players:'2人',body:'ストローク側が打つボールをフォアボレーで返し続ける。',vk:'fore_volley'},{lv:3,label:'Step 3',name:'コース打ち分けボレスト',players:'2人',body:'ボレストの中でクロス・ストレートにコースを打ち分ける。',vk:'fore_volley'}]},
-  {id:17,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'バックボレー',desc:'バックボレーが弱い・取れない',featured:false,points:['テイクバックは早めに高く — 先にテイクバックを終わらせる','肩甲骨を入れ替える — 右肩甲骨を前・左肩甲骨を後ろに','インパクトでグリップを握り込む','遠いボールは左肩を後ろに引く','体が正面を向かないようにする'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをバックボレーで弾く。テイクバックの速さと肩甲骨の入れ替えを意識。',vk:'back_volley'},{lv:2,label:'Step 2',name:'ボレスト（バック限定）',players:'2人',body:'ストローク側が打つボールをバックボレーで返し続ける。',vk:'back_volley'},{lv:3,label:'Step 3',name:'フォア・バック交互ボレスト',players:'2人',body:'ランダムなボールに対してフォア・バックを咄嗟に判断して返す。',vk:'back_volley'}]},
-  {id:18,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ローボレー',desc:'ローボレーがネットする・弱い',featured:false,points:['目とボールの距離を縮める — 頭を下げてボールに目を近づける','膝を深く曲げて体全体でボールを飛ばす','肩甲骨の入れ替えでラケットを押し出す','テンポよく素早く準備する','スマッシュ・ハイボレー・ローボレーは肩の内旋動作が共通'],steps:[{lv:1,label:'Step 1',name:'手出し低め球ローボレー',players:'2人',body:'低い位置に手出ししてもらいローボレーで弾く。頭を下げて目線をボールに近づける意識。',vk:'low_volley'},{lv:2,label:'Step 2',name:'ローボレーvsストローク',players:'2人',body:'ストローク側が足元に沈むボールを出し続け、ローボレーで返す。',vk:'low_volley'},{lv:3,label:'Step 3',name:'フォア・バックローボレー交互',players:'2人',body:'フォアとバックのローボレーをランダムに切り替えながら返球する。',vk:'low_volley'}]},
-  {id:19,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ハイボレー',desc:'ハイボレーをミスする・アウトが多い',featured:false,points:['まず足でボールの落下地点に入る','テイクバックを早く・高く','肘を上げてセット','左足をネットと平行に置いてから膝を曲げてタメを作る','タメを一気に解放してインパクト','振り遅れるとバックアウト','中間ポジションでは強打より安定'],steps:[{lv:1,label:'Step 1',name:'手出し高め球ハイボレー',players:'2人',body:'頭より少し上の高さに手出しをしてもらいハイボレーを打つ。左足の置き方と膝のタメを意識。',vk:'high_volley'},{lv:2,label:'Step 2',name:'ロブ上げからのハイボレー',players:'2人',body:'ベースラインからロブを上げてもらいハイボレーで打ち込む。',vk:'high_volley'},{lv:3,label:'Step 3',name:'ハイボレー・スマッシュ判断練習',players:'2〜3人',body:'ランダムなロブに対してハイボレーかスマッシュかを判断して打ち分ける。',vk:'high_volley'}]},
-  {id:20,cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'スマッシュ',desc:'スマッシュを空振りする・ミスが多い',featured:false,points:['ロブを早めに判断して素早く下がる','打点はボールの真下より少し前','軸足を決めてから膝を曲げてタメを作る','肩の内旋動作でスイング','コースで勝負','一発で決めようとしない','スマッシュ後はすぐにポジションを戻す'],steps:[{lv:1,label:'Step 1',name:'手出しロブからのスマッシュ',players:'2人',body:'あまり高くないロブを出してもらいスマッシュ。下がり方と打点の位置を固める。',vk:'smash'},{lv:2,label:'Step 2',name:'スマッシュ対ロブ',players:'2人',body:'スマッシュ側とロブ側に分かれてラリー。コースを打ち分けながらつながることを意識。',vk:'smash'},{lv:3,label:'Step 3',name:'スマッシュ＋ハイボレー連続練習',players:'2〜3人',body:'ロブ→スマッシュ→ポジションへ戻る→ハイボレーの流れを繰り返す。',vk:'smash'}]},
-  {id:21,cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（フォア）',desc:'フォアのポーチに出られない・届かない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要','動き出しのタイミングは相手後衛のスイングが始まった瞬間','3歩のフットワーク — 「左足→右足（大きく）→左足」の順','2歩目をかかとから大きく踏み込んでタメを作ってボレー','ラケットは振らない — グリップを握り込むだけ','ボレー後は止まって次のポジションへ','最初はセンターを狙う'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、ポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをポーチでボレー。',vk:'poach'}]},
-  {id:22,cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（バック）',desc:'バックのポーチに出られない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要','3歩のフットワーク — 「右足→左足（大きく）→右足」の順（フォアと逆）','2歩目をかかとから大きく踏み込む','遠いボールは左肩を後ろに引く','バックポーチは正クロス展開での左ストレートボレーが基本','抜かれても積極的に出続ける'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、バックポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをバックポーチでボレー。',vk:'poach'}]},
-  {id:23,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜確率',desc:'サーブが入らない・ダブルフォルトが多い',featured:false,points:['スピードより確率優先 — 5〜7割の力','トスを安定させることが全て — 身長の2倍の高さに毎回同じ位置に','ルーティンを決める','グリップはイースタン','身体の回転をピタッと止めると腕がしなる'],steps:[{lv:1,label:'Step 1',name:'連続サーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。ルーティンを必ず守る。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角のコーンを狙って打つ。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦サーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースを探りながら打つ。',vk:'normal_serve'}]},
-  {id:24,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜コース',desc:'サーブのコースが打ち分けられない',featured:false,points:['まずセンターを狙う — 相手にレシーブの角度をつけさせない','後衛サイドはセンター、前衛サイドは逆クロスが基本','コースはスピードより重要'],steps:[{lv:1,label:'Step 1',name:'コース限定サーブ練習',players:'一人OK',body:'まずセンターのみに絞って打ち続ける。1コースを安定させることを優先。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、センター・ワイド・ボディを打ち分ける。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを狙う。相手の動きを見て判断する。',vk:'normal_serve'}]},
-  {id:25,cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜スピード',desc:'サーブのスピードが出ない',featured:false,points:['スイングを止めることで威力が上がる','タメを作ってから一気に解放する','回転をかけすぎるとスピードが落ちる','スピードと確率はトレードオフ'],steps:[{lv:1,label:'Step 1',name:'フルスイング入れ練習',players:'一人OK',body:'思い切り振り抜いてまず入れることを目標に。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てスピードサーブ',players:'一人OK',body:'コーンを狙いながらスピードも意識して打つ。確率とスピードのバランスを探る。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'ファースト・セカンド実戦練習',players:'2人',body:'レシーバーありでファーストをスピード重視、セカンドを確率重視で打つ。',vk:'normal_serve'}]},
-  {id:26,cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜確率',desc:'カットサーブが入らない・ネットが多い',featured:false,points:['グリップはイースタンで短く持つ','テイクバックは小さく腕だけで引く','ボールを極限まで薄くカットする','カット後は手首を返さずに止める','ひざを柔らかく使って軌道を修正する'],steps:[{lv:1,label:'Step 1',name:'カットサーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てカットサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角を狙って打つ。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦カットサーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースと回転量を探る。',vk:'cut_serve'}]},
-  {id:27,cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜コース',desc:'カットサーブのコースが打ち分けられない',featured:false,points:['まず真っ直ぐ狙いで自分のボールがどちらに曲がるか把握する','スタンスの向きでコースを調整する','コースより確率が先'],steps:[{lv:1,label:'Step 1',name:'正クロス・逆クロス交互練習',players:'一人OK',body:'スタンスを変えて正クロス・逆クロスに交互に打ち分けて入れる。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、正クロス・逆クロスを狙い打ち分ける。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを打ち分ける。相手の反応を見て実戦感覚を養う。',vk:'cut_serve'}]},
+  {id:1,role:'back',cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'トップ打ち',desc:'チャンスボールを決めきれない',featured:true,points:['打点を落とさない — バウンド頂点より少し前・肩の高さかそれより上で捉える — 打点が下がるほど体の力が伝わりにくくなる','脇を締めてヘッドを遅らせる — 腕だけで打つと力が逃げる — 体幹と腕を連動させることで初めて爆発的な力が生まれる','インパクトの瞬間だけ力を入れる — チャンスボールほどリラックス — 力みはスイングスピードを落とし、コントロールも乱す','体の軸を崩さない — 前のめりになると威力が半減 — 軸が安定することで全身のパワーが効率よくラケットに伝わる'],steps:[{lv:1,label:'Step 1',name:'壁打ち／強バウンドトップ打ち',players:'一人OK',body:'【壁あり】壁に向かって高い打点でトップ打ちを繰り返す。【壁なし】強くバウンドさせて跳ね上がったボールをトップ打ち。',vk:'fore_top'},{lv:2,label:'Step 2a',name:'手出しノーバウンドトップ打ち',players:'2人',body:'コートの同じ側から手出しでノーバウンドでトップ打ち。打点の高さを確実に体感できる。',vk:'fore_top'},{lv:2,label:'Step 2b',name:'ロブ球出しからのトップ打ち',players:'2人',body:'コートの向こう側からロブで球出しをしてもらいトップ打ちで打ち込む。',vk:'fore_top'},{lv:3,label:'Step 3',name:'乱打でのトップ打ち実戦練習',players:'2人',body:'乱打の中でチャンスボールが来たら積極的にトップ打ちで攻める。',vk:'fore_top'}]},
+  {id:2,role:'back',cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'グランドストローク',desc:'ラリーが続かない・安定しない',featured:false,points:['体重移動を使う — 軸足から前足へ、全身でボールを運ぶ — 体重移動を使うことで腕の力だけでなく体全体のエネルギーをボールに伝えられる','テイクバックを早く — ボールが来る前に引き終わる — テイクバックが遅れるとスイングが窮屈になり打点がずれる','ラケット面を横に振り抜く — 体の回転で振る — 腕だけでなく体の回転を使うことで安定した力強いストロークになる','打点は前足より前 — 詰まると力が入らない — 体の前で捉えるほど力の伝達ロスが少ない','リラックスして、インパクトの瞬間だけ握る — 常に力んでいるとスイングスピードが下がる'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ち',players:'一人OK',body:'【手出し】自分でボールを出して打点・体重移動を確認。【壁打ち】壁に向かってリズムとフォームを固める。',vk:'fore_ground'},{lv:2,label:'Step 2',name:'手出し球でのグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールを打つ。打点・体重移動・フォームを固める。',vk:'fore_ground'},{lv:3,label:'Step 3',name:'クロス限定乱打',players:'2人',body:'クロスに限定した乱打で安定してラリーを続ける。',vk:'fore_ground'}]},
+  {id:3,role:'back',cat:'stroke',subCat:'fore',subCatLabel:'フォア',label:'FORE',title:'アンダーストローク',desc:'低いボールをうまく処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま — 上体が前傾するとラケット面が安定せず、コントロールを失う','ラケット面を縦にして下から上へ振り抜く — 面を立てることで低い打点でもネットを越える軌道になる','打点は低くても前で取る — 体の横や後ろで捉えると力が入らない','焦らない — 短いボールほど落ち着いて入ることが大事 — 急いで打ちに行くとフォームが崩れ、安定性が下がる'],steps:[{lv:1,label:'Step 1',name:'自己手出しアンダーストローク',players:'一人OK',body:'低い位置にトスして自分でアンダーストローク。低打点の感覚を繰り返し体感する。',vk:'fore_under'},{lv:2,label:'Step 2',name:'短球手出しからのアンダーストローク',players:'2人',body:'相手にネット前に短く手出しをしてもらい、前に詰めてアンダーストロークで返球。',vk:'fore_under'},{lv:3,label:'Step 3',name:'ショートボール対応の実戦練習',players:'2人',body:'乱打の中で意図的に短いボールを混ぜてもらい、走り込んでアンダーストロークで処理。',vk:'fore_under'}]},
+  {id:4,role:'back',cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'トップ打ち',desc:'バックのトップ打ちが安定しない',featured:false,points:['打点を早めに前で取る — 肩の高さかそれより上がベストな打点 — バックは特に打点が遅れるとパワーが出ない','相手に背中を向けるくらい肩をしっかり入れる — 肩の入りが浅いとスイングの可動域が狭くなり威力が落ちる','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ — 下半身から体幹を使うことで腕だけのスイングより大きな力が生まれる','肘を伸ばしてインパクト — 肘が曲がったままだとリーチが短くなり、打点がずれやすい'],steps:[{lv:1,label:'Step 1',name:'壁打ちバックトップ打ち',players:'一人OK',body:'壁に向かってバックのトップ打ちを繰り返す。高い打点での感覚づくり。',vk:'back_top'},{lv:2,label:'Step 2',name:'ロブ球出しからのバックトップ打ち',players:'2人',body:'向こう側からロブで出してもらい、バックでトップ打ち。',vk:'back_top'},{lv:3,label:'Step 3',name:'乱打でのバックトップ打ち実戦',players:'2人',body:'乱打でバック側に来たチャンスボールを積極的にトップ打ちで攻める。',vk:'back_top'}]},
+  {id:5,role:'back',cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'グランドストローク',desc:'バックのラリーが安定しない',featured:false,points:['クローズスタンスで入る — 相手に背中を見せるイメージ — 体が正面を向いたままだと体幹の回転が使えず、手打ちになる','打点は右足（踏み込み足）より前で取る — 前で捉えるほど腕とラケットに力が伝わりやすい','左足から右足へ体重移動し、右足を起点に体を回してボールを打つ — 体重移動を使うことで下半身のパワーをボールに伝えられる','フォロースルーでラケット面を立てて終わる — フォロースルーが崩れるとボールの軌道が乱れる'],steps:[{lv:1,label:'Step 1',name:'自己手出し／壁打ちバックグランド',players:'一人OK',body:'手出しまたは壁打ちでバックのグランドストロークの感覚をつかむ。',vk:'back_ground'},{lv:2,label:'Step 2',name:'手出し球からのバックグランドストローク',players:'2人',body:'ななめ前から山なりの手出しボールをバックで打つ。打点と体の向きを固める。',vk:'back_ground'},{lv:3,label:'Step 3',name:'バック限定クロスラリー',players:'2人',body:'バック側のみに打ち合う限定乱打。安定してラリーを続けることを優先。',vk:'back_ground'}]},
+  {id:6,role:'back',cat:'stroke',subCat:'back',subCatLabel:'バック',label:'BACK',title:'アンダーストローク',desc:'バックの低いボールを処理できない',featured:false,points:['膝を深く曲げて腰を低く — 上半身は立てたまま — 体が前傾すると面の安定が崩れる','縦面で下から上へ振り抜く — 縦面を保つことで低打点でもネットを越える軌道になる','左足から右足へ体重移動し、右足を起点に体を回す — 体を回転させることで腕だけの打球より力強く安定する','焦らず落ち着いて前で捉える — 急ぐと体が起き上がり、打点が体の横や後ろになる'],steps:[{lv:1,label:'Step 1',name:'自己手出しバックアンダー',players:'一人OK',body:'低い位置にトスして自分でバックアンダーストローク。',vk:'back_under'},{lv:2,label:'Step 2',name:'短球手出しからのバックアンダー',players:'2人',body:'ネット前に短く出してもらい、前に詰めてバックアンダーで返球。',vk:'back_under'},{lv:3,label:'Step 3',name:'左右振り回しからのバックアンダー',players:'2人',body:'左右に振られた後のバックアンダーを想定した実戦練習。',vk:'back_under'}]},
+  {id:7,role:'back',cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'クロス',desc:'クロスに安定して打てない',featured:false,points:['打点を早めに前で取るほどクロスに飛びやすい — 体が自然にクロス方向を向くため、意識的に操作しなくてもよい','ネットの一番低い中央を通す意識でネットミスを減らす — クロスはネットが最も低い中央付近を通るため、上を狙いすぎる必要はない'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをクロスへ。クローズ→平行→オープンの順で各スタンスを試す。',vk:'cross'},{lv:2,label:'Step 2',name:'クロス限定乱打',players:'2人',body:'クロスのみで打ち合い、各スタンスを意識しながらラリーを続ける。',vk:'cross'},{lv:3,label:'Step 3',name:'クロス→コース変更の実戦練習',players:'2人',body:'クロスラリーから合図でストレートや逆クロスに変える。',vk:'cross'}]},
+  {id:8,role:'back',cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'逆クロス',desc:'逆クロスに打てない・アウトが多い',featured:false,points:['打点をやや遅らせて体の横で捉える — 打点を遅らせることで体が引っ張られ、自然に逆クロスの方向に向く','ネットが高い分、クロスより少し上を狙う意識 — 逆クロスはネットが高い端を通るため、軌道を少し高めに設定する必要がある'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールを逆クロスへ。各スタンスで打点とコースの関係を体感する。',vk:'reverse_cross'},{lv:2,label:'Step 2',name:'逆クロス限定乱打',players:'2人',body:'逆クロスのみで打ち合う。最初はゆっくりのペースで。',vk:'reverse_cross'},{lv:3,label:'Step 3',name:'クロスから逆クロスへの切り替え実戦',players:'2人',body:'クロスラリーの中で逆クロスに変える。',vk:'reverse_cross'}]},
+  {id:9,role:'back',cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'右ストレート',desc:'ストレートに打ち抜けない',featured:false,points:['打点はクロスより遅め・体の横で捉える — 打点が前すぎるとクロスにしか行かない。遅らせることでストレートのコースが開く','前衛がポーチに出てきたときの有効打 — ストレートを選択肢に持つことで前衛の動きを牽制できる'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'手出しボールをストレートへ。各スタンスでコースの安定感を確認。',vk:'straight_right'},{lv:2,label:'Step 2',name:'クロス→ストレート切り替え練習',players:'2人',body:'クロスに2〜3球打ったあと1球ストレートに変える。',vk:'straight_right'},{lv:3,label:'Step 3',name:'前衛ありの実戦でストレート',players:'3〜4人',body:'前衛に動いてもらいながらストレートを打ち抜く実戦練習。',vk:'straight_right'}]},
+  {id:10,role:'back',cat:'stroke',subCat:'course',subCatLabel:'コース',label:'COURSE',title:'左ストレート',desc:'左ストレートに深く打てない',featured:false,points:['バック側から自然に引っ張る — 体の流れに乗る — 無理にコースを変えようとすると力が逃げる。バックのスイングの自然な延長がストレートになる','深く打てると相手を動かせる — 浅いストレートは相手に簡単に処理される。深さがあることで相手を後退させられる'],steps:[{lv:1,label:'Step 1',name:'スタンス別球出し打ち',players:'2人',body:'バック側への手出しボールを各スタンスで左ストレートへ打つ。',vk:'straight_left'},{lv:2,label:'Step 2',name:'左ストレート限定ラリー',players:'2人',body:'左ストレートのみで打ち合い、深いボールを安定して打ち続ける。',vk:'straight_left'},{lv:3,label:'Step 3',name:'逆クロス→左ストレート切り替え',players:'2人',body:'逆クロスラリーの中で左ストレートに変える実戦練習。',vk:'straight_left'}]},
+  {id:11,role:'back',cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'ロブ',desc:'ロブが浅い・前衛に取られる',featured:false,points:['前衛がジャンプして手を伸ばしても届かない高さ — 身長の2.5〜3倍をイメージ — 中途半端な高さは前衛にカットされる最悪の球になる','スピードより高さと深さ優先 — 守り・体勢立て直し・コース変更に使う — ロブは速さではなく時間を稼ぐための球。高くて深ければ相手は返球に時間がかかる'],steps:[{lv:1,label:'Step 1',name:'しゃがみ打ちロブ練習',players:'2人',body:'しゃがんだ状態から膝を伸ばしてロブを打つ。下半身の使い方に特化した一本打ち。',vk:'lob'},{lv:2,label:'Step 2',name:'深さ・高さ指定ロブ練習',players:'2人',body:'手出し球を前衛の身長2.5〜3倍の高さ・ベースライン付近の深さを狙って打つ。',vk:'lob'},{lv:3,label:'Step 3',name:'前衛ありの実戦ロブ',players:'3〜4人',body:'前衛を立てた状態でシュートとロブを使い分ける。',vk:'lob'}]},
+  {id:12,role:'back',cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'中ロブ',desc:'中ロブが前衛に取られる',featured:false,points:['前衛の身長の2倍くらいの高さを狙う — 低めに速く落とすパターンもあり — 高すぎると前衛に十分な準備時間を与えてしまう','「前衛の頭スレスレにシュートを打つ」イメージで打つ — このイメージで打つとちょうど良い軌道と速度になる','シュートボールと同じフォームで打つ — 相手にコースを悟られない — フォームが変わると相手に「ロブが来る」と読まれてしまう'],steps:[{lv:1,label:'Step 1',name:'高さ指定の中ロブ練習',players:'2人',body:'手出し球を前衛の身長2倍を目安に打つ。ドライブ回転をかけて速く落とす意識。',vk:'midlob'},{lv:2,label:'Step 2',name:'シュート→中ロブ切り替え乱打',players:'2人',body:'乱打の中でシュートと中ロブを同じフォームで打ち分ける。',vk:'midlob'},{lv:3,label:'Step 3',name:'前衛ありの実戦中ロブ×シュート',players:'3〜4人',body:'前衛を立てた状態でシュートと中ロブを使い分ける実戦パターン。',vk:'midlob'}]},
+  {id:13,role:'back',cat:'stroke',subCat:'quality',subCatLabel:'球質',label:'BALL',title:'シュートボール',desc:'シュートボールがネットする・浮く',featured:false,points:['ネット上を低く速く通す — 高さと速さが命 — 軌道が高いと前衛にカットされ、遅いと後衛に時間を与えてしまう','横面でシュート回転をかける — シュート回転をかけることで低い軌道でも沈みながら飛び、前衛が取りにくくなる','中ロブ・高いロブと組み合わせて高低差で揺さぶる — 常にシュートだけ打っていると前衛に読まれる。高低差を使うことで判断を難しくする'],steps:[{lv:1,label:'Step 1',name:'壁打ちシュートボール',players:'一人OK',body:'壁に向かって低い軌道のシュートボールを繰り返す。',vk:'shoot'},{lv:2,label:'Step 2',name:'シュートボール限定乱打',players:'2人',body:'シュートのみで打ち合う。ネットより低い位置を通すことを目標に。',vk:'shoot'},{lv:3,label:'Step 3',name:'高低差実戦切り替え',players:'3〜4人',body:'高いロブ・中ロブ・シュートを組み合わせて前衛ありで打ち分ける。',vk:'shoot'}]},
+  {id:14,role:'back',cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'準回転のショートボール（ツイスト）',desc:'ツイストが打てない・浮く',featured:false,points:['シュートボールと同じフォームで打つ — フォームが変わると相手に「短球が来る」と読まれてしまう','滞空時間を短く — 低くて速いボールが効果的 — 滞空時間が長いと相手が余裕を持って対処できてしまう','早いテンポで打つ — テンポを早くすることで相手の準備を遅らせられる','相手がベースライン後方にいるときが狙い目 — 後ろに位置しているとネット前の短球へのリカバリーが遅れる'],steps:[{lv:1,label:'Step 1',name:'手出し球での一本打ち',players:'2人',body:'手出しボールで準回転の短球の感覚をつかむ。低さ・速さを意識。',vk:'twist'},{lv:2,label:'Step 2',name:'シュート→短球切り替え練習',players:'2人',body:'シュートを2〜3球打ったあと短球を混ぜる。同じフォームで打ち分ける。',vk:'twist'},{lv:3,label:'Step 3',name:'実戦切り替え',players:'3〜4人',body:'相手が後ろに下がったタイミングを見計らって短球を打つ実戦練習。',vk:'twist'}]},
+  {id:15,role:'back',cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'ドロップ',desc:'ドロップが打てない・弾む',featured:false,points:['打点は上がり際・最頂点 — ここが最もカット面でボールを操作しやすい打点だから','カット面にボールを乗せて押し出す感覚 — 切ったり回転をかけようとしない — 過剰に回転をかけようとすると弾んでしまう','打つ前にストロークのフォームで構える — フォームが変わると相手に読まれてしまう','主導権を持っているときだけ使う — 守りの状態でドロップを打つとリスクが高い'],steps:[{lv:1,label:'Step 1',name:'手出し球でのドロップ一本打ち',players:'2人',body:'上がり際の高い打点でカット面に乗せて押し出す感覚をつかむ。',vk:'drop'},{lv:2,label:'Step 2a',name:'セカンドサーブへのドロップ練習',players:'2人',body:'セカンドサーブに対してレシーブをドロップで返す実戦パターン。',vk:'drop'},{lv:2,label:'Step 2b',name:'ラリー中からのドロップ練習',players:'2人',body:'ストロークを2〜3球打ったあとドロップを打つ。同じフォームから打ち分けて相手を崩す。',vk:'drop'}]},
+  {id:16,role:'fore',cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'フォアボレー',desc:'フォアボレーが安定しない',featured:false,points:['両手で構える — 片手だと無駄な力が入る — 両手で支えることでラケットが安定し、インパクトのブレが減る','ラケットをボールより高い位置にセット — ラケットが低い位置にあると上からのスイングになり、ネットにかかりやすくなる','体を回転させない — 横向きのまま押し出す — 体が正面を向くと力の方向が分散し、ボールが思わぬ方向に飛ぶ','送り足で体重移動して弾く — 足で飛ばす — 体重移動を使うことで腕の力だけでなく体全体でボールを飛ばせる','インパクトの瞬間だけグリップを握り込む — 常に強く握っていると腕が固くなり、感覚が鈍くなる','コンパクトに小指側から押し出す — 大きなスイングはタイミングのズレを生みやすい','どこでボレーするかイメージを持ってから動く — 動きながら考えると判断が遅れ、準備が崩れる'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをフォアボレーで弾く。両手で構え、コンパクトに押し出す感覚をつかむ。',vk:'fore_volley'},{lv:2,label:'Step 2',name:'ボレスト（フォア限定）',players:'2人',body:'ストローク側が打つボールをフォアボレーで返し続ける。',vk:'fore_volley'},{lv:3,label:'Step 3',name:'コース打ち分けボレスト',players:'2人',body:'ボレストの中でクロス・ストレートにコースを打ち分ける。',vk:'fore_volley'}]},
+  {id:17,role:'fore',cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'バックボレー',desc:'バックボレーが弱い・取れない',featured:false,points:['テイクバックは早めに高く — 先にテイクバックを終わらせる — テイクバックが遅れるとインパクトまでの時間が足りず、弱いボレーになる','肩甲骨を入れ替える — 右肩甲骨を前・左肩甲骨を後ろに — 肩甲骨を動かすことでパワーが出る体の構造になる','インパクトでグリップを握り込む — 握り込むことで面がブレずに力が伝わる','遠いボールは左肩を後ろに引く — リーチを最大限に使うための体の使い方','体が正面を向かないようにする — 正面を向くと体の回転が使えず、手打ちになる'],steps:[{lv:1,label:'Step 1',name:'手出し一本打ち',players:'2人',body:'手出しボールをバックボレーで弾く。テイクバックの速さと肩甲骨の入れ替えを意識。',vk:'back_volley'},{lv:2,label:'Step 2',name:'ボレスト（バック限定）',players:'2人',body:'ストローク側が打つボールをバックボレーで返し続ける。',vk:'back_volley'},{lv:3,label:'Step 3',name:'フォア・バック交互ボレスト',players:'2人',body:'ランダムなボールに対してフォア・バックを咄嗟に判断して返す。',vk:'back_volley'}]},
+  {id:18,role:'fore',cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ローボレー',desc:'ローボレーがネットする・弱い',featured:false,points:['目とボールの距離を縮める — 頭を下げてボールに目を近づける — 目がボールから遠いと打点がズレやすくなる','膝を深く曲げて体全体でボールを飛ばす — 腕だけで持ち上げようとするとネットにかかる','肩甲骨の入れ替えでラケットを押し出す — 肩甲骨を使うことで低い位置でもパワーを出しやすくなる','テンポよく素早く準備する — ローボレーは準備が遅れると対応できなくなる','スマッシュ・ハイボレー・ローボレーは肩の内旋動作が共通 — この共通点を意識すると技術の応用が速くなる'],steps:[{lv:1,label:'Step 1',name:'手出し低め球ローボレー',players:'2人',body:'低い位置に手出ししてもらいローボレーで弾く。頭を下げて目線をボールに近づける意識。',vk:'low_volley'},{lv:2,label:'Step 2',name:'ローボレーvsストローク',players:'2人',body:'ストローク側が足元に沈むボールを出し続け、ローボレーで返す。',vk:'low_volley'},{lv:3,label:'Step 3',name:'フォア・バックローボレー交互',players:'2人',body:'フォアとバックのローボレーをランダムに切り替えながら返球する。',vk:'low_volley'}]},
+  {id:19,role:'fore',cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'ハイボレー',desc:'ハイボレーをミスする・アウトが多い',featured:false,points:['まず足でボールの落下地点に入る — 動きながら打つとタイミングが合わない','テイクバックを早く・高く — 準備が遅れると力が入らず、押し出すだけになる','肘を上げてセット — 肘が下がるとスイング軌道が崩れ、アウトしやすくなる','左足をネットと平行に置いてから膝を曲げてタメを作る — タメを作ることで爆発的な力をボールに伝えられる','タメを一気に解放してインパクト — ゆっくり振ると力が散漫になる','振り遅れるとバックアウト — ハイボレーは振り遅れが最も出やすいミスパターン。準備の速さが全て','中間ポジションでは強打より安定 — 無理な強打はリスクが高い。安定して返球することで次のポジションへ戻れる'],steps:[{lv:1,label:'Step 1',name:'手出し高め球ハイボレー',players:'2人',body:'頭より少し上の高さに手出しをしてもらいハイボレーを打つ。左足の置き方と膝のタメを意識。',vk:'high_volley'},{lv:2,label:'Step 2',name:'ロブ上げからのハイボレー',players:'2人',body:'ベースラインからロブを上げてもらいハイボレーで打ち込む。',vk:'high_volley'},{lv:3,label:'Step 3',name:'ハイボレー・スマッシュ判断練習',players:'2〜3人',body:'ランダムなロブに対してハイボレーかスマッシュかを判断して打ち分ける。',vk:'high_volley'}]},
+  {id:20,role:'fore',cat:'volley',subCat:'shot',subCatLabel:'ショット',label:'VOLLEY',title:'スマッシュ',desc:'スマッシュを空振りする・ミスが多い',featured:false,points:['ロブを早めに判断して素早く下がる — 下がるのが遅れると後ろから打つことになり、打点が合わなくなる','打点はボールの真下より少し前 — 少し前で捉えることでラケットが力を最大限に伝えられる位置になる','軸足を決めてから膝を曲げてタメを作る — タメを作ることで体幹と脚の力をスイングに使える','肩の内旋動作でスイング — この動作が最も効率よくスイングスピードを生む','コースで勝負 — 強打だけではなくコースを意識することで相手の予測を外せる','一発で決めようとしない — 焦ると打点が狂い、スマッシュミスにつながる','スマッシュ後はすぐにポジションを戻す — 決まりきったと思っても相手に返される場合がある'],steps:[{lv:1,label:'Step 1',name:'手出しロブからのスマッシュ',players:'2人',body:'あまり高くないロブを出してもらいスマッシュ。下がり方と打点の位置を固める。',vk:'smash'},{lv:2,label:'Step 2',name:'スマッシュ対ロブ',players:'2人',body:'スマッシュ側とロブ側に分かれてラリー。コースを打ち分けながらつながることを意識。',vk:'smash'},{lv:3,label:'Step 3',name:'スマッシュ＋ハイボレー連続練習',players:'2〜3人',body:'ロブ→スマッシュ→ポジションへ戻る→ハイボレーの流れを繰り返す。',vk:'smash'}]},
+  {id:21,role:'fore',cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（フォア）',desc:'フォアのポーチに出られない・届かない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要 — ポーチは最初の一歩の速さでほぼ決まる。出遅れると届かない','動き出しのタイミングは相手後衛のスイングが始まった瞬間 — 早すぎると読まれてストレートを抜かれる','3歩のフットワーク — 「左足→右足（大きく）→左足」の順 — このフットワークが最も効率よく横移動しながらボレーの体勢を作れる','2歩目をかかとから大きく踏み込んでタメを作ってボレー — タメなしに打つと弱いボレーになる','ラケットは振らない — グリップを握り込むだけ — 振ると面がブレてコントロールできない','ボレー後は止まって次のポジションへ — 打った後の動作が次のプレーの準備になる','最初はセンターを狙う — センターへのポーチが最も成功率が高く、相手の角度も消せる'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、ポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをポーチでボレー。',vk:'poach'}]},
+  {id:22,role:'fore',cat:'volley',subCat:'poach',subCatLabel:'ポーチ',label:'POACH',title:'ポーチボレー（バック）',desc:'バックのポーチに出られない',featured:false,points:['1歩目を思いっきり早く出す — 1歩目・2歩目のスピードを一気に最高速に持っていくことが最重要 — 出遅れると届かない。最初の一歩が全て','3歩のフットワーク — 「右足→左足（大きく）→右足」の順（フォアと逆） — バック側はこの順番が最も自然な体の動きになる','2歩目をかかとから大きく踏み込む — 踏み込みが浅いとタメが作れず、弱いボレーになる','遠いボールは左肩を後ろに引く — リーチを最大にするための体の使い方','バックポーチは正クロス展開での左ストレートボレーが基本 — 最も角度のつくコース選択になる','抜かれても積極的に出続ける — 抜かれることを恐れると消極的な前衛になり、プレッシャーを与えられなくなる'],steps:[{lv:1,label:'Step 1',name:'球出しポーチ練習',players:'2人',body:'後衛役がベースラインから手出しでボールを出し、バックポーチでボレーする。4コースで実施。',vk:'poach'},{lv:2,label:'Step 2',name:'実球ポーチ練習',players:'3〜4人',body:'自分側の後衛が手出しで球出し→相手後衛が打ち返す→そのボールをバックポーチでボレー。',vk:'poach'}]},
+  {id:23,role:'both',cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜確率',desc:'サーブが入らない・ダブルフォルトが多い',featured:false,points:['スピードより確率優先 — 5〜7割の力 — ファーストを入れることで相手へのプレッシャーが持続する。ダブルフォルトは自滅','トスを安定させることが全て — 身長の2倍の高さに毎回同じ位置に — トスが乱れるとどれだけ良いフォームでも打点が合わない','ルーティンを決める — 毎回同じルーティンを踏むことで集中力が高まり、緊張した場面でも体が動く','グリップはイースタン — イースタンは回転とスピードのバランスが取りやすいグリップ','身体の回転をピタッと止めると腕がしなる — 体を止めることで反動として腕が加速する物理的な動き'],steps:[{lv:1,label:'Step 1',name:'連続サーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。ルーティンを必ず守る。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角のコーンを狙って打つ。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦サーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースを探りながら打つ。',vk:'normal_serve'}]},
+  {id:24,role:'both',cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜コース',desc:'サーブのコースが打ち分けられない',featured:false,points:['まずセンターを狙う — 相手にレシーブの角度をつけさせない — センターに入れることでレシーバーが取れるコースが限定される','後衛サイドはセンター、前衛サイドは逆クロスが基本 — 前衛の邪魔になりにくく、後衛がレシーブしにくいコース選択','コースはスピードより重要 — どんなに速くても取りやすいコースだと相手に攻撃される'],steps:[{lv:1,label:'Step 1',name:'コース限定サーブ練習',players:'一人OK',body:'まずセンターのみに絞って打ち続ける。1コースを安定させることを優先。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、センター・ワイド・ボディを打ち分ける。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを狙う。相手の動きを見て判断する。',vk:'normal_serve'}]},
+  {id:25,role:'both',cat:'service',subCat:'normal',subCatLabel:'通常サーブ',label:'SERVE',title:'通常サーブ｜スピード',desc:'サーブのスピードが出ない',featured:false,points:['スイングを止めることで威力が上がる — 体を止めることで腕がしなり、速いスイングが生まれる物理的な原理','タメを作ってから一気に解放する — タメがないと力が分散し、スイングスピードが上がらない','回転をかけすぎるとスピードが落ちる — 回転とスピードはトレードオフ。スピードを出したいときは回転を最小限に','スピードと確率はトレードオフ — 速いサーブほどコントロールが難しくなる。バランスを理解して使い分ける'],steps:[{lv:1,label:'Step 1',name:'フルスイング入れ練習',players:'一人OK',body:'思い切り振り抜いてまず入れることを目標に。',vk:'normal_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てスピードサーブ',players:'一人OK',body:'コーンを狙いながらスピードも意識して打つ。確率とスピードのバランスを探る。',vk:'normal_serve'},{lv:3,label:'Step 3',name:'ファースト・セカンド実戦練習',players:'2人',body:'レシーバーありでファーストをスピード重視、セカンドを確率重視で打つ。',vk:'normal_serve'}]},
+  {id:26,role:'both',cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜確率',desc:'カットサーブが入らない・ネットが多い',featured:false,points:['グリップはイースタンで短く持つ — 短く持つことでコントロールが向上し、ネットとアウトを減らせる','テイクバックは小さく腕だけで引く — 大きなテイクバックはタイミングのズレを生む','ボールを極限まで薄くカットする — カットが厚いと回転がかかりにくく、変化が小さくなる','カット後は手首を返さずに止める — 返すとボールの回転方向が変わり、コントロールを失う','ひざを柔らかく使って軌道を修正する — 膝で高さを調整することで細かいコントロールが可能になる'],steps:[{lv:1,label:'Step 1',name:'カットサーブ入れ練習',players:'一人OK',body:'まずサービスボックスに入れることだけを意識して連続で打つ。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てカットサーブ練習',players:'一人OK',body:'サービスボックスを3ゾーンに分けてコーンを置き、指定ゾーンや角を狙って打つ。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありの実戦カットサーブ',players:'2人',body:'レシーバーに立ってもらい、取られにくいコースと回転量を探る。',vk:'cut_serve'}]},
+  {id:27,role:'both',cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜コース',desc:'カットサーブのコースが打ち分けられない',featured:false,points:['まず真っ直ぐ狙いで自分のボールがどちらに曲がるか把握する — 個人差があるため、まず自分のクセを知ることが基本','スタンスの向きでコースを調整する — スタンスを変えることが最もシンプルで再現性の高いコース調整方法','コースより確率が先 — コースを狙うよりまず入れることが重要。入らないと意味がない'],steps:[{lv:1,label:'Step 1',name:'正クロス・逆クロス交互練習',players:'一人OK',body:'スタンスを変えて正クロス・逆クロスに交互に打ち分けて入れる。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、正クロス・逆クロスを狙い打ち分ける。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを打ち分ける。相手の反応を見て実戦感覚を養う。',vk:'cut_serve'}]},
+  {id:28,role:'both',cat:'receive',subCat:'normal_receive',subCatLabel:'通常サーブのレシーブ',label:'RECV',title:'ファーストレシーブ',desc:'ファーストサーブを返せない・浮かせてしまう',featured:false,points:['スプリットステップを必ず踏む — サーバーのトスと同時に小さくジャンプ — スプリットステップがないと初動が遅れ、速いサーブに反応できない','ブロックリターン優先 — 強振しない — ファーストは速い。面を作って弾き返すだけで相手のリズムを崩せる','コースを早めに読む — サーバーのトスの位置・体の向きでコースを予測する — 予測が早いほど余裕を持って構えられる','センター返球が基本 — まずセンターに返す — 角度をつけようとすると難易度が上がり、ミスが増える','後ろで構えすぎない — ベースライン付近で待つ — 下がりすぎるとボールが落ちてから打つことになり、処理が難しくなる'],steps:[{lv:1,label:'Step 1',name:'スプリットステップ＋素振り',players:'一人OK',body:'サービスの動きをイメージしながらスプリットステップを踏み、ブロックリターンの素振りを繰り返す。リズムと構え方を体に染み込ませる。',vk:'normal_receive'},{lv:2,label:'Step 2',name:'速い手出し球へのブロックリターン',players:'2人',body:'ベースライン付近から速い球を手出しで出してもらい、面を作ってブロックリターンで返す。センターへ安定して返すことを目標に。',vk:'normal_receive'},{lv:3,label:'Step 3',name:'実サーブへのレシーブ実戦',players:'2人',body:'実際のファーストサーブに対してブロックリターンでセンターへ返す。コースの読みと反応速度を高める。',vk:'normal_receive'}]},
+  {id:29,role:'both',cat:'receive',subCat:'normal_receive',subCatLabel:'通常サーブのレシーブ',label:'RECV',title:'セカンドレシーブ',desc:'セカンドサーブを攻め切れない・チャンスを活かせない',featured:false,points:['セカンドサーブはチャンス — 入れるより攻めることを優先 — セカンドを受け身で打ち返すだけでは相手にプレッシャーをかけられない','打点を前で取る — 踏み込んで前で捉えるほど角度と威力が増す — 後ろで打つと守りのレシーブになってしまう','トップ打ちかグランドストロークで積極的に打ち込む — 浮かせず、コートに速く返す意識','コースはクロス深め or サーバーの足元 — 後衛が動きやすく、相手前衛もケアしやすいコース選択','バウンドを早く読んで早めに動く — セカンドは遅いが読みの速さで攻撃力が変わる'],steps:[{lv:1,label:'Step 1',name:'球出し攻撃レシーブ練習',players:'2人',body:'ゆっくりした球を出してもらい、踏み込んでトップ打ちまたはグランドストロークで打ち込む。攻撃的に返す感覚を身につける。',vk:'normal_receive'},{lv:2,label:'Step 2',name:'実セカンドサーブへのアタックレシーブ',players:'2人',body:'実際のセカンドサーブに対してコースを意識して攻撃的に返球する。クロス深めとセンターを中心に打ち分ける。',vk:'normal_receive'},{lv:3,label:'Step 3',name:'セカンドレシーブからの展開実戦',players:'3〜4人',body:'セカンドレシーブで攻撃し、そのままラリー展開に持ち込む実戦練習。主導権を取りにいく意識で。',vk:'normal_receive'}]},
+  {id:30,role:'both',cat:'receive',subCat:'cut_receive',subCatLabel:'カットサーブのレシーブ',label:'RECV',title:'カットサーブのレシーブ',desc:'カットサーブが返らない・変化に対応できない',featured:false,points:['前に詰めてネット前で処理する — カットサーブはネット付近で止まる。後ろで待つと低くて短い球になり処理が難しくなる','バウンドの変化を先読みする — サーバーのラケットの向きと回転の方向で変化を予測する — 慣れるまでは観察に徹することが最優先','縦面で下からすくい上げる — 横面だとボールを引っかけてネットになりやすい — 面を立てることで低打点でも安定する','「まず触る」意識 — 強打より確実にコートに返すことを優先 — 強引に打ちに行くと空振りやネットが多発する','クロスかセンターへ安全に返す — 無理にコースを狙わない — 返球できるだけで相手へのプレッシャーになる'],steps:[{lv:1,label:'Step 1',name:'カットサーブのバウンド観察練習',players:'2人',body:'相手にカットサーブを打ってもらい、まずバウンドの変化を観察することに集中する。どちらに飛ぶか・どれだけ低くなるかを体感する。',vk:'cut_receive'},{lv:2,label:'Step 2',name:'前詰めカットレシーブ',players:'2人',body:'前に詰めながら低い打点で縦面を作ってカットサーブを返す。まず入れることを優先し、クロスかセンターへ確実に返す。',vk:'cut_receive'},{lv:3,label:'Step 3',name:'カットサーブ実戦レシーブ',players:'2人',body:'試合形式でカットサーブに対応し、レシーブからラリーに繋げる実戦練習。変化の読みと前詰めのタイミングを磨く。',vk:'cut_receive'}]},
 ];
 
-const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}]};
+// ステップ昇格基準 [steps配列インデックスに対応。最後の要素=習得の目安、中間=次へ進む目安、null=表示なし]
+const STEP_NEXT={
+  1:['打点が毎回肩の高さ以上で安定したら',null,'手出し・ロブ球で7割以上打ち込めたら','乱打でチャンスボールを積極的に攻め切れる'],
+  2:['20球連続でフォームを崩さず打てたら','手出し球をミス3割以内でコートに収められたら','クロス乱打を30球以上継続できる'],
+  3:['10球中8球以上、低打点で前でボールを捉えられたら','短球をミス2割以内でコートに収められたら','乱打中の短球を安定して処理できる'],
+  4:['壁打ちで10球中8球以上、肩の高さ以上で捉えられたら','ロブ球でタイミングよく打ち込めたら','乱打でバック側のチャンスを積極的に攻められる'],
+  5:['15球連続でスタンス・打点を崩さず打てたら','手出し球でフォームを崩さずコートに収められたら','バック限定乱打を30球以上継続できる'],
+  6:['10球中8球以上、低打点で返球できたら','短球をアンダーで確実に入れられたら','乱打中のバック短球を安定して処理できる'],
+  7:['各スタンスでクロス方向に6割以上安定して打てたら','クロス限定乱打を20球以上継続できたら','乱打の中でクロスとコース変更を使い分けられる'],
+  8:['各スタンスで逆クロス方向に6割以上飛ばせたら','逆クロス限定乱打を15球以上継続できたら','乱打の中で逆クロスを自在に選択できる'],
+  9:['ストレート方向に6割以上安定して打てたら','クロスからストレートへの切り替えを意識できたら','前衛がいても怖がらずストレートを選べる'],
+  10:['左ストレート方向に6割以上安定して飛ばせたら','深いボールを20球以上継続できたら','乱打中に左ストレートを使い分けられる'],
+  11:['10球中7球以上、十分な高さで深く上げられたら','指定ゾーンに7割以上入れられたら','試合の場面に応じてロブを使い分けられる'],
+  12:['高さと速さを意識した中ロブを6割以上入れられたら','乱打でシュートと中ロブを同じフォームで打ち分けられたら','前衛ありで効果的に中ロブを使える'],
+  13:['壁打ちで10球中7球以上、低い軌道で打てたら','シュート限定乱打でネットより低い軌道を安定させられたら','ロブと組み合わせて高低差を使い分けられる'],
+  14:['手出し球で低く速い短球を6割以上入れられたら','シュートと同じフォームで打ち分けられたら','試合の場面を見て積極的にツイストを使える'],
+  15:['5球中3球以上、ネットを越えて短く落とせたら',null,'セカンドサーブや乱打中に場面を見てドロップを使える'],
+  16:['手出し球を10球中8球以上コンパクトに弾けたら','ボレストで15球以上安定して返球できたら','コースを意識してクロス・ストレートに打ち分けられる'],
+  17:['テイクバックを早く取る習慣がつき、10球中7球以上入ったら','ボレストで15球以上安定して返球できたら','フォア・バックをランダムに対応できる'],
+  18:['10球中7球以上、低打点でコートに収められたら','足元へのボールをローボレーで確実に返球できたら','フォア・バックのローボレーをランダムに対応できる'],
+  19:['準備・タメの動作ができ、10球中7球以上入ったら','ロブからハイボレーを安定して打ち込めたら','ハイボレーかスマッシュかを判断して打ち分けられる'],
+  20:['下がり方と打点が安定し、10球中7球以上入ったら','コースを意識しながら乱打でつながれたら','ロブ→スマッシュ→ポジション戻りの一連が安定している'],
+  21:['3歩のフットワークと1歩目の速さを意識して動けたら','実球ポーチを7割以上決められる'],
+  22:['バック側の3歩フットワークで確実に動けたら','実球でバックポーチを6割以上決められる'],
+  23:['連続10本中7本以上サービスボックスに入れられたら','指定ゾーンに6割以上入れられたら','レシーバーありでファーストが5〜7割安定している'],
+  24:['センターに7割以上安定して入れられたら','3コースを指定どおり6割以上打ち分けられたら','レシーバーの反応を見てコースを選べる'],
+  25:['フルスイングで10本中6本以上コートに入れられたら','コーンを狙いながらスピードを出せたら','ファーストとセカンドで速さを使い分けられる'],
+  26:['連続10本中6本以上サービスボックスに入れられたら','指定ゾーンに5割以上入れられたら','相手が取りにくい回転量とコースを自分で見つけられる'],
+  27:['自分のボールの曲がり方のクセを把握できたら','スタンスを変えて2コースを打ち分けられたら','レシーバーの反応を見てコースを選べる'],
+  28:['スプリットステップのリズムが安定し、ブロックリターンの構えが作れたら','速い手出し球を面で捉えてセンターへ6割以上返せたら','実サーブを安定してコートに収められる'],
+  29:['踏み込んでの攻撃的な返球フォームが身についたら','実セカンドに対してクロス深めへ6割以上打ち込めたら','セカンドレシーブから主導権を持ってラリー展開に入れる'],
+  30:['カットサーブのバウンドの変化パターンを認識できたら','前に詰めて6割以上コートに返せるようになったら','試合でカットサーブを安定して処理し、ラリーに繋げられる'],
+};
 
-let currentCat='all',currentSubCat=null;
+const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}],receive:[{key:'all_r',label:'すべて'},{key:'normal_receive',label:'通常サーブ'},{key:'cut_receive',label:'カットサーブ'}]};
+
+let currentCat='all',currentSubCat=null,currentRole='all';
 renderList(DB);
 
 function renderList(items){
   const list=document.getElementById('resultList'),empty=document.getElementById('emptyState');
-  if(!items.length){list.innerHTML='';empty.style.display='block';return}
+  if(!items.length){
+    list.innerHTML='';empty.style.display='block';
+    const posLabel={all:'すべて',back:'後衛向け',fore:'前衛向け'}[currentRole];
+    const catLabel={all:'すべて',stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'}[currentCat]||'';
+    let hint='🎾 該当する練習メニューが見つかりませんでした';
+    if(currentRole==='back'&&currentCat==='volley') hint='「後衛向け」にボレーメニューはありません。<br>ポジションを「すべて」に変えると前衛のボレーも見られます。';
+    else if(currentRole==='fore'&&currentCat==='stroke') hint='「前衛向け」にストロークメニューはありません。<br>ポジションを「すべて」に変えるとストロークも見られます。';
+    else if(currentRole!=='all'&&currentCat!=='all') hint=`「${posLabel}×${catLabel}」の組み合わせは現在準備中です。<br>「すべて」に戻して探してみてください。`;
+    document.getElementById('emptyMsg').innerHTML=hint;
+    return;
+  }
   empty.style.display='none';
   list.innerHTML=items.map(d=>`<div class="result-card ${d.featured?'featured':''} fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}</div><div class="result-sub">${d.desc}</div><div>${d.steps.length?'<span class="step-pill s1">Step1</span><span class="step-pill s2">Step2</span><span class="step-pill s3">Step3</span>':'<span style="font-size:11px;color:var(--text-muted)">準備中</span>'}</div></div>`).join('');
+}
+
+function selectPos(el,role){
+  document.querySelectorAll('#posChips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');currentRole=role;applyFilter();
 }
 
 function selectCat(el,cat){
@@ -251,7 +355,7 @@ function selectCat(el,cat){
   const sub=document.getElementById('subCatArea');
   if(cat!=='all'&&SUB_CATS[cat]){
     sub.style.display='block';
-    document.getElementById('subCatLabel').textContent=cat==='stroke'?'STROKE':cat==='volley'?'VOLLEY':'SERVICE';
+    document.getElementById('subCatLabel').textContent=cat==='stroke'?'STROKE':cat==='volley'?'VOLLEY':cat==='service'?'SERVICE':'RECEIVE';
     document.getElementById('subCatChips').innerHTML=SUB_CATS[cat].map((s,i)=>`<span class="chip ${i===0?'active':''}" onclick="selectSubCat(this,'${s.key}')">${s.label}</span>`).join('');
     currentSubCat=SUB_CATS[cat][0].key;
   }else{sub.style.display='none';}
@@ -262,6 +366,8 @@ function selectSubCat(el,sub){document.querySelectorAll('#subCatChips .chip').fo
 
 function applyFilter(){
   let items=DB;
+  if(currentRole==='back') items=items.filter(d=>d.role==='back'||d.role==='both');
+  if(currentRole==='fore') items=items.filter(d=>d.role==='fore'||d.role==='both');
   if(currentCat!=='all') items=items.filter(d=>d.cat===currentCat);
   if(currentSubCat&&!currentSubCat.startsWith('all_')) items=items.filter(d=>d.subCat===currentSubCat);
   const q=document.getElementById('searchInput').value.trim();
@@ -273,9 +379,16 @@ function onSearch(){applyFilter();}
 
 function showDetail(id){
   const d=DB.find(x=>x.id===id);if(!d)return;
-  const stepsHTML=d.steps.length?d.steps.map(s=>{
+  const criteria=STEP_NEXT[d.id]||[];
+  const stepsHTML=d.steps.length?d.steps.map((s,i)=>{
     const vids=(YT[s.vk]||[]).filter(v=>s.lv>=(v.minLv||1));
-    return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div></div>`;
+    const isLast=i===d.steps.length-1;
+    const crit=criteria[i];
+    const critHTML=crit?(isLast
+      ?`<div class="step-crit mastery">✓ 習得の目安：${crit}</div>`
+      :`<div class="step-crit next">→ 次へ進む目安：${crit}</div>`
+    ):'';
+    return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div>${critHTML}</div>`;
   }).join(''):'<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">準備中</div>';
   document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in"><div class="kanjo-label">POINT — 勘所</div>${d.points.map(p=>`<div class="kanjo-item">・${p}</div>`).join('')}</div><div class="section-label">PRACTICE MENU</div>${stepsHTML}`;
   document.getElementById('homeScreen').style.display='none';
@@ -287,10 +400,45 @@ function showDetail(id){
 }
 
 function showHome(){
-  document.getElementById('homeScreen').style.display='block';
+  const activeTab=document.querySelector('.bnav-item.active');
+  const tab=activeTab?activeTab.id.replace('bnav-',''):'search';
+  document.getElementById('homeScreen').style.display=tab==='search'?'block':'none';
+  document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
+  document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('navHome').style.display='block';
   document.getElementById('navBack').style.display='none';
+}
+
+function goSymptomDetail(id,title){
+  showDetail(id);
+  document.getElementById('symptomScreen').style.display='none';
+  document.getElementById('detailScreen').style.display='block';
+  document.getElementById('navHome').style.display='none';
+  document.getElementById('navBack').style.display='flex';
+  document.getElementById('navBack').textContent='← 悩みから探す › '+title;
+}
+
+function toggleSymptomGroup(el){
+  const body=el.nextElementSibling;
+  const isOpen=body.style.display!=='none';
+  body.style.display=isOpen?'none':'block';
+  el.querySelector('.symptom-arrow').textContent=isOpen?'▶':'▼';
+}
+
+function renderSymptomList(){
+  const groups=[
+    {label:'後衛向けの悩み',filter:d=>d.role==='back',icon:'🏃',open:true},
+    {label:'前衛向けの悩み',filter:d=>d.role==='fore',icon:'🏅',open:false},
+    {label:'サーブの悩み',filter:d=>d.cat==='service',icon:'🎾',open:false},
+    {label:'レシーブの悩み',filter:d=>d.cat==='receive',icon:'↩️',open:false},
+  ];
+  const html=groups.map(g=>{
+    const items=DB.filter(g.filter);
+    const cards=items.map(d=>`<div class="result-card fade-in" onclick="goSymptomDetail(${d.id},'${d.title}')"><div class="symptom-desc">${d.desc}</div><div class="symptom-menu">→ ${d.subCatLabel}：${d.title}</div></div>`).join('');
+    return `<div class="symptom-group-label" onclick="toggleSymptomGroup(this)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">${g.icon} ${g.label}<span class="symptom-arrow">${g.open?'▼':'▶'}</span></div><div style="display:${g.open?'block':'none'}">${cards}</div>`;
+  }).join('');
+  document.getElementById('symptomList').innerHTML=html;
 }
 
 function switchTab(tab){
@@ -299,8 +447,10 @@ function switchTab(tab){
   document.getElementById('homeScreen').style.display=tab==='search'?'block':'none';
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
+  document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
   document.getElementById('navHome').style.display='block';
   document.getElementById('navBack').style.display='none';
+  if(tab==='symptom') renderSymptomList();
 }
 </script>
 </body>
