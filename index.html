@@ -71,6 +71,23 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .step-crit{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:11.5px;line-height:1.6}
 .step-crit.next{background:rgba(201,168,76,.10);color:#8B6914;border-left:3px solid var(--gold)}
 .step-crit.mastery{background:rgba(60,170,100,.10);color:#2e7d52;border-left:3px solid #4caf7a}
+.note-add-btn{width:100%;padding:13px;background:var(--gold);color:var(--white);border:none;border-radius:12px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-bottom:16px}
+.note-date-header{font-size:11px;color:var(--gold-dark);letter-spacing:.1em;font-weight:500;margin:16px 0 8px;padding-left:2px}
+.note-card{border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;background:var(--white);cursor:pointer;transition:all .2s}
+.note-card:hover{border-color:var(--gold-light);transform:translateY(-1px)}
+.note-menu-name{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:3px}
+.note-step-tag{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+.note-memo{font-size:12px;color:var(--text-secondary);line-height:1.6;background:var(--warm-gray);border-radius:6px;padding:7px 9px;margin-top:6px}
+.note-empty{text-align:center;padding:50px 20px;color:var(--text-muted);font-size:13px;line-height:1.9}
+.note-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.note-form{background:var(--off-white);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:24px 20px 44px;max-height:85vh;overflow-y:auto}
+.note-form-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text-primary);margin-bottom:18px;font-weight:600}
+.note-form label{font-size:11px;color:var(--gold-dark);letter-spacing:.08em;font-weight:500;display:block;margin-bottom:5px}
+.note-form select,.note-form textarea{width:100%;border:1px solid var(--border-gold);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text-primary);background:var(--white);font-family:'Noto Sans JP',sans-serif;outline:none;margin-bottom:14px;-webkit-appearance:none}
+.note-form textarea{min-height:80px;resize:none}
+.note-submit{width:100%;padding:13px;background:var(--gold);color:var(--white);border:none;border-radius:12px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;cursor:pointer}
+.note-cancel{width:100%;padding:10px;background:none;color:var(--text-muted);border:none;font-size:13px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:8px}
+.note-delete{float:right;background:none;border:none;color:var(--text-muted);font-size:11px;cursor:pointer;padding:0;font-family:'Noto Sans JP',sans-serif}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -122,13 +139,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     </div>
   </div>
   <div class="screen-body detail-view" id="detailScreen"></div>
-  <div class="screen-body note-screen" id="noteScreen">
-    <div class="note-coming">
-      <div class="badge-coming">COMING SOON</div>
-      <div class="note-coming-title">テニスノート機能</div>
-      <div class="note-coming-sub">練習日誌・課題管理機能は<br>近日公開予定です。お楽しみに！</div>
-    </div>
-  </div>
+  <div class="screen-body note-screen" id="noteScreen"></div>
   <div class="screen-body" id="symptomScreen" style="display:none">
     <div id="symptomList"></div>
   </div>
@@ -458,6 +469,82 @@ function showScenarioDetail(sid){
   document.getElementById('detailScreen').scrollTop=0;
 }
 
+// ── ノート機能 ──────────────────────────
+const NOTES_KEY='stl_notes_v1';
+function loadNotes(){return JSON.parse(localStorage.getItem(NOTES_KEY)||'[]');}
+function saveNotes(n){localStorage.setItem(NOTES_KEY,JSON.stringify(n));}
+
+function formatDate(str){
+  const d=new Date(str+'T00:00:00');
+  const wd=['日','月','火','水','木','金','土'][d.getDay()];
+  return `${d.getMonth()+1}月${d.getDate()}日（${wd}）`;
+}
+
+function renderNoteScreen(){
+  const notes=loadNotes().sort((a,b)=>b.id-a.id);
+  const screen=document.getElementById('noteScreen');
+  const addBtn=`<button class="note-add-btn" onclick="openNoteForm()">＋ 今日の練習を記録する</button>`;
+  if(!notes.length){
+    screen.innerHTML=addBtn+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
+    return;
+  }
+  const byDate={};
+  notes.forEach(n=>{if(!byDate[n.date])byDate[n.date]=[];byDate[n.date].push(n);});
+  const html=Object.keys(byDate).map(date=>{
+    const cards=byDate[date].map(n=>{
+      const m=DB.find(d=>d.id===n.menuId);if(!m)return '';
+      return `<div class="note-card fade-in" onclick="showDetail(${m.id})">
+        <button class="note-delete" onclick="event.stopPropagation();deleteNote(${n.id})">削除</button>
+        <div class="note-menu-name">${m.title}</div>
+        <div class="note-step-tag">${m.subCatLabel} · Step ${n.step}</div>
+        ${n.memo?`<div class="note-memo">${n.memo}</div>`:''}
+      </div>`;
+    }).join('');
+    return `<div class="note-date-header">${formatDate(date)}</div>${cards}`;
+  }).join('');
+  screen.innerHTML=addBtn+html;
+}
+
+function openNoteForm(){
+  const opts=DB.map(d=>`<option value="${d.id}">${d.subCatLabel}：${d.title}</option>`).join('');
+  const today=new Date().toISOString().slice(0,10);
+  const el=document.createElement('div');
+  el.className='note-overlay';el.id='noteOverlay';
+  el.innerHTML=`<div class="note-form">
+    <div class="note-form-title">練習を記録する</div>
+    <label>練習したメニュー</label>
+    <select id="noteMenu">${opts}</select>
+    <label>ステップ</label>
+    <select id="noteStep"><option value="1">Step 1</option><option value="2">Step 2</option><option value="3">Step 3</option></select>
+    <label>メモ（任意）</label>
+    <textarea id="noteMemo" placeholder="気づいたこと・課題・感覚など"></textarea>
+    <button class="note-submit" onclick="submitNote('${today}')">保存する</button>
+    <button class="note-cancel" onclick="closeNoteForm()">キャンセル</button>
+  </div>`;
+  document.body.appendChild(el);
+}
+
+function closeNoteForm(){const el=document.getElementById('noteOverlay');if(el)el.remove();}
+
+function submitNote(date){
+  const menuId=parseInt(document.getElementById('noteMenu').value);
+  const step=parseInt(document.getElementById('noteStep').value);
+  const memo=document.getElementById('noteMemo').value.trim();
+  if(!menuId)return;
+  const notes=loadNotes();
+  notes.push({id:Date.now(),date,menuId,step,memo});
+  saveNotes(notes);
+  closeNoteForm();
+  renderNoteScreen();
+}
+
+function deleteNote(id){
+  if(!confirm('このログを削除しますか？'))return;
+  saveNotes(loadNotes().filter(n=>n.id!==id));
+  renderNoteScreen();
+}
+// ─────────────────────────────────────────
+
 function switchTab(tab){
   document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('bnav-'+tab).classList.add('active');
@@ -468,6 +555,7 @@ function switchTab(tab){
   document.getElementById('navHome').style.display='block';
   document.getElementById('navBack').style.display='none';
   if(tab==='symptom') renderScenarioList();
+  if(tab==='note') renderNoteScreen();
 }
 </script>
 </body>
