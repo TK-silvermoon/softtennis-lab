@@ -134,7 +134,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   </div>
   <div class="bottom-nav">
     <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
-    <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>悩みから探す</span></div>
+    <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>場面から探す</span></div>
     <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span>ノート</span></div>
   </div>
 </div>
@@ -324,6 +324,20 @@ const STEP_NEXT={
 
 const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}],receive:[{key:'all_r',label:'すべて'},{key:'normal_receive',label:'通常サーブ'},{key:'cut_receive',label:'カットサーブ'}]};
 
+const SCENARIOS=[
+  {id:'s1',role:'back',icon:'😫',title:'前衛に捕まる',body:'ボールが前衛に届いてしまう。高いロブか、低いシュートか、揺さぶりが必要。',menus:[11,12,13,14,15]},
+  {id:'s2',role:'back',icon:'😤',title:'ラリーが続かない',body:'ミスが多くてラリーが安定しない。フォームと打点の安定が先決。',menus:[2,5,7]},
+  {id:'s3',role:'back',icon:'😣',title:'チャンスボールを決め切れない',body:'甘いボールが来ても決められない。打点と攻撃力を鍛えよう。',menus:[1,4,13]},
+  {id:'s4',role:'back',icon:'😕',title:'コースを打ち分けられない',body:'いつも同じコースになってしまう。コース別の打点と体の向きを覚えよう。',menus:[7,8,9,10]},
+  {id:'s5',role:'fore',icon:'🦘',title:'ポーチに出られない',body:'出るタイミングが掴めない・届かない。1歩目の速さとフットワークが全て。',menus:[21,22]},
+  {id:'s6',role:'fore',icon:'😰',title:'ボレーでミスが多い',body:'ネットする・アウトする。面の作り方と体の使い方を整理しよう。',menus:[16,17,18]},
+  {id:'s7',role:'fore',icon:'😓',title:'スマッシュが決まらない',body:'空振りする・アウトが多い。下がり方と打点の位置が鍵。',menus:[20,19]},
+  {id:'s8',role:'both',icon:'🎾',title:'サーブが安定しない',body:'ダブルフォルトが多い・入れるだけになる。トスとフォームを固めよう。',menus:[23,26]},
+  {id:'s9',role:'both',icon:'💥',title:'サーブで相手を崩せない',body:'入るけど攻撃的なサーブが打てない。コースとスピードを武器にしよう。',menus:[24,25,27]},
+  {id:'s10',role:'both',icon:'😱',title:'ファーストレシーブが返らない',body:'速いサーブへの反応が遅れる。スプリットステップとブロックリターンが基本。',menus:[28,30,3,6]},
+  {id:'s11',role:'both',icon:'⚔️',title:'セカンドレシーブで攻めたい',body:'返すだけになってしまう。踏み込んで積極的に打ち込もう。',menus:[29,1,4,13]},
+];
+
 let currentCat='all',currentSubCat=null,currentRole='all';
 renderList(DB);
 
@@ -410,15 +424,6 @@ function showHome(){
   document.getElementById('navBack').style.display='none';
 }
 
-function goSymptomDetail(id,title){
-  showDetail(id);
-  document.getElementById('symptomScreen').style.display='none';
-  document.getElementById('detailScreen').style.display='block';
-  document.getElementById('navHome').style.display='none';
-  document.getElementById('navBack').style.display='flex';
-  document.getElementById('navBack').textContent='← 悩みから探す › '+title;
-}
-
 function toggleSymptomGroup(el){
   const body=el.nextElementSibling;
   const isOpen=body.style.display!=='none';
@@ -426,19 +431,31 @@ function toggleSymptomGroup(el){
   el.querySelector('.symptom-arrow').textContent=isOpen?'▶':'▼';
 }
 
-function renderSymptomList(){
+function renderScenarioList(){
   const groups=[
-    {label:'後衛向けの悩み',filter:d=>d.role==='back',icon:'🏃',open:true},
-    {label:'前衛向けの悩み',filter:d=>d.role==='fore',icon:'🏅',open:false},
-    {label:'サーブの悩み',filter:d=>d.cat==='service',icon:'🎾',open:false},
-    {label:'レシーブの悩み',filter:d=>d.cat==='receive',icon:'↩️',open:false},
+    {label:'後衛の場面',role:'back',icon:'🏃',open:true},
+    {label:'前衛の場面',role:'fore',icon:'🏅',open:false},
+    {label:'共通の場面',role:'both',icon:'🎾',open:false},
   ];
   const html=groups.map(g=>{
-    const items=DB.filter(g.filter);
-    const cards=items.map(d=>`<div class="result-card fade-in" onclick="goSymptomDetail(${d.id},'${d.title}')"><div class="symptom-desc">${d.desc}</div><div class="symptom-menu">→ ${d.subCatLabel}：${d.title}</div></div>`).join('');
+    const items=SCENARIOS.filter(s=>s.role===g.role);
+    const cards=items.map(s=>`<div class="result-card fade-in" onclick="showScenarioDetail('${s.id}')"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:20px">${s.icon}</span><div class="result-title">${s.title}</div></div><div class="result-sub">${s.body}</div><div style="font-size:11px;color:var(--gold-dark);margin-top:5px">関連練習 ${s.menus.length}メニュー →</div></div>`).join('');
     return `<div class="symptom-group-label" onclick="toggleSymptomGroup(this)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">${g.icon} ${g.label}<span class="symptom-arrow">${g.open?'▼':'▶'}</span></div><div style="display:${g.open?'block':'none'}">${cards}</div>`;
   }).join('');
   document.getElementById('symptomList').innerHTML=html;
+}
+
+function showScenarioDetail(sid){
+  const s=SCENARIOS.find(x=>x.id===sid);if(!s)return;
+  const menus=s.menus.map(id=>DB.find(d=>d.id===id)).filter(Boolean);
+  const menuHTML=menus.map(d=>`<div class="result-card fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}</div><div class="result-sub">${d.desc}</div></div>`).join('');
+  document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in" style="margin-bottom:16px"><div style="font-size:26px;margin-bottom:6px">${s.icon}</div><div class="kanjo-label">${s.title}</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-top:4px">${s.body}</div></div><div class="section-label">この場面に効く練習メニュー</div>${menuHTML}`;
+  document.getElementById('symptomScreen').style.display='none';
+  document.getElementById('detailScreen').style.display='block';
+  document.getElementById('navHome').style.display='none';
+  document.getElementById('navBack').style.display='flex';
+  document.getElementById('navBack').textContent='← 場面から探す › '+s.title;
+  document.getElementById('detailScreen').scrollTop=0;
 }
 
 function switchTab(tab){
@@ -450,7 +467,7 @@ function switchTab(tab){
   document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
   document.getElementById('navHome').style.display='block';
   document.getElementById('navBack').style.display='none';
-  if(tab==='symptom') renderSymptomList();
+  if(tab==='symptom') renderScenarioList();
 }
 </script>
 </body>
