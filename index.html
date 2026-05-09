@@ -84,12 +84,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .yt-icon{width:13px;height:9px;background:#b03030;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .yt-tri{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid white;margin-left:1px}
 .no-video{font-size:11px;color:var(--text-muted);font-style:italic}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:14px 0 24px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);cursor:pointer;padding:0 16px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:9px 0 18px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--text-muted);cursor:pointer;padding:0 16px}
 .bnav-item.active{color:var(--gold-dark)}
 .bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
 .bnav-item.active .bnav-dot{background:var(--gold)}
 .note-screen{display:none;padding:16px}
+.footer-link{display:block;text-align:center;font-size:10px;color:var(--text-muted);padding:10px 0 4px;text-decoration:none}
+.footer-link:hover{color:var(--gold-dark)}
 .note-coming{text-align:center;padding:60px 20px}
 .note-coming-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-dark);margin-bottom:10px}
 .note-coming-sub{font-size:13px;color:var(--text-muted);line-height:1.7}
@@ -176,6 +178,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   <div class="screen-body" id="symptomScreen" style="display:none">
     <div id="symptomList"></div>
   </div>
+  <a class="footer-link" href="/privacy.html" target="_blank">プライバシーポリシー</a>
   <div class="bottom-nav">
     <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
     <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>場面から探す</span></div>
