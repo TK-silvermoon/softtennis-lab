@@ -8,6 +8,22 @@
 <meta name="keywords" content="ソフトテニス,練習メニュー,練習方法,ストローク,ボレー,サービス,レシーブ,カットサーブ,ポーチ,スマッシュ,上達,中学生,高校生">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://soft-tennis-lab.vercel.app/">
+<!-- 構造化データ（JSON-LD） -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"ソフトテニスラボ",
+  "url":"https://soft-tennis-lab.vercel.app/",
+  "description":"ソフトテニスの苦手を克服する練習メニューアプリ。ストローク・ボレー・サービス・レシーブの基礎から応用まで、ステップ別に練習方法と参考動画を掲載。",
+  "applicationCategory":"SportsApplication",
+  "operatingSystem":"All",
+  "inLanguage":"ja",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+  "audience":{"@type":"Audience","audienceType":"ソフトテニス選手・中学生・高校生"}
+}
+</script>
+<script type="application/ld+json" id="menuJsonLd"></script>
 <!-- OGP -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="ソフトテニスラボ｜練習メニューを探せるアプリ">
@@ -30,8 +46,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .nav-logo span{color:var(--gold)}
 .nav-sub{font-size:10px;color:var(--text-muted);margin-top:1px}
 .nav-back{display:none;align-items:center;gap:6px;color:var(--gold-dark);font-size:13px;cursor:pointer;background:none;border:none;font-family:'Noto Sans JP',sans-serif}
-.fb-float{position:fixed;bottom:80px;right:calc(50% - 215px + 12px);background:var(--white);color:var(--gold-dark);border:.5px solid var(--gold);padding:7px 13px;border-radius:20px;font-size:11px;text-decoration:none;font-family:'Noto Sans JP',sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.10);z-index:9;white-space:nowrap}
-@media(max-width:430px){.fb-float{right:12px}}
+.nav-fb{font-size:11px;color:var(--gold-dark);border:.5px solid var(--gold);padding:5px 11px;border-radius:20px;text-decoration:none;white-space:nowrap;font-family:'Noto Sans JP',sans-serif}
 .screen-body{flex:1;overflow-y:auto;padding:14px 14px 100px}
 .search-wrap{position:relative;margin-bottom:14px}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none}
@@ -69,8 +84,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .yt-icon{width:13px;height:9px;background:#b03030;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .yt-tri{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid white;margin-left:1px}
 .no-video{font-size:11px;color:var(--text-muted);font-style:italic}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:10px 0 18px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--text-muted);cursor:pointer;padding:0 16px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:14px 0 24px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);cursor:pointer;padding:0 16px}
 .bnav-item.active{color:var(--gold-dark)}
 .bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
 .bnav-item.active .bnav-dot{background:var(--gold)}
@@ -122,6 +137,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <div class="nav-logo">ソフトテニス<span>ラボ</span></div>
       <div class="nav-sub">苦手を入力して練習を探す</div>
     </div>
+    <a class="nav-fb" id="navFb" href="https://docs.google.com/forms/d/e/1FAIpQLSfcNvFGIPXuTTvAluTsfGMurUH6E8QFBFqC6UhItSZugh_r6g/viewform" target="_blank" rel="noopener">意見を送る</a>
     <button class="nav-back" id="navBack" onclick="showHome()">← 戻る</button>
   </div>
   <div class="screen-body" id="homeScreen">
@@ -160,7 +176,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   <div class="screen-body" id="symptomScreen" style="display:none">
     <div id="symptomList"></div>
   </div>
-  <a class="fb-float" href="https://docs.google.com/forms/d/e/1FAIpQLSfcNvFGIPXuTTvAluTsfGMurUH6E8QFBFqC6UhItSZugh_r6g/viewform" target="_blank" rel="noopener">💬 意見を送る</a>
   <div class="bottom-nav">
     <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
     <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>場面から探す</span></div>
@@ -439,6 +454,18 @@ function showDetail(id){
   const d=DB.find(x=>x.id===id);if(!d)return;
   history.pushState({menuId:id},'',`#menu-${id}`);
   gtag('event','view_menu',{menu_id:id,menu_title:d.title,menu_category:d.cat});
+  // SEO: タイトル・description動的更新
+  document.title=`${d.title}の練習方法｜ソフトテニスラボ`;
+  document.querySelector('meta[name="description"]').setAttribute('content',`${d.desc}。${d.subCatLabel}の練習メニューをステップ別に解説。参考動画付き。ソフトテニスラボ。`);
+  // JSON-LD: HowToスキーマ
+  const howto={
+    '@context':'https://schema.org','@type':'HowTo',
+    'name':`${d.title}の練習方法`,
+    'description':d.desc,
+    'url':`https://soft-tennis-lab.vercel.app/#menu-${d.id}`,
+    'step':d.steps.map((s,i)=>({'@type':'HowToStep','position':i+1,'name':s.name,'text':s.body}))
+  };
+  document.getElementById('menuJsonLd').textContent=JSON.stringify(howto);
   const criteria=STEP_NEXT[d.id]||[];
   const stepsHTML=d.steps.length?d.steps.map((s,i)=>{
     const vids=(YT[s.vk]||[]).filter(v=>s.lv>=(v.minLv||1));
@@ -454,6 +481,7 @@ function showDetail(id){
   document.getElementById('homeScreen').style.display='none';
   document.getElementById('detailScreen').style.display='block';
   document.getElementById('navHome').style.display='none';
+  document.getElementById('navFb').style.display='none';
   document.getElementById('navBack').style.display='flex';
   document.getElementById('navBack').textContent=`← ${d.subCatLabel} › ${d.title}`;
   document.getElementById('detailScreen').scrollTop=0;
@@ -467,8 +495,12 @@ function showHome(){
   document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('navHome').style.display='block';
+  document.getElementById('navFb').style.display='';
   document.getElementById('navBack').style.display='none';
   history.pushState({},'',location.pathname);
+  document.title='ソフトテニスラボ｜練習メニューを探せるアプリ';
+  document.querySelector('meta[name="description"]').setAttribute('content','ソフトテニスの苦手を克服する練習メニューアプリ。ストローク・ボレー・サービス・レシーブの基礎から応用まで、ステップ別に練習方法と参考動画を掲載。試合の場面から練習を探せる「場面から探す」機能も搭載。');
+  document.getElementById('menuJsonLd').textContent='';
 }
 
 function toggleSymptomGroup(el){
@@ -501,6 +533,7 @@ function showScenarioDetail(sid){
   document.getElementById('symptomScreen').style.display='none';
   document.getElementById('detailScreen').style.display='block';
   document.getElementById('navHome').style.display='none';
+  document.getElementById('navFb').style.display='none';
   document.getElementById('navBack').style.display='flex';
   document.getElementById('navBack').textContent='← 場面から探す › '+s.title;
   document.getElementById('detailScreen').scrollTop=0;
