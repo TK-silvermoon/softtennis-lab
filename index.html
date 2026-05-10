@@ -122,6 +122,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .note-submit{width:100%;padding:13px;background:var(--gold);color:var(--white);border:none;border-radius:12px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;cursor:pointer}
 .note-cancel{width:100%;padding:10px;background:none;color:var(--text-muted);border:none;font-size:13px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:8px}
 .note-delete{float:right;background:none;border:none;color:var(--text-muted);font-size:11px;cursor:pointer;padding:0;font-family:'Noto Sans JP',sans-serif}
+.note-tag-badge{font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;}
+.ntag-kadai{background:#FEF0F0;color:#b03030;border:.5px solid #e8b0b0;}
+.ntag-dekita{background:#EAF7EA;color:#2a7a2a;border:.5px solid #90d090;}
+.ntag-mae{background:#EAF4FB;color:#1a6fa0;border:.5px solid #b0d4ec;}
+.ntag-ato{background:#F8EEF8;color:#7a2a7a;border:.5px solid #d0a0d0;}
+.ntag-kizuki{background:#FDF8EE;color:#9a7520;border:.5px solid #ddc878;}
+.note-filter-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;font-weight:500;margin-bottom:7px;}
+.note-filter-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.note-filter-chip{background:var(--white);color:var(--text-secondary);font-size:12px;padding:4px 11px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+.note-filter-chip.active{background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:500;}
+.note-tag-form{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.note-tag-form-chip{font-size:12px;padding:5px 12px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--text-secondary);transition:all .15s;}
+.note-tag-form-chip.selected{font-weight:500;}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -335,6 +348,7 @@ const DB=[
   {id:27,role:'both',cat:'service',subCat:'cut',subCatLabel:'カットサーブ',label:'CUT',title:'カットサーブ｜コース',desc:'カットサーブのコースが打ち分けられない',featured:false,points:['まず真っ直ぐ狙いで自分のボールがどちらに曲がるか把握する — 個人差があるため、まず自分のクセを知ることが基本','スタンスの向きでコースを調整する — スタンスを変えることが最もシンプルで再現性の高いコース調整方法','コースより確率が先 — コースを狙うよりまず入れることが重要。入らないと意味がない'],steps:[{lv:1,label:'Step 1',name:'正クロス・逆クロス交互練習',players:'一人OK',body:'スタンスを変えて正クロス・逆クロスに交互に打ち分けて入れる。',vk:'cut_serve'},{lv:2,label:'Step 2',name:'ゾーン・的当てコース打ち分け',players:'一人OK',body:'サービスボックスの角にコーンを置き、正クロス・逆クロスを狙い打ち分ける。',vk:'cut_serve'},{lv:3,label:'Step 3',name:'レシーバーありのコース実戦',players:'2人',body:'レシーバーを立てた状態でコースを打ち分ける。相手の反応を見て実戦感覚を養う。',vk:'cut_serve'}]},
   {id:28,role:'both',cat:'receive',subCat:'normal_receive',subCatLabel:'通常サーブのレシーブ',label:'RECV',title:'ファーストレシーブ',desc:'ファーストサーブを返せない・浮かせてしまう',featured:false,points:['スプリットステップを必ず踏む — サーバーのトスと同時に小さくジャンプ — スプリットステップがないと初動が遅れ、速いサーブに反応できない','ブロックリターン優先 — 強振しない — ファーストは速い。面を作って弾き返すだけで相手のリズムを崩せる','コースを早めに読む — サーバーのトスの位置・体の向きでコースを予測する — 予測が早いほど余裕を持って構えられる','センター返球が基本 — まずセンターに返す — 角度をつけようとすると難易度が上がり、ミスが増える','後ろで構えすぎない — ベースライン付近で待つ — 下がりすぎるとボールが落ちてから打つことになり、処理が難しくなる'],steps:[{lv:1,label:'Step 1',name:'スプリットステップ＋素振り',players:'一人OK',body:'サービスの動きをイメージしながらスプリットステップを踏み、ブロックリターンの素振りを繰り返す。リズムと構え方を体に染み込ませる。',vk:'normal_receive'},{lv:2,label:'Step 2',name:'速い手出し球へのブロックリターン',players:'2人',body:'ベースライン付近から速い球を手出しで出してもらい、面を作ってブロックリターンで返す。センターへ安定して返すことを目標に。',vk:'normal_receive'},{lv:3,label:'Step 3',name:'実サーブへのレシーブ実戦',players:'2人',body:'実際のファーストサーブに対してブロックリターンでセンターへ返す。コースの読みと反応速度を高める。',vk:'normal_receive'}]},
   {id:29,role:'both',cat:'receive',subCat:'normal_receive',subCatLabel:'通常サーブのレシーブ',label:'RECV',title:'セカンドレシーブ',desc:'セカンドサーブを攻め切れない・チャンスを活かせない',featured:false,points:['セカンドサーブはチャンス — 入れるより攻めることを優先 — セカンドを受け身で打ち返すだけでは相手にプレッシャーをかけられない','打点を前で取る — 踏み込んで前で捉えるほど角度と威力が増す — 後ろで打つと守りのレシーブになってしまう','トップ打ちかグランドストロークで積極的に打ち込む — 浮かせず、コートに速く返す意識','コースはクロス深め or サーバーの足元 — 後衛が動きやすく、相手前衛もケアしやすいコース選択','バウンドを早く読んで早めに動く — セカンドは遅いが読みの速さで攻撃力が変わる'],steps:[{lv:1,label:'Step 1',name:'球出し攻撃レシーブ練習',players:'2人',body:'ゆっくりした球を出してもらい、踏み込んでトップ打ちまたはグランドストロークで打ち込む。攻撃的に返す感覚を身につける。',vk:'normal_receive'},{lv:2,label:'Step 2',name:'実セカンドサーブへのアタックレシーブ',players:'2人',body:'実際のセカンドサーブに対してコースを意識して攻撃的に返球する。クロス深めとセンターを中心に打ち分ける。',vk:'normal_receive'},{lv:3,label:'Step 3',name:'セカンドレシーブからの展開実戦',players:'3〜4人',body:'セカンドレシーブで攻撃し、そのままラリー展開に持ち込む実戦練習。主導権を取りにいく意識で。',vk:'normal_receive'}]},
+  {id:31,role:'back',cat:'stroke',subCat:'special',subCatLabel:'特殊ショット',label:'SPEC',title:'ライジング',desc:'ライジングのタイミングが合わない・ミスが多い',featured:false,points:['バウンド直後・上がり際を打点にする — ボールが頂点に達する前に捉える — 打点を頂点より前にすることで相手の準備時間を奪える','ポジションをベースラインより前に取る — 下がって待つとライジングの打点が生まれない — 前に立つことで上がり際を作り出す','コンパクトスイングで面を合わせる — テイクバックを大きくするとタイミングが合わない — 短いスイングで押し出すイメージ','オープンスタンスで体を正面に向けて構える — ライジングは体の向きをネット正面に近くすることで対応しやすくなる','強打より早いリターンが武器 — スピードより相手の時間を奪うことが目的 — 早いテンポで返し続けることが最大の効果'],steps:[{lv:1,label:'Step 1',name:'バウンド確認ライジング一本打ち',players:'一人OK',body:'自分でボールを直接バウンドさせ、上がり際のタイミングを手で触って確認。次にラケットで打点の感覚をつかむ。',vk:'fore_ground'},{lv:2,label:'Step 2',name:'浅い手出しからのライジング',players:'2人',body:'相手にベースライン内に浅く手出ししてもらい、前に詰めてライジングで返球。面を作って押し出す感覚を繰り返す。',vk:'fore_ground'},{lv:3,label:'Step 3',name:'乱打でのライジング実戦',players:'2人',body:'乱打の中でポジションを前に取り、意識的にライジングを混ぜる。早いテンポで返し続けることを目標に。',vk:'fore_ground'}]},
   {id:30,role:'both',cat:'receive',subCat:'cut_receive',subCatLabel:'カットサーブのレシーブ',label:'RECV',title:'カットサーブのレシーブ',desc:'カットサーブが返らない・変化に対応できない',featured:false,points:['前に詰めてネット前で処理する — カットサーブはネット付近で止まる。後ろで待つと低くて短い球になり処理が難しくなる','バウンドの変化を先読みする — サーバーのラケットの向きと回転の方向で変化を予測する — 慣れるまでは観察に徹することが最優先','縦面で下からすくい上げる — 横面だとボールを引っかけてネットになりやすい — 面を立てることで低打点でも安定する','「まず触る」意識 — 強打より確実にコートに返すことを優先 — 強引に打ちに行くと空振りやネットが多発する','クロスかセンターへ安全に返す — 無理にコースを狙わない — 返球できるだけで相手へのプレッシャーになる'],steps:[{lv:1,label:'Step 1',name:'カットサーブのバウンド観察練習',players:'2人',body:'相手にカットサーブを打ってもらい、まずバウンドの変化を観察することに集中する。どちらに飛ぶか・どれだけ低くなるかを体感する。',vk:'cut_receive'},{lv:2,label:'Step 2',name:'前詰めカットレシーブ',players:'2人',body:'前に詰めながら低い打点で縦面を作ってカットサーブを返す。まず入れることを優先し、クロスかセンターへ確実に返す。',vk:'cut_receive'},{lv:3,label:'Step 3',name:'カットサーブ実戦レシーブ',players:'2人',body:'試合形式でカットサーブに対応し、レシーブからラリーに繋げる実戦練習。変化の読みと前詰めのタイミングを磨く。',vk:'cut_receive'}]},
 ];
 
@@ -370,6 +384,7 @@ const STEP_NEXT={
   28:['スプリットステップのリズムが安定し、ブロックリターンの構えが作れたら','速い手出し球を面で捉えてセンターへ6割以上返せたら','実サーブを安定してコートに収められる'],
   29:['踏み込んでの攻撃的な返球フォームが身についたら','実セカンドに対してクロス深めへ6割以上打ち込めたら','セカンドレシーブから主導権を持ってラリー展開に入れる'],
   30:['カットサーブのバウンドの変化パターンを認識できたら','前に詰めて6割以上コートに返せるようになったら','試合でカットサーブを安定して処理し、ラリーに繋げられる'],
+  31:['バウンドの上がり際を手で触って打点のタイミングを掴めたら','浅い手出し球をライジングで6割以上コートに返せたら','乱打の中でライジングを意図的に使って早いテンポを作れる'],
 };
 
 const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}],receive:[{key:'all_r',label:'すべて'},{key:'normal_receive',label:'通常サーブ'},{key:'cut_receive',label:'カットサーブ'}]};
@@ -550,17 +565,60 @@ const NOTES_KEY='stl_notes_v1';
 function loadNotes(){return JSON.parse(localStorage.getItem(NOTES_KEY)||'[]');}
 function saveNotes(n){localStorage.setItem(NOTES_KEY,JSON.stringify(n));}
 
+const NOTE_TAGS=[
+  {key:'kadai', label:'課題', cls:'ntag-kadai'},
+  {key:'dekita', label:'できた！', cls:'ntag-dekita'},
+  {key:'mae', label:'試合前', cls:'ntag-mae'},
+  {key:'ato', label:'試合後', cls:'ntag-ato'},
+  {key:'kizuki', label:'気づき', cls:'ntag-kizuki'},
+];
+const CAT_LABELS={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'};
+let noteActiveFilter=null; // status tag
+let noteActivecat=null;    // category filter
+
 function formatDate(str){
   const d=new Date(str+'T00:00:00');
   const wd=['日','月','火','水','木','金','土'][d.getDay()];
   return `${d.getMonth()+1}月${d.getDate()}日（${wd}）`;
 }
 
+function setNoteFilter(key){
+  noteActiveFilter=(noteActiveFilter===key)?null:key;
+  renderNoteScreen();
+}
+function setNoteCat(cat){
+  noteActivecat=(noteActivecat===cat)?null:cat;
+  renderNoteScreen();
+}
+
 function renderNoteScreen(){
-  const notes=loadNotes().sort((a,b)=>b.id-a.id);
+  const allNotes=loadNotes().sort((a,b)=>b.id-a.id);
   const screen=document.getElementById('noteScreen');
   const addBtn=`<button class="note-add-btn" onclick="openNoteForm()">＋ 今日の練習を記録する</button>`;
-  if(!notes.length){
+
+  // フィルターバー（カテゴリ＋状態タグ）
+  const catChips=Object.entries(CAT_LABELS).map(([cat,label])=>{
+    const active=noteActivecat===cat?'active':'';
+    return `<button class="note-filter-chip ${active}" onclick="setNoteCat('${cat}')">${label}</button>`;
+  }).join('');
+  const tagChipsFilter=NOTE_TAGS.map(t=>{
+    const active=noteActiveFilter===t.key?'active':'';
+    return `<button class="note-filter-chip ${active}" onclick="setNoteFilter('${t.key}')">${t.label}</button>`;
+  }).join('');
+  const filterBar=`
+    <div class="note-filter-label">練習の種類</div>
+    <div class="note-filter-chips">${catChips}</div>
+    <div class="note-filter-label">ノートの種別</div>
+    <div class="note-filter-chips" style="margin-bottom:16px">${tagChipsFilter}</div>`;
+
+  const notes=allNotes.filter(n=>{
+    const m=DB.find(d=>d.id===n.menuId);
+    if(noteActivecat && (!m || m.cat!==noteActivecat))return false;
+    if(noteActiveFilter && n.tag!==noteActiveFilter)return false;
+    return true;
+  });
+
+  if(!allNotes.length){
     screen.innerHTML=addBtn+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
     return;
   }
@@ -569,21 +627,30 @@ function renderNoteScreen(){
   const html=Object.keys(byDate).map(date=>{
     const cards=byDate[date].map(n=>{
       const m=DB.find(d=>d.id===n.menuId);if(!m)return '';
+      const tagInfo=NOTE_TAGS.find(t=>t.key===n.tag);
+      const catLabel=CAT_LABELS[m.cat]||'';
+      const catBadge=catLabel?`<span class="note-tag-badge" style="background:var(--warm-gray);color:var(--text-secondary);border:.5px solid var(--border)">${catLabel}</span>`:'';
+      const tagBadge=tagInfo?`<span class="note-tag-badge ${tagInfo.cls}">${tagInfo.label}</span>`:'';
+      const badges=(catBadge||tagBadge)?`<div style="margin-top:5px">${catBadge}${tagBadge}</div>`:'';
       return `<div class="note-card fade-in" onclick="showDetail(${m.id})">
         <button class="note-delete" onclick="event.stopPropagation();deleteNote(${n.id})">削除</button>
         <div class="note-menu-name">${m.title}</div>
         <div class="note-step-tag">${m.subCatLabel} · Step ${n.step}</div>
+        ${badges}
         ${n.memo?`<div class="note-memo">${n.memo}</div>`:''}
       </div>`;
     }).join('');
+    if(!cards.trim())return '';
     return `<div class="note-date-header">${formatDate(date)}</div>${cards}`;
   }).join('');
-  screen.innerHTML=addBtn+html;
+  const emptyMsg=notes.length===0?`<div class="note-empty">この条件に一致するログはありません。</div>`:'';
+  screen.innerHTML=addBtn+filterBar+html+emptyMsg;
 }
 
 function openNoteForm(){
   const opts=DB.map(d=>`<option value="${d.id}">${d.subCatLabel}：${d.title}</option>`).join('');
   const today=new Date().toISOString().slice(0,10);
+  const tagChips=NOTE_TAGS.map(t=>`<button type="button" class="note-tag-form-chip" data-tag="${t.key}" style="border-color:var(--border);" onclick="selectNoteTag('${t.key}',this)">${t.label}</button>`).join('');
   const el=document.createElement('div');
   el.className='note-overlay';el.id='noteOverlay';
   el.innerHTML=`<div class="note-form">
@@ -592,6 +659,8 @@ function openNoteForm(){
     <select id="noteMenu">${opts}</select>
     <label>ステップ</label>
     <select id="noteStep"><option value="1">Step 1</option><option value="2">Step 2</option><option value="3">Step 3</option></select>
+    <label>タグ（任意）</label>
+    <div class="note-tag-form" id="noteTagForm">${tagChips}</div>
     <label>メモ（任意）</label>
     <textarea id="noteMemo" placeholder="気づいたこと・課題・感覚など"></textarea>
     <button class="note-submit" onclick="submitNote('${today}')">保存する</button>
@@ -600,18 +669,33 @@ function openNoteForm(){
   document.body.appendChild(el);
 }
 
+function selectNoteTag(key, btn){
+  const chips=document.querySelectorAll('.note-tag-form-chip');
+  chips.forEach(c=>{c.classList.remove('selected');c.style.background='var(--white)';c.style.color='var(--text-secondary)';c.style.borderColor='var(--border)';});
+  const tagInfo=NOTE_TAGS.find(t=>t.key===key);
+  if(btn.dataset.tag===key && !btn.classList.contains('was-selected')){
+    btn.classList.add('selected');
+    // タグカラーでハイライト
+    const colorMap={kadai:['#FEF0F0','#b03030','#e8b0b0'],dekita:['#EAF7EA','#2a7a2a','#90d090'],mae:['#EAF4FB','#1a6fa0','#b0d4ec'],ato:['#F8EEF8','#7a2a7a','#d0a0d0'],kizuki:['#FDF8EE','#9a7520','#ddc878']};
+    const [bg,cl,bc]=colorMap[key]||[];
+    if(bg){btn.style.background=bg;btn.style.color=cl;btn.style.borderColor=bc;btn.style.fontWeight='500';}
+  }
+}
+
 function closeNoteForm(){const el=document.getElementById('noteOverlay');if(el)el.remove();}
 
 function submitNote(date){
   const menuId=parseInt(document.getElementById('noteMenu').value);
   const step=parseInt(document.getElementById('noteStep').value);
   const memo=document.getElementById('noteMemo').value.trim();
+  const selectedTag=document.querySelector('.note-tag-form-chip.selected');
+  const tag=selectedTag?selectedTag.dataset.tag:null;
   if(!menuId)return;
   const menu=DB.find(d=>d.id===menuId);
   const notes=loadNotes();
-  notes.push({id:Date.now(),date,menuId,step,memo});
+  notes.push({id:Date.now(),date,menuId,step,memo,tag});
   saveNotes(notes);
-  gtag('event','note_add',{menu_id:menuId,menu_title:menu?menu.title:'',step});
+  gtag('event','note_add',{menu_id:menuId,menu_title:menu?menu.title:'',step,tag:tag||'none'});
   closeNoteForm();
   renderNoteScreen();
 }
