@@ -163,6 +163,24 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .filter-section.open{display:block;}
 .note-more-btn{width:100%;padding:11px;background:none;border:.5px solid var(--border-gold);border-radius:12px;font-size:13px;color:var(--gold-dark);font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:6px;}
 .note-more-btn:hover{background:var(--gold-pale);}
+.guide-screen{padding:16px 14px 100px;}
+.guide-hero{background:linear-gradient(135deg,var(--gold-pale),var(--warm-gray));border:.5px solid var(--border-gold);border-radius:14px;padding:18px 16px;margin-bottom:16px;text-align:center;}
+.guide-hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text-primary);margin-bottom:6px;}
+.guide-hero-sub{font-size:12px;color:var(--text-secondary);line-height:1.7;}
+.guide-article{border:.5px solid var(--border);border-radius:14px;margin-bottom:12px;background:var(--white);overflow:hidden;}
+.guide-article-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;}
+.guide-article-cat{font-size:10px;color:var(--gold-dark);border:.5px solid var(--gold);padding:2px 9px;border-radius:10px;background:var(--gold-pale);font-family:'Cormorant Garamond',serif;font-weight:600;margin-right:10px;white-space:nowrap;}
+.guide-article-title{font-size:14px;font-weight:500;color:var(--text-primary);flex:1;}
+.guide-article-arrow{font-size:11px;color:var(--text-muted);transition:transform .2s;margin-left:8px;}
+.guide-article.open .guide-article-arrow{transform:rotate(180deg);}
+.guide-article-body{display:none;padding:0 16px 16px;border-top:.5px solid var(--border);}
+.guide-article.open .guide-article-body{display:block;}
+.guide-article-body h3{font-size:13px;font-weight:700;color:var(--gold-dark);margin:14px 0 6px;letter-spacing:.04em;}
+.guide-article-body p{font-size:13px;color:var(--text-secondary);line-height:1.85;margin-bottom:10px;}
+.guide-article-body .point{background:var(--gold-pale);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--text-secondary);line-height:1.8;}
+.guide-article-body .point strong{color:var(--gold-dark);}
+.guide-source{font-size:10px;color:var(--text-muted);margin-top:12px;padding-top:10px;border-top:.5px solid var(--border);}
+.guide-source a{color:var(--text-muted);}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -219,6 +237,99 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   </div>
   <div class="screen-body detail-view" id="detailScreen"></div>
   <div class="screen-body note-screen" id="noteScreen"></div>
+  <div class="guide-screen" id="guideScreen" style="display:none">
+    <div class="guide-hero">
+      <div class="guide-hero-title">上達ガイド</div>
+      <div class="guide-hero-sub">ストローク・ボレー・サービス・レシーブ。<br>各技術の本質を、信頼できる情報源からまとめました。</div>
+    </div>
+
+    <!-- ストローク -->
+    <article class="guide-article" id="guide-stroke">
+      <div class="guide-article-header" onclick="toggleGuide('guide-stroke')">
+        <span class="guide-article-cat">STROKE</span>
+        <span class="guide-article-title">ストローク上達の本質</span>
+        <span class="guide-article-arrow">▾</span>
+      </div>
+      <div class="guide-article-body">
+        <p>ストロークが安定しない人の大半は「腕の使い方」を直そうとする。しかし上級者がボールに力を乗せられる本当の理由は腕にない。体重移動——正確には「軸の移動」——こそがストロークの根幹だ。複数の指導者・競技者が口をそろえてこの点を最重要と挙げている。</p>
+        <h3>① 「体重移動」の本当の意味</h3>
+        <div class="point">足で地面を蹴るだけでは体重移動にならない。打つ前と打った後で<strong>頭の位置（重心）が前に移動すること</strong>が本質。腕の振りではなく、軸ごと移動することで全身のパワーが自然にボールへ伝わる。歩きながら打つ練習が体重移動の感覚を身につける最短ルートとして多くの指導者が推奨している。</div>
+        <h3>② ムチの動きは「結果」であって「原因」ではない</h3>
+        <div class="point">ラケットヘッドが遅れて出てくる「ムチのしなり」は、体重移動と股関節の内転が正しく連動したときに<strong>自然に生まれる動き</strong>だ。腕だけでムチを再現しようとすると逆に力が抜けてしまう。インパクト直前にヘソの向きが変わること（股関節の内転）を意識すると連動しやすくなる。</div>
+        <h3>③ フォームを固めることは目的ではない</h3>
+        <div class="point">「どんなボールも同じフォームで打てれば安定する」という考え方は間違い。ボールの高さ・速さ・バウンドは毎回異なる。<strong>フォームに執着するより、ボールとのタイミングを合わせる感覚を磨くこと</strong>が上達を加速させる。手首は固定しすぎも使いすぎも両方NG。</div>
+        <h3>試合で崩れるのはフォームではなくフットワーク</h3>
+        <p>練習では打てるのに試合になると打てなくなる場合、大半の原因はフットワーク——ボールへの入り方——にある。打点に余裕を持って入れれば体重移動は自然についてくる。スプリットステップを踏んで常に動き続ける習慣が、ストロークの安定を根本から変える。</p>
+      </div>
+    </article>
+
+    <!-- ボレー・前衛 -->
+    <article class="guide-article" id="guide-volley">
+      <div class="guide-article-header" onclick="toggleGuide('guide-volley')">
+        <span class="guide-article-cat">VOLLEY</span>
+        <span class="guide-article-title">ボレー・前衛上達の本質</span>
+        <span class="guide-article-arrow">▾</span>
+      </div>
+      <div class="guide-article-body">
+        <p>ボレーが上手く弾けない人の多くは「ラケットの振り方」を変えようとする。しかし複数の上級者・指導者の意見を集約すると、ボレーで最も重要なのは「タイミング」と「足」だという結論に一致する。腕はあくまで面を合わせる役割に過ぎない。</p>
+        <h3>① 超基本：タイミング・面・スイングの三原則</h3>
+        <div class="point"><strong>タイミングよく・まっすぐな面で・まっすぐ振れば、ボールはまっすぐ飛ぶ。</strong>ボレーが弾けない原因は必ずこの三つのどれかにある。手の平でボールを押し出すように弾くイメージを持つと、面・タイミング・スイングが自然に整いやすい。ラケットを使わず手の平でボールを弾く練習が上達を加速させると多くの指導者が推薦している。</div>
+        <h3>② ボレーは足で弾く</h3>
+        <div class="point">踏み込み2歩目をかかとから大きく入れることで全身の体重がボールに乗る。腰が後ろに残ったまま打つと腕だけの軽いボレーになってしまう。<strong>腰ごと前に押し出す意識</strong>で踏み込むと弾きが格段に変わる。フォア・バックともに「送り足」のフットワークが威力の源だ。</div>
+        <h3>③ テイクバックは最小限、グリップはインパクトの瞬間だけ</h3>
+        <div class="point">相手の球速が速いほどテイクバックは小さくていい。引きすぎると面が崩れてタイミングが取れなくなる。グリップは常に握り続けず、<strong>インパクトの瞬間だけギュッと締める</strong>。脱力→締める→脱力のリズムが面の安定と弾きを両立させる。</div>
+        <h3>④ 前衛の構え：常にラケットを高く</h3>
+        <div class="point">試合中はラケットを常に上半身より上に構えておく。低いと反応が遅れてボレーのチャンスを逃す。<strong>静止→スプリットステップ→3歩フットワーク（左・右大きく・左）</strong>の流れを反射的に出せるようにすることがポーチの成功率を上げる。</div>
+        <h3>抜かれても動き続けることが前衛の仕事</h3>
+        <p>ポーチを恐れて動かない前衛は相手へのプレッシャーがゼロになる。多少抜かれても動き続けることで相手後衛にプレッシャーをかけ続けることが、長期的に試合を有利に進める本質だ。ボレーが上手くならない人は、まず「手の平でのボレー練習」から始めることを強く勧める。</p>
+      </div>
+    </article>
+
+    <!-- サービス -->
+    <article class="guide-article" id="guide-service">
+      <div class="guide-article-header" onclick="toggleGuide('guide-service')">
+        <span class="guide-article-cat">SERVICE</span>
+        <span class="guide-article-title">サービス上達の本質</span>
+        <span class="guide-article-arrow">▾</span>
+      </div>
+      <div class="guide-article-body">
+        <p>サーブはソフトテニスで唯一「相手の動きに関係なく自分のリズムで打てるショット」だ。それゆえ強い選手ほどサーブを徹底的に磨く。ダブルフォルトは相手のミスを待たずに自分でポイントを失う行為であり、サービスゲームを支配するには「確率」を最優先に考えることが全ての出発点になる。</p>
+        <h3>① サーブ最大の課題はトスの安定</h3>
+        <div class="point">「サーブが入らない」原因の大半はトスのブレにある。毎回ほぼ同じ位置・同じ高さに上げる技術が、スピードやコースより先に必要なスキルだ。<strong>指先にそっと乗せて腕全体で押し上げ、目の高さでボールを離す</strong>イメージで練習すると安定しやすい。身長の2倍程度の高さが適切とされており、高すぎると風の影響も受けやすくなる。</div>
+        <h3>② タメを作る：膝の曲げ＋上半身のひねり</h3>
+        <div class="point">少ない力で速いサーブを打つには「タメ」が不可欠だ。前足の膝を充分に曲げながら上半身をひねり、力を蓄える。そこから<strong>ギリギリまでラケットを振り出さず我慢すると、伸ばされた筋肉が縮もうとする反動（伸張反射）が加わり</strong>スイングスピードが劇的に速くなる。タメを深く作るほど速い球が少ない力で打てる。グリップはイースタン（包丁持ち）が最も力を伝えやすい。</div>
+        <h3>③ ルーティンが確率を安定させる</h3>
+        <div class="point">打つ前に毎回同じ動作（ボールをつく・ガットを直す・深呼吸など）を行うルーティンを決めることで、呼吸・リズム・集中が整う。<strong>練習から必ずルーティンを行う習慣</strong>をつけることで、試合の緊張した場面でも同じパフォーマンスを再現しやすくなる。フォロースルーでは肘を高く保つと自然なドライブ回転がかかり確率が上がる。</div>
+        <h3>④ カットサーブは「回転量」が全て</h3>
+        <div class="point">カットサーブの変化量を決めるのは回転量だ。グリップはイースタンで短めに持ち、テイクバックは小さく。インパクトでボールを<strong>できる限り薄くカット</strong>し、手首を返さずフォロースルーを止める。コースを狙う前に、まずバウンド後に低く飛ばない「確率の高いカットサーブ」を完成させることが先決だ。</div>
+        <h3>上達の順番：確率→深さ→コース→スピード</h3>
+        <p>多くの選手がコースやスピードから練習しようとして確率が下がる。まず「入れること」に集中し、次に深さ、その後にコース打ち分け、最後にスピードアップというステップが最も効率的な上達ルートだ。自分のサーブがどちらに曲がるクセがあるかを把握し、スタンスの向きで調整するのがシンプルで再現性が高い。</p>
+      </div>
+    </article>
+
+    <!-- レシーブ -->
+    <article class="guide-article" id="guide-receive">
+      <div class="guide-article-header" onclick="toggleGuide('guide-receive')">
+        <span class="guide-article-cat">RECEIVE</span>
+        <span class="guide-article-title">レシーブ上達の本質</span>
+        <span class="guide-article-arrow">▾</span>
+      </div>
+      <div class="guide-article-body">
+        <p>すべてのラリーはサーブとレシーブから始まる。レシーブが安定すれば相手のサーブに対して主導権を持てるようになり、試合の流れを変える力になる。技術的なコツより前に「考え方」と「準備」を正しく整えることが、レシーブ上達の最短ルートだ。</p>
+        <h3>① スプリットステップ：全ての土台</h3>
+        <div class="point">相手のインパクトの瞬間に軽く飛んで着地することで、どの方向へも素早く踏み出せる状態を作る。重要なのは<strong>「高く跳ぶ」のではなく「沈む」イメージ</strong>で着地すること。高く跳ぶと滞空時間が長くなり一歩目が遅れる。スプリットステップを習慣化するだけで、テイクバックの早さと打点への移動スピードが格段に変わる。</div>
+        <h3>② ファーストレシーブは「守り」、セカンドレシーブは「攻め」</h3>
+        <div class="point">ファーストは相手が有利な場面なのでリスクを抑えた返球が基本。深いロブをベースライン付近に返すだけで相手の攻撃角度を消せる。セカンドは逆に<strong>「攻めるべき」場面</strong>だ。セカンドで攻めない選手は「この相手のセカンドは怖くない」と認識され、相手はファーストをより強く打てるようになる。セカンドへの積極性が試合全体のサーブの質を左右する。</div>
+        <h3>③ 打点は高く・テイクバックは早く</h3>
+        <div class="point">打点が低いほどボールのコントロールは難しくなる。できるだけ<strong>高い打点でボールを捉える</strong>ために、早めに移動して余裕を持って構えることが重要だ。テイクバックが遅れるとどんなコツも活かせない。スプリットステップ→一歩目の踏み出し→早いテイクバック、この流れを体に染み込ませることが安定への近道だ。</div>
+        <h3>④ カットサーブのレシーブは「ライジングで早めに捉える」</h3>
+        <div class="point">カットサーブは低くバウンドして変化するため、普通のレシーブと同じタイミングで待つと打点が低くなりすぎてコントロールが難しくなる。<strong>バウンド直後のライジングのタイミングで早めに捉える</strong>ことで、変化が大きくなる前にボールを叩ける。低い体勢で準備しながら早いタイミングで入ることが鍵だ。</div>
+        <h3>コースより先に「深さ」と「センター」</h3>
+        <p>広角に打ち分けようとしてミスが増えるのはレシーブ上達の典型的な失敗パターンだ。まずセンター（ミドル）に確実に深く返すことを徹底する。センターへの返球は相手の角度を消しミスを誘いやすい。入れること→深さ→センター→コース打ち分けの順で磨くのが最も効率的な上達の道だ。</p>
+      </div>
+    </article>
+  </div>
+
   <div class="screen-body" id="symptomScreen" style="display:none">
     <div id="symptomList"></div>
   </div>
@@ -227,6 +338,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
     <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>場面から探す</span></div>
     <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span>ノート</span></div>
+    <div class="bnav-item" id="bnav-guide" onclick="switchTab('guide')"><div class="bnav-dot"></div><span>ガイド</span></div>
   </div>
 </div>
 <script>
@@ -863,11 +975,19 @@ function switchTab(tab){
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
   document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
+  document.getElementById('guideScreen').style.display=tab==='guide'?'block':'none';
   document.getElementById('navHome').style.display='block';
   document.getElementById('navBack').style.display='none';
   gtag('event','switch_tab',{tab_name:tab});
   if(tab==='symptom') renderScenarioList();
   if(tab==='note') renderNoteScreen();
+}
+
+function toggleGuide(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.toggle('open');
+  gtag('event','view_guide',{article_id:id});
 }
 </script>
 </body>
