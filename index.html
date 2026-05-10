@@ -156,6 +156,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .cal-dot.invisible{visibility:hidden;}
 .cal-streak{font-size:10px;color:var(--gold-dark);text-align:center;margin-top:8px;padding-top:8px;border-top:.5px solid var(--border);}
 .cal-clear{font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;cursor:pointer;text-decoration:underline;}
+.filter-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:12px;color:var(--gold-dark);font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-bottom:10px;}
+.filter-toggle .ft-arrow{font-size:11px;transition:transform .2s;}
+.filter-toggle.open .ft-arrow{transform:rotate(180deg);}
+.filter-section{display:none;margin-bottom:4px;}
+.filter-section.open{display:block;}
+.note-more-btn{width:100%;padding:11px;background:none;border:.5px solid var(--border-gold);border-radius:12px;font-size:13px;color:var(--gold-dark);font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:6px;}
+.note-more-btn:hover{background:var(--gold-pale);}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -596,6 +603,12 @@ const NOTE_TAGS=[
 const CAT_LABELS={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'};
 let noteActiveFilter=null; // status tag
 let noteActivecat=null;    // category filter
+let filterOpen=false;      // フィルター折りたたみ状態
+let showAllNotes=false;    // 全件表示フラグ
+
+function toggleFilter(){filterOpen=!filterOpen;renderNoteScreen();}
+function loadMoreNotes(){showAllNotes=true;renderNoteScreen();}
+function resetShowAll(){showAllNotes=false;}
 let calYear=new Date().getFullYear();
 let calMonth=new Date().getMonth(); // 0-indexed
 let calSelectedDate=null; // 'YYYY-MM-DD'
@@ -676,10 +689,12 @@ function formatDate(str){
 
 function setNoteFilter(key){
   noteActiveFilter=(noteActiveFilter===key)?null:key;
+  showAllNotes=false;
   renderNoteScreen();
 }
 function setNoteCat(cat){
   noteActivecat=(noteActivecat===cat)?null:cat;
+  showAllNotes=false;
   renderNoteScreen();
 }
 
@@ -692,7 +707,11 @@ function renderNoteScreen(){
   const noteDates=new Set(allNotes.map(n=>n.date));
   const calHTML=buildCalendar(noteDates);
 
-  // フィルターバー（カテゴリ＋状態タグ）
+  // フィルターバー（折りたたみ式）
+  const hasActiveFilter=noteActivecat||noteActiveFilter;
+  const filterLabel=hasActiveFilter
+    ? `絞り込み中 ▾`
+    : `絞り込む ▾`;
   const catChips=Object.entries(CAT_LABELS).map(([cat,label])=>{
     const active=noteActivecat===cat?'active':'';
     return `<button class="note-filter-chip ${active}" onclick="setNoteCat('${cat}')">${label}</button>`;
@@ -702,18 +721,31 @@ function renderNoteScreen(){
     return `<button class="note-filter-chip ${active}" onclick="setNoteFilter('${t.key}')">${t.label}</button>`;
   }).join('');
   const filterBar=`
-    <div class="note-filter-label">練習の種類</div>
-    <div class="note-filter-chips">${catChips}</div>
-    <div class="note-filter-label">ノートの種別</div>
-    <div class="note-filter-chips" style="margin-bottom:16px">${tagChipsFilter}</div>`;
+    <button class="filter-toggle ${filterOpen?'open':''}" onclick="toggleFilter()">
+      <span>${filterLabel}</span>
+      <span class="ft-arrow">▾</span>
+    </button>
+    <div class="filter-section ${filterOpen?'open':''}">
+      <div class="note-filter-label">練習の種類</div>
+      <div class="note-filter-chips">${catChips}</div>
+      <div class="note-filter-label">ノートの種別</div>
+      <div class="note-filter-chips" style="margin-bottom:12px">${tagChipsFilter}</div>
+    </div>`;
+
+  // 直近7日フィルター（カレンダー選択・タグ絞り込み・全件表示フラグがなければ適用）
+  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-6);
+  const cutoffStr=cutoff.toISOString().slice(0,10);
+  const useLimit=!showAllNotes&&!calSelectedDate&&!hasActiveFilter;
 
   const notes=allNotes.filter(n=>{
     if(calSelectedDate && n.date!==calSelectedDate)return false;
     const m=DB.find(d=>d.id===n.menuId);
     if(noteActivecat && (!m || m.cat!==noteActivecat))return false;
     if(noteActiveFilter && n.tag!==noteActiveFilter)return false;
+    if(useLimit && n.date<cutoffStr)return false;
     return true;
   });
+  const hiddenCount=useLimit?allNotes.filter(n=>n.date<cutoffStr).length:0;
 
   if(!allNotes.length){
     screen.innerHTML=addBtn+calHTML+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
@@ -745,13 +777,16 @@ function renderNoteScreen(){
       ? `<div class="note-empty">この日の練習ログはありません。</div>`
       : `<div class="note-empty">この条件に一致するログはありません。</div>`
     : '';
-  screen.innerHTML=addBtn+calHTML+filterBar+html+emptyMsg;
+  const moreBtn=hiddenCount>0
+    ? `<button class="note-more-btn" onclick="loadMoreNotes()">過去のログをもっと見る（全${allNotes.length}件）</button>`
+    : '';
+  screen.innerHTML=addBtn+calHTML+filterBar+html+emptyMsg+moreBtn;
 }
 
 function openNoteForm(){
   const opts=DB.map(d=>`<option value="${d.id}">${d.subCatLabel}：${d.title}</option>`).join('');
   const today=new Date().toISOString().slice(0,10);
-  const tagChips=NOTE_TAGS.map(t=>`<button type="button" class="note-tag-form-chip" data-tag="${t.key}" style="border-color:var(--border);" onclick="selectNoteTag('${t.key}',this)">${t.label}</button>`).join('');
+  const tagChips=NOTE_TAGS.map(t=>`<button type="button" class="note-tag-form-chip" data-tag="${t.key}" onclick="selectNoteTag('${t.key}',this)">${t.label}</button>`).join('');
   const el=document.createElement('div');
   el.className='note-overlay';el.id='noteOverlay';
   el.innerHTML=`<div class="note-form">
@@ -760,14 +795,27 @@ function openNoteForm(){
     <select id="noteMenu">${opts}</select>
     <label>ステップ</label>
     <select id="noteStep"><option value="1">Step 1</option><option value="2">Step 2</option><option value="3">Step 3</option></select>
-    <label>タグ（任意）</label>
-    <div class="note-tag-form" id="noteTagForm">${tagChips}</div>
+    <button type="button" class="filter-toggle" id="formTagToggle" onclick="toggleFormTag()" style="margin-bottom:8px">
+      <span>タグを付ける（任意）</span><span class="ft-arrow">▾</span>
+    </button>
+    <div class="filter-section" id="formTagSection">
+      <div class="note-tag-form" id="noteTagForm" style="margin-bottom:14px">${tagChips}</div>
+    </div>
     <label>メモ（任意）</label>
     <textarea id="noteMemo" placeholder="気づいたこと・課題・感覚など"></textarea>
     <button class="note-submit" onclick="submitNote('${today}')">保存する</button>
     <button class="note-cancel" onclick="closeNoteForm()">キャンセル</button>
   </div>`;
   document.body.appendChild(el);
+}
+
+function toggleFormTag(){
+  const sec=document.getElementById('formTagSection');
+  const btn=document.getElementById('formTagToggle');
+  if(!sec||!btn)return;
+  const isOpen=sec.classList.contains('open');
+  sec.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
 }
 
 function selectNoteTag(key, btn){
