@@ -181,6 +181,44 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .guide-article-body .point strong{color:var(--gold-dark);}
 .guide-source{font-size:10px;color:var(--text-muted);margin-top:12px;padding-top:10px;border-top:.5px solid var(--border);}
 .guide-source a{color:var(--text-muted);}
+
+/* ── ポジションオンボーディング ── */
+.pos-onboarding{position:fixed;inset:0;background:linear-gradient(160deg,#1e1508 0%,#2a1f08 50%,#111 100%);z-index:200;display:flex;align-items:center;justify-content:center;padding:28px 20px}
+.pos-ob-inner{width:100%;max-width:390px;animation:fadeIn .45s ease}
+.pos-ob-logo{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--gold-light);letter-spacing:.12em;text-align:center;margin-bottom:4px}
+.pos-ob-logo span{color:var(--gold)}
+.pos-ob-tagline{font-size:11px;color:rgba(255,255,255,.38);text-align:center;letter-spacing:.18em;margin-bottom:52px;text-transform:uppercase}
+.pos-ob-question{font-family:'Cormorant Garamond',serif;font-size:21px;color:rgba(255,255,255,.88);text-align:center;margin-bottom:24px;font-weight:500;letter-spacing:.04em}
+.pos-ob-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.pos-ob-btn{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.35);border-radius:16px;padding:22px 14px 18px;text-align:center;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;user-select:none}
+.pos-ob-btn:active{transform:scale(.96);background:rgba(201,168,76,.2)}
+.pos-ob-btn:hover{background:rgba(201,168,76,.12);border-color:var(--gold)}
+.pos-ob-btn-full{grid-column:1/-1}
+.pos-ob-icon{font-size:26px;margin-bottom:9px}
+.pos-ob-label{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--white);letter-spacing:.06em}
+.pos-ob-desc{font-size:10px;color:rgba(255,255,255,.42);margin-top:5px;line-height:1.6}
+
+/* ── ポジションバッジ（ナビ） ── */
+.pos-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--gold-dark);background:var(--gold-pale);border:.5px solid var(--gold-light);padding:3px 10px;border-radius:20px;cursor:pointer;margin-top:4px;font-family:'Noto Sans JP',sans-serif;transition:background .15s;white-space:nowrap}
+.pos-badge:hover{background:var(--gold-light)}
+.pos-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* ── ポジション変更シート ── */
+.pos-change-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none;align-items:flex-end;justify-content:center}
+.pos-change-overlay.open{display:flex}
+.pos-change-sheet{background:var(--off-white);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:24px 20px 48px;animation:slideUp .22s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pos-change-title{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--text-primary);font-weight:600;text-align:center;margin-bottom:18px;letter-spacing:.04em}
+.pos-change-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.pos-change-btn{border:1px solid var(--border-gold);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--white);transition:all .18s;-webkit-tap-highlight-color:transparent}
+.pos-change-btn:active{transform:scale(.97)}
+.pos-change-btn.selected{border-color:var(--gold);background:var(--gold-pale)}
+.pos-change-btn:hover{border-color:var(--gold)}
+.pos-change-full{grid-column:1/-1}
+.pos-change-icon{font-size:22px;margin-bottom:6px}
+.pos-change-label{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--text-primary);letter-spacing:.04em}
+.pos-change-sub{font-size:10px;color:var(--text-secondary);margin-top:3px;line-height:1.5}
+.pos-change-cancel{width:100%;padding:11px;background:none;border:none;color:var(--text-muted);font-size:13px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:4px}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -195,11 +233,64 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
      crossorigin="anonymous"></script>
 </head>
 <body>
+<!-- ポジションオンボーディング -->
+<div class="pos-onboarding" id="posOnboarding" style="display:none">
+  <div class="pos-ob-inner">
+    <div class="pos-ob-logo">ソフトテニス<span>ラボ</span></div>
+    <div class="pos-ob-tagline">Practice Menu App</div>
+    <div class="pos-ob-question">あなたのポジションは？</div>
+    <div class="pos-ob-grid">
+      <div class="pos-ob-btn" onclick="selectOnboardPos('back')">
+        <div class="pos-ob-icon">🏃</div>
+        <div class="pos-ob-label">後衛</div>
+        <div class="pos-ob-desc">ストローク・<br>レシーブ中心</div>
+      </div>
+      <div class="pos-ob-btn" onclick="selectOnboardPos('fore')">
+        <div class="pos-ob-icon">🎾</div>
+        <div class="pos-ob-label">前衛</div>
+        <div class="pos-ob-desc">ボレー・<br>スマッシュ中心</div>
+      </div>
+      <div class="pos-ob-btn pos-ob-btn-full" onclick="selectOnboardPos('all')">
+        <div class="pos-ob-icon">⚡</div>
+        <div class="pos-ob-label">どちらも</div>
+        <div class="pos-ob-desc">全メニューを表示します</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ポジション変更シート -->
+<div class="pos-change-overlay" id="posChangeOverlay" onclick="closePosChange()">
+  <div class="pos-change-sheet" onclick="event.stopPropagation()">
+    <div class="pos-change-title">ポジションを変更</div>
+    <div class="pos-change-opts">
+      <div class="pos-change-btn" data-pos="back" onclick="selectChangePos('back')">
+        <div class="pos-change-icon">🏃</div>
+        <div class="pos-change-label">後衛</div>
+        <div class="pos-change-sub">ストローク・レシーブ中心</div>
+      </div>
+      <div class="pos-change-btn" data-pos="fore" onclick="selectChangePos('fore')">
+        <div class="pos-change-icon">🎾</div>
+        <div class="pos-change-label">前衛</div>
+        <div class="pos-change-sub">ボレー・スマッシュ中心</div>
+      </div>
+      <div class="pos-change-btn pos-change-full" data-pos="all" onclick="selectChangePos('all')">
+        <div class="pos-change-icon">⚡</div>
+        <div class="pos-change-label">どちらも</div>
+        <div class="pos-change-sub">全メニューを表示</div>
+      </div>
+    </div>
+    <button class="pos-change-cancel" onclick="closePosChange()">キャンセル</button>
+  </div>
+</div>
+
 <div class="app">
   <div class="nav-bar" id="navBar">
     <div id="navHome">
       <div class="nav-logo">ソフトテニス<span>ラボ</span></div>
-      <div class="nav-sub">苦手を入力して練習を探す</div>
+      <div class="pos-badge" id="posBadge" onclick="openPosChange()">
+        <span class="pos-badge-dot"></span><span id="posBadgeLabel">後衛</span> ▾
+      </div>
     </div>
     <a class="nav-fb" id="navFb" href="https://docs.google.com/forms/d/e/1FAIpQLSfcNvFGIPXuTTvAluTsfGMurUH6E8QFBFqC6UhItSZugh_r6g/viewform" target="_blank" rel="noopener">意見を送る</a>
     <button class="nav-back" id="navBack" onclick="showHome()">← 戻る</button>
@@ -379,26 +470,39 @@ const YT={
   cross:[
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
     {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'【芸術的】正クロス展開のストレート・クロス2コース打ち分け術',url:'https://www.youtube.com/watch?v=a73GLGqpih0'},
+    {label:'実業団選手の課題克服！フォアに打たれたボールをクロスに切り返す打ち方',url:'https://www.youtube.com/watch?v=WHmkasJRnvU'},
   ],
   reverse_cross:[
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
     {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'【逆クロス展開】フォアハンド逆クロス流し打ちのコツ',url:'https://www.youtube.com/watch?v=k9JYlC22keE'},
+    {label:'乱打よりも10倍上手くなる！逆クロス展開からの得点パターン集',url:'https://www.youtube.com/watch?v=zRhRYPQzN9k'},
   ],
   straight_right:[
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
     {label:'安定したストロークが打てない原因5選',url:'https://www.youtube.com/watch?v=vLyI9eBrjG4'},
+    {label:'乱打よりも10倍上手くなる！右ストレート展開からの得点パターン集',url:'https://www.youtube.com/watch?v=mQwqFWIs5_I'},
+    {label:'クロスラリー中の爆音ストレートアタックの打ち方',url:'https://www.youtube.com/watch?v=BiUShObkF3s'},
   ],
   straight_left:[
     {label:'バックハンドが最速で上達する方法',url:'https://www.youtube.com/live/MXHhrHNNRYM'},
     {label:'クロス方向に強力なストロークを打つ方法',url:'https://www.youtube.com/watch?v=kLN66U7Gkeg'},
+    {label:'左ストレート展開からのランニングストロークで相手前衛を攻める方法',url:'https://www.youtube.com/watch?v=-3BNB56bmP8'},
   ],
   lob:[
     {label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},
     {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
+    {label:'【速い球は必要ない！】試合で勝てる後衛に最も必要なロブの打ち方',url:'https://www.youtube.com/watch?v=bSx9LG8Akfo'},
+    {label:'【試合で使えるロブ】中ロブ練習＋使い方まで全部解説',url:'https://www.youtube.com/watch?v=n8K4sETEJYU'},
+    {label:'【速い球を返すコツ】膝を柔らかく使った深いフォアハンドロブの打ち方',url:'https://www.youtube.com/watch?v=NgekUFm_kDI'},
   ],
   midlob:[
     {label:'中ロブのコツ！前衛の攻撃を封じるテクニック',url:'https://www.youtube.com/watch?v=cq5l-Nbv1yQ'},
     {label:'内本隆文 回り込みトップの極意（中ロブ連動）',url:'https://www.youtube.com/watch?v=OWvl9eOb2TA',minLv:3},
+    {label:'中ロブ上達方法！試合で勝てる後衛はロブが上手い！',url:'https://www.youtube.com/watch?v=ZJG2Gaazqp4'},
+    {label:'強い後衛は「中ロブ」が上手い！後衛の個人技で得点を取る方法',url:'https://www.youtube.com/watch?v=k8bzngSWfUo'},
+    {label:'ミス激減！99%安定する中ロブの打ち方とコツ｜試合で使える実践練習',url:'https://www.youtube.com/watch?v=2K3bJtJnSJU'},
   ],
   shoot:[
     {label:'ドライブ回転が自然にかけれる練習方法',url:'https://www.youtube.com/watch?v=Qodoj4WQrPw'},
@@ -410,10 +514,15 @@ const YT={
     {label:'ツイストで陣形を崩して得点を取る方法',url:'https://www.youtube.com/watch?v=6w43YrGerO0'},
     {label:'実践で使えるツイストのコツをマスターしよう',url:'https://www.youtube.com/watch?v=4a028bOhWTw'},
   ],
-  drop:[],
+  drop:[
+    {label:'ドロップショットの極意（プロテニス直伝）',url:'https://www.youtube.com/watch?v=J4gvPHpJ4lw'},
+    {label:'試合で使えるカットストローク伝授',url:'https://www.youtube.com/watch?v=jWA-y9UjpXQ'},
+  ],
   fore_volley:[
     {label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},
     {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+    {label:'速い球でも安定！ボレー2つのコツ',url:'https://www.youtube.com/watch?v=U_XAC6NssdE'},
+    {label:'前衛指導の教科書！ボレー練習3選',url:'https://www.youtube.com/watch?v=bT33dIpc1l8'},
   ],
   back_volley:[
     {label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},
@@ -423,10 +532,14 @@ const YT={
   low_volley:[
     {label:'基礎ボレーテクニック フォアボレー',url:'https://www.youtube.com/watch?v=17wB6Q64uso'},
     {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
+    {label:'ローボレー練習3選（初心者から全国出場へ）',url:'https://www.youtube.com/watch?v=9ONBkh0uFA4'},
+    {label:'最新ローボレー練習法2選！',url:'https://www.youtube.com/watch?v=Qz-8kuIvV7o'},
   ],
   high_volley:[
     {label:'クロスポーチを決めろ！フォア・バックボレー講座',url:'https://www.youtube.com/watch?v=rMRBAzK2-2g'},
     {label:'鉄壁！絶対抜かれないバックボレー3つのコツ',url:'https://www.youtube.com/watch?v=ANwOX2GLdmk'},
+    {label:'ハイボレー練習3選（初心者から全国出場へ）',url:'https://www.youtube.com/watch?v=ZPjk6miSM08'},
+    {label:'チャンスボールを確実に決めるハイボレーの極意',url:'https://www.youtube.com/watch?v=tzArkriI2xo'},
   ],
   smash:[
     {label:'元全国3位が教えるスマッシュ講座',url:'https://www.youtube.com/watch?v=It8TwUQ6yQ0'},
@@ -447,6 +560,9 @@ const YT={
   cut_serve:[
     {label:'世界チャンピオンのカットサーブ（荻原正人）',url:'https://www.youtube.com/watch?v=dbKWrhyWxZY'},
     {label:'プロのカットサーブを超スーパースローで（船水雄太）',url:'https://www.youtube.com/watch?v=SUasgNL91yI'},
+    {label:'日本一跳ねない！米澤式カットサーブの極意',url:'https://www.youtube.com/watch?v=l25gIlZ_2IU'},
+    {label:'長江光一流カットサーブの極意',url:'https://www.youtube.com/watch?v=KVlYKdAgh_c'},
+    {label:'世界王者 高橋・半谷のカットサーブ極意',url:'https://www.youtube.com/watch?v=t9XukpgmAnM'},
   ],
   normal_receive:[
     {label:'レシーブ苦手な人必見！たった10分でレシーブが良くなる⁉︎',url:'https://www.youtube.com/watch?v=RG2q_d-actU'},
@@ -455,6 +571,8 @@ const YT={
   ],
   cut_receive:[
     {label:'【返すだけ→攻める】カットサーブを返せるけど攻めれない人の練習法',url:'https://www.youtube.com/watch?v=6mMfeX_T-fU'},
+    {label:'切れる・曲がるカット どっちも怖くない返し方',url:'https://www.youtube.com/watch?v=9651oP-bee4'},
+    {label:'試合を有利にするレシーブコース解説',url:'https://www.youtube.com/watch?v=4cUO1hPGBvE'},
   ],
 };
 
@@ -555,6 +673,79 @@ window.addEventListener('popstate',()=>{
   if(!location.hash)showHome();
   else handleHash();
 });
+// ── localStorage マイグレーション ───────────
+// キー名を変更する際は古いキーから新しいキーへデータを移行する関数をここに追加する。
+// stl_notes_v1 は凍結キー。このキー文字列自体は絶対に変えない。
+// 将来の移行例:
+//   const old = localStorage.getItem('stl_notes_v1');
+//   if (old && !localStorage.getItem('stl_notes_v2')) {
+//     localStorage.setItem('stl_notes_v2', old); // 必要なら変換処理を挟む
+//     localStorage.removeItem('stl_notes_v1');
+//   }
+function migrateLocalStorage() {
+  // v1 は現行バージョン。移行不要。
+  // 将来 v2 が必要になった時にここに処理を追加する。
+}
+migrateLocalStorage();
+
+// ── ポジション記憶機能 ───────────────────────
+const POS_KEY='stl_position_v1'; // 凍結キー。変更不可。
+const POS_LABELS={all:'どちらも',back:'後衛',fore:'前衛'};
+
+function initPosition(){
+  const saved=localStorage.getItem(POS_KEY);
+  if(!saved){
+    document.getElementById('posOnboarding').style.display='flex';
+  } else {
+    applyPositionFromStorage(saved);
+    updatePosBadge(saved);
+  }
+}
+
+function selectOnboardPos(role){
+  localStorage.setItem(POS_KEY,role);
+  document.getElementById('posOnboarding').style.display='none';
+  applyPositionFromStorage(role);
+  updatePosBadge(role);
+  gtag('event','select_position',{position:role,source:'onboarding'});
+}
+
+function applyPositionFromStorage(role){
+  currentRole=role;
+  document.querySelectorAll('#posChips .chip').forEach(c=>{
+    const m=c.getAttribute('onclick').match(/'(\w+)'\)/);
+    if(m) c.classList.toggle('active',m[1]===role);
+  });
+  applyFilter();
+}
+
+function updatePosBadge(role){
+  const el=document.getElementById('posBadgeLabel');
+  if(el) el.textContent=POS_LABELS[role]||'どちらも';
+}
+
+function openPosChange(){
+  const saved=localStorage.getItem(POS_KEY)||'all';
+  document.querySelectorAll('.pos-change-btn').forEach(b=>{
+    b.classList.toggle('selected',b.dataset.pos===saved);
+  });
+  document.getElementById('posChangeOverlay').classList.add('open');
+}
+
+function closePosChange(){
+  document.getElementById('posChangeOverlay').classList.remove('open');
+}
+
+function selectChangePos(role){
+  localStorage.setItem(POS_KEY,role);
+  applyPositionFromStorage(role);
+  updatePosBadge(role);
+  closePosChange();
+  gtag('event','select_position',{position:role,source:'change_sheet'});
+}
+
+initPosition();
+
 handleHash();
 
 renderList(DB);
