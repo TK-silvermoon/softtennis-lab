@@ -135,6 +135,27 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .note-tag-form{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
 .note-tag-form-chip{font-size:12px;padding:5px 12px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--text-secondary);transition:all .15s;}
 .note-tag-form-chip.selected{font-weight:500;}
+.cal-wrap{background:var(--white);border:.5px solid var(--border);border-radius:14px;padding:14px 12px 10px;margin-bottom:16px;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cal-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text-primary);font-weight:600;letter-spacing:.04em;}
+.cal-nav{background:none;border:none;color:var(--gold-dark);cursor:pointer;font-size:20px;padding:0 6px;line-height:1;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-dow{font-size:10px;color:var(--text-muted);text-align:center;padding:2px 0 6px;}
+.cal-dow.sun{color:#e08080;}.cal-dow.sat{color:#6090c0;}
+.cal-day{font-size:12px;text-align:center;padding:5px 2px 3px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-height:32px;transition:background .15s;}
+.cal-day:hover:not(.empty){background:var(--warm-gray);}
+.cal-day.other-month{color:var(--text-muted);opacity:.35;pointer-events:none;}
+.cal-day.today .cal-num{font-weight:700;color:var(--gold-dark);}
+.cal-day.selected{background:var(--gold);}
+.cal-day.selected .cal-num{color:var(--white);font-weight:700;}
+.cal-day.selected .cal-dot{background:rgba(255,255,255,.7);}
+.cal-day.sun .cal-num{color:#d06060;}
+.cal-day.sat .cal-num{color:#4a80b0;}
+.cal-num{font-size:12px;line-height:1;}
+.cal-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);margin-top:3px;}
+.cal-dot.invisible{visibility:hidden;}
+.cal-streak{font-size:10px;color:var(--gold-dark);text-align:center;margin-top:8px;padding-top:8px;border-top:.5px solid var(--border);}
+.cal-clear{font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;cursor:pointer;text-decoration:underline;}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -575,6 +596,77 @@ const NOTE_TAGS=[
 const CAT_LABELS={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'};
 let noteActiveFilter=null; // status tag
 let noteActivecat=null;    // category filter
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth(); // 0-indexed
+let calSelectedDate=null; // 'YYYY-MM-DD'
+
+function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}calSelectedDate=null;renderNoteScreen();}
+function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}calSelectedDate=null;renderNoteScreen();}
+function selectCalDate(dateStr){
+  calSelectedDate=(calSelectedDate===dateStr)?null:dateStr;
+  renderNoteScreen();
+}
+function clearCalDate(){calSelectedDate=null;renderNoteScreen();}
+
+function buildCalendar(noteDates){
+  const today=new Date().toISOString().slice(0,10);
+  const firstDay=new Date(calYear,calMonth,1).getDay(); // 0=Sun
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const DOWS=['日','月','火','水','木','金','土'];
+  const dowHeaders=DOWS.map((d,i)=>`<div class="cal-dow ${i===0?'sun':i===6?'sat':''}">${d}</div>`).join('');
+
+  let cells='';
+  // 前月の空白
+  for(let i=0;i<firstDay;i++){
+    const d=daysInPrev-firstDay+1+i;
+    cells+=`<div class="cal-day other-month"><span class="cal-num">${d}</span><span class="cal-dot invisible"></span></div>`;
+  }
+  // 当月
+  for(let d=1;d<=daysInMonth;d++){
+    const mm=String(calMonth+1).padStart(2,'0');
+    const dd=String(d).padStart(2,'0');
+    const dateStr=`${calYear}-${mm}-${dd}`;
+    const hasNote=noteDates.has(dateStr);
+    const isToday=dateStr===today;
+    const isSelected=dateStr===calSelectedDate;
+    const dow=(firstDay+d-1)%7;
+    const cls=[isSelected?'selected':'',isToday?'today':'',dow===0?'sun':dow===6?'sat':''].filter(Boolean).join(' ');
+    cells+=`<div class="cal-day ${cls}" onclick="selectCalDate('${dateStr}')">
+      <span class="cal-num">${d}</span>
+      <span class="cal-dot${hasNote?'':' invisible'}"></span>
+    </div>`;
+  }
+  // 翌月の空白
+  const total=firstDay+daysInMonth;
+  const remain=total%7===0?0:7-(total%7);
+  for(let i=1;i<=remain;i++){
+    cells+=`<div class="cal-day other-month"><span class="cal-num">${i}</span><span class="cal-dot invisible"></span></div>`;
+  }
+
+  // 連続練習日数
+  let streak=0;
+  const check=new Date();
+  while(true){
+    const s=check.toISOString().slice(0,10);
+    if(noteDates.has(s)){streak++;check.setDate(check.getDate()-1);}
+    else break;
+  }
+  const streakMsg=streak>0?`🔥 ${streak}日連続練習中！`:'今日練習すると連続記録スタート！';
+
+  const clearBtn=calSelectedDate?`<div class="cal-clear" onclick="clearCalDate()">選択を解除する</div>`:'';
+  const monthNames=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  return `<div class="cal-wrap">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="prevMonth()">&#8249;</button>
+      <span class="cal-title">${calYear}年 ${monthNames[calMonth]}</span>
+      <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
+    </div>
+    <div class="cal-grid">${dowHeaders}${cells}</div>
+    <div class="cal-streak">${streakMsg}</div>
+    ${clearBtn}
+  </div>`;
+}
 
 function formatDate(str){
   const d=new Date(str+'T00:00:00');
@@ -596,6 +688,10 @@ function renderNoteScreen(){
   const screen=document.getElementById('noteScreen');
   const addBtn=`<button class="note-add-btn" onclick="openNoteForm()">＋ 今日の練習を記録する</button>`;
 
+  // カレンダー
+  const noteDates=new Set(allNotes.map(n=>n.date));
+  const calHTML=buildCalendar(noteDates);
+
   // フィルターバー（カテゴリ＋状態タグ）
   const catChips=Object.entries(CAT_LABELS).map(([cat,label])=>{
     const active=noteActivecat===cat?'active':'';
@@ -612,6 +708,7 @@ function renderNoteScreen(){
     <div class="note-filter-chips" style="margin-bottom:16px">${tagChipsFilter}</div>`;
 
   const notes=allNotes.filter(n=>{
+    if(calSelectedDate && n.date!==calSelectedDate)return false;
     const m=DB.find(d=>d.id===n.menuId);
     if(noteActivecat && (!m || m.cat!==noteActivecat))return false;
     if(noteActiveFilter && n.tag!==noteActiveFilter)return false;
@@ -619,7 +716,7 @@ function renderNoteScreen(){
   });
 
   if(!allNotes.length){
-    screen.innerHTML=addBtn+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
+    screen.innerHTML=addBtn+calHTML+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
     return;
   }
   const byDate={};
@@ -643,8 +740,12 @@ function renderNoteScreen(){
     if(!cards.trim())return '';
     return `<div class="note-date-header">${formatDate(date)}</div>${cards}`;
   }).join('');
-  const emptyMsg=notes.length===0?`<div class="note-empty">この条件に一致するログはありません。</div>`:'';
-  screen.innerHTML=addBtn+filterBar+html+emptyMsg;
+  const emptyMsg=notes.length===0
+    ? calSelectedDate
+      ? `<div class="note-empty">この日の練習ログはありません。</div>`
+      : `<div class="note-empty">この条件に一致するログはありません。</div>`
+    : '';
+  screen.innerHTML=addBtn+calHTML+filterBar+html+emptyMsg;
 }
 
 function openNoteForm(){
