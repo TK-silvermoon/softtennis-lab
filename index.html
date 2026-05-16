@@ -163,6 +163,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .filter-section.open{display:block;}
 .note-more-btn{width:100%;padding:11px;background:none;border:.5px solid var(--border-gold);border-radius:12px;font-size:13px;color:var(--gold-dark);font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:6px;}
 .note-more-btn:hover{background:var(--gold-pale);}
+.note-stats{display:flex;background:var(--white);border:.5px solid var(--border);border-radius:14px;padding:14px 0;margin-bottom:14px;text-align:center;}
+.note-stat{flex:1;}
+.note-stat-num{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-dark);font-weight:600;line-height:1.1;}
+.note-stat-label{font-size:10px;color:var(--text-muted);margin-top:4px;letter-spacing:.04em;}
+.note-stat-div{width:.5px;background:var(--border);margin:4px 0;}
+.note-growth-box{background:#FEFAE8;border:.5px solid var(--gold-light);border-radius:9px;padding:9px 11px;margin-top:8px;}
+.note-growth-label{font-size:10px;color:var(--gold-dark);font-weight:600;letter-spacing:.05em;margin-bottom:3px;}
+.note-growth-text{font-size:12px;color:var(--text-primary);line-height:1.65;}
+.note-challenge-box{background:var(--warm-gray);border-radius:9px;padding:8px 11px;margin-top:6px;}
+.note-challenge-label{font-size:10px;color:var(--text-muted);margin-bottom:2px;letter-spacing:.04em;}
+.note-challenge-text{font-size:12px;color:var(--text-secondary);line-height:1.65;}
+.note-field-memo{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-top:5px;}
+
 .guide-screen{padding:16px 14px 100px;}
 .guide-hero{background:linear-gradient(135deg,var(--gold-pale),var(--warm-gray));border:.5px solid var(--border-gold);border-radius:14px;padding:18px 16px;margin-bottom:16px;text-align:center;}
 .guide-hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text-primary);margin-bottom:6px;}
@@ -855,6 +868,22 @@ function renderNoteScreen(){
   const noteDates=new Set(allEntries.map(n=>n.date));
   const calHTML=buildCalendar(noteDates);
 
+  // 統計バー
+  const now=new Date();
+  const thisMonthStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const monthEntries=allEntries.filter(n=>n.date.startsWith(thisMonthStr));
+  const monthDays=new Set(monthEntries.map(n=>n.date)).size;
+  let streak=0;const sc=new Date();
+  while(true){const s=sc.toISOString().slice(0,10);if(noteDates.has(s)){streak++;sc.setDate(sc.getDate()-1);}else break;}
+  const growthCount=allEntries.filter(n=>n.growth&&n.growth.trim()).length;
+  const statsHTML=`<div class="note-stats">
+    <div class="note-stat"><div class="note-stat-num">${monthDays}<span style="font-size:13px">日</span></div><div class="note-stat-label">今月の練習</div></div>
+    <div class="note-stat-div"></div>
+    <div class="note-stat"><div class="note-stat-num">${streak}<span style="font-size:13px">日</span></div><div class="note-stat-label">連続記録</div></div>
+    <div class="note-stat-div"></div>
+    <div class="note-stat"><div class="note-stat-num">${growthCount}<span style="font-size:13px">件</span></div><div class="note-stat-label">上達メモ</div></div>
+  </div>`;
+
   // カテゴリフィルターチップ
   const catChips=Object.entries(CAT_LABELS).map(([cat,label])=>{
     const active=noteActiveCat===cat?'active':'';
@@ -875,21 +904,26 @@ function renderNoteScreen(){
   const hiddenCount=useLimit?allEntries.filter(n=>n.date<cutoffStr).length:0;
 
   if(!allEntries.length){
-    screen.innerHTML=addBtn+calHTML+filterBar+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみましょう。</div>`;
+    screen.innerHTML=addBtn+statsHTML+calHTML+filterBar+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみましょう。</div>`;
     return;
   }
   const byDate={};
   entries.forEach(n=>{if(!byDate[n.date])byDate[n.date]=[];byDate[n.date].push(n);});
+  function esc(s){return s.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
   const html=Object.keys(byDate).map(date=>{
     const cards=byDate[date].map(n=>{
       const catBadges=(n.cats||[]).map(c=>{
         const col=CAT_COLORS[c]||{};
         return `<span class="note-tag-badge" style="background:${col.bg||'var(--warm-gray)'};color:${col.color||'var(--text-secondary)'};border:.5px solid ${col.border||'var(--border)'}">${CAT_LABELS[c]||c}</span>`;
       }).join('');
+      const memoHtml=n.memo?`<div class="note-field-memo">${esc(n.memo)}</div>`:'';
+      const challengeHtml=n.challenge&&n.challenge.trim()?`<div class="note-challenge-box"><div class="note-challenge-label">📌 課題・もっと改善したいこと</div><div class="note-challenge-text">${esc(n.challenge)}</div></div>`:'';
+      const growthHtml=n.growth&&n.growth.trim()?`<div class="note-growth-box"><div class="note-growth-label">⭐ できるようになったこと</div><div class="note-growth-text">${esc(n.growth)}</div></div>`:'';
       return `<div class="note-card fade-in">
         <button class="note-delete" onclick="deleteDiaryEntry(${n.id})">削除</button>
         ${catBadges?`<div style="margin-bottom:6px">${catBadges}</div>`:''}
-        ${n.memo?`<div class="note-memo">${n.memo.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>`:'<div class="note-memo" style="color:var(--text-muted);font-style:italic">メモなし</div>'}
+        ${memoHtml}${challengeHtml}${growthHtml}
+        ${!n.memo&&!n.challenge&&!n.growth?'<div class="note-field-memo" style="color:var(--text-muted);font-style:italic">メモなし</div>':''}
       </div>`;
     }).join('');
     if(!cards.trim())return '';
@@ -903,7 +937,7 @@ function renderNoteScreen(){
   const moreBtn=hiddenCount>0
     ? `<button class="note-more-btn" onclick="loadMoreNotes()">過去の記録をもっと見る（全${allEntries.length}件）</button>`
     : '';
-  screen.innerHTML=addBtn+calHTML+filterBar+html+emptyMsg+moreBtn;
+  screen.innerHTML=addBtn+statsHTML+calHTML+filterBar+html+emptyMsg+moreBtn;
 }
 
 function openNoteForm(prefillDate){
@@ -921,8 +955,12 @@ function openNoteForm(prefillDate){
     <input type="date" id="diaryDate" value="${dateVal}" style="width:100%;padding:10px 12px;border:.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:14px;background:var(--white)">
     <label>練習の種類（複数可）</label>
     <div class="diary-cat-row" id="diaryCatRow" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">${catBtns}</div>
-    <label>メモ（任意）</label>
-    <textarea id="diaryMemo" placeholder="気づいたこと・課題・今日の感覚など" style="height:110px"></textarea>
+    <label>練習内容</label>
+    <textarea id="diaryMemo" placeholder="今日やったこと・感覚・気づきなど" style="height:80px"></textarea>
+    <label>📌 課題・もっと改善したいこと</label>
+    <textarea id="diaryChallenge" placeholder="まだできないこと・次回意識したいことなど" style="height:70px"></textarea>
+    <label>⭐ できるようになったこと</label>
+    <textarea id="diaryGrowth" placeholder="今日できた！上達したと感じたこと" style="height:70px;border-color:var(--border-gold)"></textarea>
     <button class="note-submit" onclick="submitDiaryEntry()">記録する</button>
     <button class="note-cancel" onclick="closeDiaryForm()">キャンセル</button>
   </div>`;
@@ -942,11 +980,13 @@ function submitDiaryEntry(){
   const date=document.getElementById('diaryDate').value;
   const cats=[...document.querySelectorAll('.diary-cat-btn.selected')].map(b=>b.dataset.cat);
   const memo=document.getElementById('diaryMemo').value.trim();
+  const challenge=document.getElementById('diaryChallenge').value.trim();
+  const growth=document.getElementById('diaryGrowth').value.trim();
   if(!date)return;
   const entries=loadDiary();
-  entries.push({id:Date.now(),date,cats,memo});
+  entries.push({id:Date.now(),date,cats,memo,challenge,growth});
   saveDiary(entries);
-  gtag('event','diary_add',{cats:cats.join(','),has_memo:memo.length>0});
+  gtag('event','diary_add',{cats:cats.join(','),has_growth:growth.length>0});
   closeDiaryForm();
   renderNoteScreen();
 }
