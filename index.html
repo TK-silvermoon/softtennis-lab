@@ -958,7 +958,6 @@ function deleteDiaryEntry(id){
 }
 // ─────────────────────────────────────────
 
-function switchTab
 
 function switchTab(tab){
   document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
@@ -1042,32 +1041,7 @@ function getMasteryPipsHTML(menuId){
   return `<div class="mastery-pips">${pips}${label}</div>`;
 }
 
-// 今週の練習統計 + 昨日の重点
-function getWizardStats(){
-  const notes=loadNotes();
-  const today=new Date();
-  const weekAgo=new Date(today);weekAgo.setDate(today.getDate()-6);
-  const weekAgoStr=weekAgo.toISOString().slice(0,10);
-  const weekDates=new Set(notes.filter(n=>n.date>=weekAgoStr).map(n=>n.date));
 
-  let prevFocusLabel=null;
-  try{
-    if(prev&&prev.focus){
-      const fl={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ',omakase:'おまかせ'};
-      prevFocusLabel=fl[prev.focus]||null;
-    }
-  }catch(e){}
-
-  // マスター数
-  const mastery=loadMastery();
-  let masteredCount=0;
-  DB.forEach(d=>{
-    const done=mastery[d.id]||[];
-    const unique=[...new Set(d.steps.map(s=>s.lv))];
-    if(unique.length>0&&unique.every(lv=>done.includes(lv)))masteredCount++;
-  });
-
-  return{weekCount:weekDates.size,prevFocusLabel,masteredCount};
-}
-
-// ── 今日の練習メニュー ──────────────────────
+</script>
+</body>
+</html>
