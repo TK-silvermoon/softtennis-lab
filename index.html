@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ソフトテニスラボ｜練習メニューを探せるアプリ</title>
+<title>ソフトテニスLab｜練習メニューを探せるアプリ</title>
 <meta name="description" content="ソフトテニスの苦手を克服する練習メニューアプリ。ストローク・ボレー・サービス・レシーブの基礎から応用まで、ステップ別に練習方法と参考動画を掲載。試合の場面から練習を探せる「場面から探す」機能も搭載。">
 <meta name="keywords" content="ソフトテニス,練習メニュー,練習方法,ストローク,ボレー,サービス,レシーブ,カットサーブ,ポーチ,スマッシュ,上達,中学生,高校生">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 {
   "@context":"https://schema.org",
   "@type":"WebApplication",
-  "name":"ソフトテニスラボ",
+  "name":"ソフトテニスLab",
   "url":"https://soft-tennis-lab.vercel.app/",
   "description":"ソフトテニスの苦手を克服する練習メニューアプリ。ストローク・ボレー・サービス・レシーブの基礎から応用まで、ステップ別に練習方法と参考動画を掲載。",
   "applicationCategory":"SportsApplication",
@@ -26,14 +26,14 @@
 <script type="application/ld+json" id="menuJsonLd"></script>
 <!-- OGP -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="ソフトテニスラボ｜練習メニューを探せるアプリ">
+<meta property="og:title" content="ソフトテニスLab｜練習メニューを探せるアプリ">
 <meta property="og:description" content="苦手なプレーから練習メニューを探せるソフトテニス専用アプリ。ストローク・ボレー・サービス・レシーブ30メニュー掲載。">
 <meta property="og:url" content="https://soft-tennis-lab.vercel.app/">
-<meta property="og:site_name" content="ソフトテニスラボ">
+<meta property="og:site_name" content="ソフトテニスLab">
 <meta property="og:locale" content="ja_JP">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ソフトテニスラボ｜練習メニューを探せるアプリ">
+<meta name="twitter:title" content="ソフトテニスLab｜練習メニューを探せるアプリ">
 <meta name="twitter:description" content="苦手なプレーから練習メニューを探せるソフトテニス専用アプリ。ステップ別練習法・参考動画付き。">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -85,7 +85,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .yt-tri{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid white;margin-left:1px}
 .no-video{font-size:11px;color:var(--text-muted);font-style:italic}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:9px 0 18px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--text-muted);cursor:pointer;flex:1;padding:0 4px;text-align:center;white-space:nowrap;min-width:0}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--text-muted);cursor:pointer;flex:1;padding:0 2px;text-align:center;white-space:nowrap;min-width:0}
 .bnav-item.active{color:var(--gold-dark)}
 .bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
 .bnav-item.active .bnav-dot{background:var(--gold)}
@@ -182,43 +182,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .guide-source{font-size:10px;color:var(--text-muted);margin-top:12px;padding-top:10px;border-top:.5px solid var(--border);}
 .guide-source a{color:var(--text-muted);}
 
-/* ── ポジションオンボーディング ── */
-.pos-onboarding{position:fixed;inset:0;background:linear-gradient(160deg,#1e1508 0%,#2a1f08 50%,#111 100%);z-index:200;display:flex;align-items:center;justify-content:center;padding:28px 20px}
-.pos-ob-inner{width:100%;max-width:390px;animation:fadeIn .45s ease}
-.pos-ob-logo{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--gold-light);letter-spacing:.12em;text-align:center;margin-bottom:4px}
-.pos-ob-logo span{color:var(--gold)}
-.pos-ob-tagline{font-size:11px;color:rgba(255,255,255,.38);text-align:center;letter-spacing:.18em;margin-bottom:52px;text-transform:uppercase}
-.pos-ob-question{font-family:'Cormorant Garamond',serif;font-size:21px;color:rgba(255,255,255,.88);text-align:center;margin-bottom:24px;font-weight:500;letter-spacing:.04em}
-.pos-ob-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
-.pos-ob-btn{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.35);border-radius:16px;padding:22px 14px 18px;text-align:center;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;user-select:none}
-.pos-ob-btn:active{transform:scale(.96);background:rgba(201,168,76,.2)}
-.pos-ob-btn:hover{background:rgba(201,168,76,.12);border-color:var(--gold)}
-.pos-ob-btn-full{grid-column:1/-1}
-.pos-ob-icon{font-size:26px;margin-bottom:9px}
-.pos-ob-label{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--white);letter-spacing:.06em}
-.pos-ob-desc{font-size:10px;color:rgba(255,255,255,.42);margin-top:5px;line-height:1.6}
-
-/* ── ポジションバッジ（ナビ） ── */
-.pos-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--gold-dark);background:var(--gold-pale);border:.5px solid var(--gold-light);padding:3px 10px;border-radius:20px;cursor:pointer;margin-top:4px;font-family:'Noto Sans JP',sans-serif;transition:background .15s;white-space:nowrap}
-.pos-badge:hover{background:var(--gold-light)}
-.pos-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
-
-/* ── ポジション変更シート ── */
-.pos-change-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none;align-items:flex-end;justify-content:center}
-.pos-change-overlay.open{display:flex}
-.pos-change-sheet{background:var(--off-white);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:24px 20px 48px;animation:slideUp .22s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.pos-change-title{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--text-primary);font-weight:600;text-align:center;margin-bottom:18px;letter-spacing:.04em}
-.pos-change-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.pos-change-btn{border:1px solid var(--border-gold);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--white);transition:all .18s;-webkit-tap-highlight-color:transparent}
-.pos-change-btn:active{transform:scale(.97)}
-.pos-change-btn.selected{border-color:var(--gold);background:var(--gold-pale)}
-.pos-change-btn:hover{border-color:var(--gold)}
-.pos-change-full{grid-column:1/-1}
-.pos-change-icon{font-size:22px;margin-bottom:6px}
-.pos-change-label{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--text-primary);letter-spacing:.04em}
-.pos-change-sub{font-size:10px;color:var(--text-secondary);margin-top:3px;line-height:1.5}
-.pos-change-cancel{width:100%;padding:11px;background:none;border:none;color:var(--text-muted);font-size:13px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:4px}
 
 /* ── 今日の練習メニュー ── */
 .today-section{padding:6px 4px 2px}
@@ -294,64 +258,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
      crossorigin="anonymous"></script>
 </head>
 <body>
-<!-- ポジションオンボーディング -->
-<div class="pos-onboarding" id="posOnboarding" style="display:none">
-  <div class="pos-ob-inner">
-    <div class="pos-ob-logo">ソフトテニス<span>ラボ</span></div>
-    <div class="pos-ob-tagline">Practice Menu App</div>
-    <div class="pos-ob-question">あなたのポジションは？</div>
-    <div class="pos-ob-grid">
-      <div class="pos-ob-btn" onclick="selectOnboardPos('back')">
-        <div class="pos-text-icon">後</div>
-        <div class="pos-ob-label">後衛</div>
-        <div class="pos-ob-desc">ストローク・<br>レシーブ中心</div>
-      </div>
-      <div class="pos-ob-btn" onclick="selectOnboardPos('fore')">
-        <div class="pos-text-icon">前</div>
-        <div class="pos-ob-label">前衛</div>
-        <div class="pos-ob-desc">ボレー・<br>スマッシュ中心</div>
-      </div>
-      <div class="pos-ob-btn pos-ob-btn-full" onclick="selectOnboardPos('all')">
-        <div class="pos-text-icon">両</div>
-        <div class="pos-ob-label">どちらも</div>
-        <div class="pos-ob-desc">全メニューを表示します</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ポジション変更シート -->
-<div class="pos-change-overlay" id="posChangeOverlay" onclick="closePosChange()">
-  <div class="pos-change-sheet" onclick="event.stopPropagation()">
-    <div class="pos-change-title">ポジションを変更</div>
-    <div class="pos-change-opts">
-      <div class="pos-change-btn" data-pos="back" onclick="selectChangePos('back')">
-        <div class="pos-text-icon">後</div>
-        <div class="pos-change-label">後衛</div>
-        <div class="pos-change-sub">ストローク・レシーブ中心</div>
-      </div>
-      <div class="pos-change-btn" data-pos="fore" onclick="selectChangePos('fore')">
-        <div class="pos-text-icon">前</div>
-        <div class="pos-change-label">前衛</div>
-        <div class="pos-change-sub">ボレー・スマッシュ中心</div>
-      </div>
-      <div class="pos-change-btn pos-change-full" data-pos="all" onclick="selectChangePos('all')">
-        <div class="pos-text-icon">両</div>
-        <div class="pos-change-label">どちらも</div>
-        <div class="pos-change-sub">全メニューを表示</div>
-      </div>
-    </div>
-    <button class="pos-change-cancel" onclick="closePosChange()">キャンセル</button>
-  </div>
-</div>
-
 <div class="app">
   <div class="nav-bar" id="navBar">
     <div id="navHome">
-      <div class="nav-logo">ソフトテニス<span>ラボ</span></div>
-      <div class="pos-badge" id="posBadge" onclick="openPosChange()">
-        <span class="pos-badge-dot"></span><span id="posBadgeLabel">後衛</span> ▾
-      </div>
+      <div class="nav-logo">ソフトテニス<span>Lab</span></div>
     </div>
     <a class="nav-fb" id="navFb" href="https://docs.google.com/forms/d/e/1FAIpQLSfcNvFGIPXuTTvAluTsfGMurUH6E8QFBFqC6UhItSZugh_r6g/viewform" target="_blank" rel="noopener">意見を送る</a>
     <button class="nav-back" id="navBack" onclick="showHome()">← 戻る</button>
@@ -370,12 +280,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <input class="search-input" type="text" placeholder="苦手なプレーを入力…" id="searchInput" oninput="onSearch()">
     </div>
     <div id="browseArea">
-      <div class="cat-label">POSITION</div>
-      <div class="chip-row" id="posChips">
-        <span class="chip active" onclick="selectPos(this,'all')">すべて</span>
-        <span class="chip" onclick="selectPos(this,'back')">後衛向け</span>
-        <span class="chip" onclick="selectPos(this,'fore')">前衛向け</span>
-      </div>
       <div class="cat-label">CATEGORY</div>
       <div class="chip-row" id="catChips">
         <span class="chip active" onclick="selectCat(this,'all')">すべて</span>
@@ -527,10 +431,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   </div>
   <a class="footer-link" href="/privacy.html" target="_blank">プライバシーポリシー</a>
   <div class="bottom-nav">
-    <div class="bnav-item active" id="bnav-today" onclick="switchTab('today')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="3" y="4" width="14" height="13" rx="2"/><line x1="3" y1="8" x2="17" y2="8"/><line x1="7" y1="2" x2="7" y2="5"/><line x1="13" y1="2" x2="13" y2="5"/><line x1="7" y1="12" x2="7" y2="14"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="13" y1="12" x2="13" y2="14"/></svg></span><span>今日</span></div>
+    <div class="bnav-item active" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="13" x2="10" y2="13"/></svg></span><span>ノート</span></div>
+    <div class="bnav-item" id="bnav-today" onclick="switchTab('today')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="3" y="4" width="14" height="13" rx="2"/><line x1="3" y1="8" x2="17" y2="8"/><line x1="7" y1="2" x2="7" y2="5"/><line x1="13" y1="2" x2="13" y2="5"/><line x1="7" y1="12" x2="7" y2="14"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="13" y1="12" x2="13" y2="14"/></svg></span><span>今日</span></div>
     <div class="bnav-item" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg></span><span>探す</span></div>
     <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="10,2 18,10 10,18 2,10"/></svg></span><span>場面</span></div>
-    <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="13" x2="10" y2="13"/></svg></span><span>ノート</span></div>
     <div class="bnav-item" id="bnav-guide" onclick="switchTab('guide')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M10 5 C10 5 7 4 4 4.5 L4 16 C7 15.5 10 16.5 10 16.5 C10 16.5 13 15.5 16 16 L16 4.5 C13 4 10 5 10 5 Z"/><line x1="10" y1="5" x2="10" y2="16.5"/></svg></span><span>ガイド</span></div>
   </div>
 </div>
@@ -791,77 +695,21 @@ function migrateLocalStorage() {
 migrateLocalStorage();
 
 // ── ポジション記憶機能 ───────────────────────
-const POS_KEY='stl_position_v1'; // 凍結キー。変更不可。
-const POS_LABELS={all:'どちらも',back:'後衛',fore:'前衛'};
 
-function initPosition(){
-  const saved=localStorage.getItem(POS_KEY);
-  if(!saved){
-    document.getElementById('posOnboarding').style.display='flex';
-  } else {
-    applyPositionFromStorage(saved);
-    updatePosBadge(saved);
-  }
-}
-
-function selectOnboardPos(role){
-  localStorage.setItem(POS_KEY,role);
-  document.getElementById('posOnboarding').style.display='none';
-  applyPositionFromStorage(role);
-  updatePosBadge(role);
-  gtag('event','select_position',{position:role,source:'onboarding'});
-}
-
-function applyPositionFromStorage(role){
-  currentRole=role;
-  document.querySelectorAll('#posChips .chip').forEach(c=>{
-    const m=c.getAttribute('onclick').match(/'(\w+)'\)/);
-    if(m) c.classList.toggle('active',m[1]===role);
-  });
-  applyFilter();
-}
-
-function updatePosBadge(role){
-  const el=document.getElementById('posBadgeLabel');
-  if(el) el.textContent=POS_LABELS[role]||'どちらも';
-}
-
-function openPosChange(){
-  const saved=localStorage.getItem(POS_KEY)||'all';
-  document.querySelectorAll('.pos-change-btn').forEach(b=>{
-    b.classList.toggle('selected',b.dataset.pos===saved);
-  });
-  document.getElementById('posChangeOverlay').classList.add('open');
-}
-
-function closePosChange(){
-  document.getElementById('posChangeOverlay').classList.remove('open');
-}
-
-function selectChangePos(role){
-  localStorage.setItem(POS_KEY,role);
-  applyPositionFromStorage(role);
-  updatePosBadge(role);
-  closePosChange();
-  gtag('event','select_position',{position:role,source:'change_sheet'});
-}
-
-initPosition();
+currentRole='all';
 
 handleHash();
 
 renderList(DB);
+switchTab('note');
 
 function renderList(items){
   const list=document.getElementById('resultList'),empty=document.getElementById('emptyState');
   if(!items.length){
     list.innerHTML='';empty.style.display='block';
-    const posLabel={all:'すべて',back:'後衛向け',fore:'前衛向け'}[currentRole];
     const catLabel={all:'すべて',stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'}[currentCat]||'';
     let hint='該当する練習メニューが見つかりませんでした';
-    if(currentRole==='back'&&currentCat==='volley') hint='「後衛向け」にボレーメニューはありません。<br>ポジションを「すべて」に変えると前衛のボレーも見られます。';
-    else if(currentRole==='fore'&&currentCat==='stroke') hint='「前衛向け」にストロークメニューはありません。<br>ポジションを「すべて」に変えるとストロークも見られます。';
-    else if(currentRole!=='all'&&currentCat!=='all') hint=`「${posLabel}×${catLabel}」の組み合わせは現在準備中です。<br>「すべて」に戻して探してみてください。`;
+
     document.getElementById('emptyMsg').innerHTML=hint;
     return;
   }
@@ -880,8 +728,6 @@ function renderList(items){
 }
 
 function selectPos(el,role){
-  document.querySelectorAll('#posChips .chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');currentRole=role;applyFilter();
   gtag('event','select_position',{position:role});
 }
 
@@ -903,8 +749,6 @@ function selectSubCat(el,sub){document.querySelectorAll('#subCatChips .chip').fo
 
 function applyFilter(){
   let items=DB;
-  if(currentRole==='back') items=items.filter(d=>d.role==='back'||d.role==='both');
-  if(currentRole==='fore') items=items.filter(d=>d.role==='fore'||d.role==='both');
   if(currentCat!=='all') items=items.filter(d=>d.cat===currentCat);
   if(currentSubCat&&!currentSubCat.startsWith('all_')) items=items.filter(d=>d.subCat===currentSubCat);
   const q=document.getElementById('searchInput').value.trim();
@@ -919,8 +763,8 @@ function showDetail(id){
   history.pushState({menuId:id},'',`#menu-${id}`);
   gtag('event','view_menu',{menu_id:id,menu_title:d.title,menu_category:d.cat});
   // SEO: タイトル・description動的更新
-  document.title=`${d.title}の練習方法｜ソフトテニスラボ`;
-  document.querySelector('meta[name="description"]').setAttribute('content',`${d.desc}。${d.subCatLabel}の練習メニューをステップ別に解説。参考動画付き。ソフトテニスラボ。`);
+  document.title=`${d.title}の練習方法｜ソフトテニスLab`;
+  document.querySelector('meta[name="description"]').setAttribute('content',`${d.desc}。${d.subCatLabel}の練習メニューをステップ別に解説。参考動画付き。ソフトテニスLab。`);
   // JSON-LD: HowToスキーマ
   const howto={
     '@context':'https://schema.org','@type':'HowTo',
@@ -971,7 +815,7 @@ function showHome(){
   document.getElementById('navFb').style.display='';
   document.getElementById('navBack').style.display='none';
   history.pushState({},'',location.pathname);
-  document.title='ソフトテニスラボ｜練習メニューを探せるアプリ';
+  document.title='ソフトテニスLab｜練習メニューを探せるアプリ';
   document.querySelector('meta[name="description"]').setAttribute('content','ソフトテニスの苦手を克服する練習メニューアプリ。ストローク・ボレー・サービス・レシーブの基礎から応用まで、ステップ別に練習方法と参考動画を掲載。試合の場面から練習を探せる「場面から探す」機能も搭載。');
   document.getElementById('menuJsonLd').textContent='';
 }
@@ -1448,7 +1292,7 @@ function todayMatchPos(menuRole,userPos){
 
 function generateMenuFromAnswers(ans){
   const count=ans.time==='15'?3:ans.time==='30'?4:6;
-  const pos=localStorage.getItem(POS_KEY)||'all';
+  const pos='all';
   const candidates=DB.filter(d=>todayMatchPos(d.role,pos)&&d.steps&&d.steps.length);
   const seed=getDailySeedValue()+(ans.focus||'x').charCodeAt(0)*101+(ans.mood||'x').charCodeAt(0);
   const rng=todaySeededRandom(seed);
@@ -1529,8 +1373,8 @@ function showTodayWizard(){
 function showTodayResult(track){
   const menu=generateMenuFromAnswers(todayAnswers);
   todayMenu=menu;
-  const pos=localStorage.getItem(POS_KEY)||'all';
-  const posLabel=POS_LABELS[pos]||'どちらも';
+  const pos='all';
+  
   const today=new Date();
   const wd=['日','月','火','水','木','金','土'][today.getDay()];
   const dateLabel=`${today.getMonth()+1}月${today.getDate()}日（${wd}）`;
@@ -1614,35 +1458,4 @@ function saveTodayToNotes(){
   todayMenu.forEach((item,i)=>{
     notes.push({id:base+i,date:today,menuId:item.menu.id,step:item.step,memo:'',tag:'mae'});
   });
-  saveNotes(notes);
-  gtag('event','today_menu_save',{count:todayMenu.length});
-  showTodayToast('ノートに保存しました ✓');
-}
-
-function showTodayToast(msg){
-  const existing=document.querySelector('.today-toast');
-  if(existing)existing.remove();
-  const t=document.createElement('div');
-  t.className='today-toast';
-  t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>{if(t.parentNode)t.remove();},2000);
-}
-
-// チップ選択（イベント委譲）
-document.getElementById('todayScreen').addEventListener('click',function(e){
-  const chip=e.target.closest('.today-chip');
-  if(!chip||!chip.parentElement.classList.contains('today-chip-row'))return;
-  const row=chip.parentElement;
-  const q=row.dataset.q;
-  if(!q)return;
-  row.querySelectorAll('.today-chip').forEach(c=>c.classList.remove('active'));
-  chip.classList.add('active');
-  todayAnswers[q]=chip.dataset.v;
-  updateTodayCTA();
-});
-
-renderTodayTab();
-</script>
-</body>
-</html>
+  saveNotes(
