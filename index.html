@@ -42,8 +42,8 @@
 body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-height:100vh;display:flex;justify-content:center}
 .app{width:100%;max-width:430px;min-height:100vh;background:var(--off-white);display:flex;flex-direction:column}
 .nav-bar{background:var(--off-white);border-bottom:1px solid var(--border-gold);padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--text-primary);letter-spacing:.08em}
-.nav-logo span{color:var(--gold)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--text-primary);letter-spacing:.1em}
+.nav-logo span{color:var(--gold);font-style:italic}
 .nav-sub{font-size:10px;color:var(--text-muted);margin-top:1px}
 .nav-back{display:none;align-items:center;gap:6px;color:var(--gold-dark);font-size:13px;cursor:pointer;background:none;border:none;font-family:'Noto Sans JP',sans-serif}
 .nav-fb{font-size:11px;color:var(--gold-dark);border:.5px solid var(--gold);padding:5px 11px;border-radius:20px;text-decoration:none;white-space:nowrap;font-family:'Noto Sans JP',sans-serif}
@@ -52,17 +52,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none}
 .search-input{width:100%;border:1px solid var(--border-gold);border-radius:10px;padding:10px 12px 10px 34px;font-size:14px;color:var(--text-primary);background:var(--white);font-family:'Noto Sans JP',sans-serif;outline:none}
 .search-input::placeholder{color:var(--text-muted)}
-.cat-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;margin-bottom:7px;font-weight:500}
+.cat-label{font-size:10px;color:var(--gold-dark);letter-spacing:.15em;margin-bottom:9px;font-weight:500;text-transform:uppercase}
 .chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .chip{background:var(--white);color:var(--text-secondary);font-size:12px;padding:5px 12px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif}
 .chip.active{background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:500}
 .divider{border:none;border-top:.5px solid var(--border);margin:10px 0}
-.result-card{border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;background:var(--white);position:relative;overflow:hidden;cursor:pointer;transition:all .2s}
-.result-card:hover{border-color:var(--gold-light);transform:translateY(-1px)}
-.result-card.featured{border-color:var(--gold)}
+.result-card{border:.5px solid rgba(212,184,106,0.3);border-radius:14px;padding:15px;margin-bottom:10px;background:var(--white);position:relative;overflow:hidden;cursor:pointer;transition:all .2s;box-shadow:0 1px 8px rgba(0,0,0,0.05)}
+.result-card:hover{border-color:var(--gold-light);transform:translateY(-2px);box-shadow:0 4px 16px rgba(201,168,76,0.12)}
+.result-card.featured{border-color:rgba(201,168,76,0.5);box-shadow:0 2px 12px rgba(201,168,76,0.1)}
 .result-card.featured::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
 .result-tag{font-size:10px;color:var(--gold-dark);border:.5px solid var(--gold);padding:2px 9px;border-radius:10px;display:inline-block;margin-bottom:6px;background:var(--gold-pale);font-family:'Cormorant Garamond',serif;font-weight:600}
-.result-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:3px}
+.result-title{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:3px;letter-spacing:.01em}
 .result-sub{font-size:12px;color:var(--text-secondary);margin-bottom:7px}
 .step-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-right:4px;margin-top:2px}
 .s1{background:var(--s1-bg);color:var(--s1-c);border:.5px solid var(--s1-b)}
@@ -72,7 +72,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .kanjo-box{background:var(--gold-pale);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px}
 .kanjo-label{font-size:13px;font-weight:500;color:var(--gold-dark);margin-bottom:8px;font-family:'Cormorant Garamond',serif}
 .kanjo-item{font-size:12px;color:var(--text-secondary);margin-bottom:5px;padding-left:2px;line-height:1.6}
-.section-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;margin-bottom:9px;font-weight:500}
+.section-label{font-size:10px;color:var(--gold-dark);letter-spacing:.15em;margin-bottom:9px;font-weight:500;text-transform:uppercase}
 .step-card{border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;background:var(--white)}
 .step-header{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .step-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;white-space:nowrap}
@@ -85,7 +85,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .yt-tri{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid white;margin-left:1px}
 .no-video{font-size:11px;color:var(--text-muted);font-style:italic}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:9px 0 18px;background:var(--off-white);border-top:1px solid var(--border-gold);z-index:10}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--text-muted);cursor:pointer;padding:0 16px}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--text-muted);cursor:pointer;flex:1;padding:0 4px;text-align:center;white-space:nowrap;min-width:0}
 .bnav-item.active{color:var(--gold-dark)}
 .bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
 .bnav-item.active .bnav-dot{background:var(--gold)}
@@ -219,6 +219,67 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .pos-change-label{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--text-primary);letter-spacing:.04em}
 .pos-change-sub{font-size:10px;color:var(--text-secondary);margin-top:3px;line-height:1.5}
 .pos-change-cancel{width:100%;padding:11px;background:none;border:none;color:var(--text-muted);font-size:13px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:4px}
+
+/* ── 今日の練習メニュー ── */
+.today-section{padding:6px 4px 2px}
+.today-section-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--text-primary);margin-bottom:5px;letter-spacing:.04em;line-height:1.3}
+.today-section-sub{font-size:11px;color:var(--text-muted);margin-bottom:14px;letter-spacing:.04em;line-height:1.6}
+.today-q-label{font-size:11px;color:var(--gold-dark);letter-spacing:.08em;font-weight:500;margin:18px 0 9px;padding-left:2px}
+.today-chip{background:var(--white);color:var(--text-secondary);font-size:13px;padding:7px 15px;border-radius:22px;border:.5px solid var(--border);cursor:pointer;font-family:'Noto Sans JP',sans-serif;display:inline-block;transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent}
+.today-chip.active{background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:500}
+.today-chip:active{transform:scale(.97)}
+.today-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.today-cta{width:100%;padding:14px;background:var(--gold);color:var(--white);border:none;border-radius:14px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:26px;letter-spacing:.04em;transition:opacity .2s}
+.today-cta.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.today-card{padding-left:44px;position:relative}
+.today-num{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600;line-height:1}
+.today-result-head{margin-bottom:14px}
+.today-result-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--text-primary);letter-spacing:.04em;line-height:1.3}
+.today-result-meta{font-size:11px;color:var(--text-muted);margin-top:3px;letter-spacing:.04em}
+.today-time-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--gold-dark);background:var(--gold-pale);border:.5px solid var(--gold-light);padding:5px 13px;border-radius:20px;margin-top:9px;font-family:'Noto Sans JP',sans-serif}
+.today-save-btn{width:100%;padding:12px;background:var(--white);color:var(--gold-dark);border:1px solid var(--gold);border-radius:12px;font-size:13px;font-weight:500;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:12px;transition:background .15s}
+.today-save-btn:hover{background:var(--gold-pale)}
+.today-reshuffle{display:block;text-align:center;background:none;border:none;color:var(--text-muted);font-size:12px;margin-top:9px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;padding:6px;width:100%;text-decoration:underline}
+.today-reshuffle:hover{color:var(--gold-dark)}
+.today-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(26,26,26,.92);color:var(--white);padding:11px 22px;border-radius:24px;font-size:13px;z-index:300;font-family:'Noto Sans JP',sans-serif;letter-spacing:.04em;animation:toastIn .25s ease,toastOut .25s ease 1.6s forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(8px)}}
+
+/* ── マスタリー（Step達成トグル） ── */
+.step-done-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);background:var(--white);border:.5px solid var(--border);padding:5px 13px;border-radius:20px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;margin-top:11px;user-select:none;-webkit-tap-highlight-color:transparent}
+.step-done-btn:active{transform:scale(.96)}
+.step-done-btn.done{background:#EAF7EA;color:#2a7a2a;border-color:#90d090;font-weight:500}
+.mastery-pips{display:flex;align-items:center;gap:4px;margin-top:7px}
+.mastery-pip{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .25s}
+.mastery-pip.done{background:var(--gold)}
+.mastery-pip-label{font-size:10px;color:var(--text-muted);margin-left:5px}
+.result-card.mastered{border-color:var(--gold-light)}
+.mastered-badge{font-size:10px;color:var(--gold-dark);background:var(--gold-pale);border:.5px solid var(--gold-light);padding:2px 8px;border-radius:10px;display:inline-block;margin-left:6px;vertical-align:middle;font-family:'Cormorant Garamond',serif;font-weight:600}
+
+/* ── 今日ウィザード stats ── */
+.today-stats-row{display:flex;gap:8px;margin-bottom:18px}
+.today-stat-card{flex:1;background:var(--white);border:.5px solid var(--border-gold);border-radius:12px;padding:11px 10px;text-align:center}
+.today-stat-num{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--gold-dark);line-height:1.1}
+.today-stat-label{font-size:10px;color:var(--text-muted);margin-top:3px;line-height:1.5}
+
+/* ── 場面CTAバナー（searchScreen上部固定） ── */
+.scene-banner{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--gold-pale) 0%,#FFF8E8 100%);border:1px solid var(--border-gold);border-radius:14px;padding:14px 16px;margin-bottom:14px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.scene-banner:active{transform:scale(.98)}
+.scene-banner:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(201,168,76,0.12)}
+.scene-banner-label{font-size:10px;color:var(--gold-dark);letter-spacing:.1em;font-weight:500;margin-bottom:3px}
+.scene-banner-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text-primary);letter-spacing:.04em;margin-bottom:3px}
+.scene-banner-sub{font-size:11px;color:var(--text-secondary);line-height:1.5}
+.scene-banner-arrow{font-size:24px;color:var(--gold);font-weight:300;flex-shrink:0;margin-left:10px;line-height:1}
+/* シナリオ連番バッジ */
+.scenario-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);line-height:1;min-width:28px;flex-shrink:0;letter-spacing:.04em}
+/* ポジションテキストアイコン */
+.pos-text-icon{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--gold-dark);margin-bottom:9px;line-height:1;letter-spacing:.05em}
+/* ボトムナビSVGアイコン */
+.bnav-icon svg{display:block;stroke:currentColor}
+.bnav-item.active svg{stroke:var(--gold-dark)}
+
+/* ── ボトムナビ アイコン ── */
+.bnav-icon{font-size:18px;line-height:1;margin-bottom:1px}
 </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WSDX7965Y"></script>
@@ -241,17 +302,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     <div class="pos-ob-question">あなたのポジションは？</div>
     <div class="pos-ob-grid">
       <div class="pos-ob-btn" onclick="selectOnboardPos('back')">
-        <div class="pos-ob-icon">🏃</div>
+        <div class="pos-text-icon">後</div>
         <div class="pos-ob-label">後衛</div>
         <div class="pos-ob-desc">ストローク・<br>レシーブ中心</div>
       </div>
       <div class="pos-ob-btn" onclick="selectOnboardPos('fore')">
-        <div class="pos-ob-icon">🎾</div>
+        <div class="pos-text-icon">前</div>
         <div class="pos-ob-label">前衛</div>
         <div class="pos-ob-desc">ボレー・<br>スマッシュ中心</div>
       </div>
       <div class="pos-ob-btn pos-ob-btn-full" onclick="selectOnboardPos('all')">
-        <div class="pos-ob-icon">⚡</div>
+        <div class="pos-text-icon">両</div>
         <div class="pos-ob-label">どちらも</div>
         <div class="pos-ob-desc">全メニューを表示します</div>
       </div>
@@ -265,17 +326,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     <div class="pos-change-title">ポジションを変更</div>
     <div class="pos-change-opts">
       <div class="pos-change-btn" data-pos="back" onclick="selectChangePos('back')">
-        <div class="pos-change-icon">🏃</div>
+        <div class="pos-text-icon">後</div>
         <div class="pos-change-label">後衛</div>
         <div class="pos-change-sub">ストローク・レシーブ中心</div>
       </div>
       <div class="pos-change-btn" data-pos="fore" onclick="selectChangePos('fore')">
-        <div class="pos-change-icon">🎾</div>
+        <div class="pos-text-icon">前</div>
         <div class="pos-change-label">前衛</div>
         <div class="pos-change-sub">ボレー・スマッシュ中心</div>
       </div>
       <div class="pos-change-btn pos-change-full" data-pos="all" onclick="selectChangePos('all')">
-        <div class="pos-change-icon">⚡</div>
+        <div class="pos-text-icon">両</div>
         <div class="pos-change-label">どちらも</div>
         <div class="pos-change-sub">全メニューを表示</div>
       </div>
@@ -295,7 +356,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     <a class="nav-fb" id="navFb" href="https://docs.google.com/forms/d/e/1FAIpQLSfcNvFGIPXuTTvAluTsfGMurUH6E8QFBFqC6UhItSZugh_r6g/viewform" target="_blank" rel="noopener">意見を送る</a>
     <button class="nav-back" id="navBack" onclick="showHome()">← 戻る</button>
   </div>
-  <div class="screen-body" id="homeScreen">
+  <div class="screen-body" id="homeScreen" style="display:none">
+    <div class="scene-banner" onclick="onSceneBannerTap()">
+      <div class="scene-banner-left">
+        <div class="scene-banner-label">試合で困ったら</div>
+        <div class="scene-banner-title">場面から練習を探す</div>
+        <div class="scene-banner-sub">前衛に捕まる・ラリーが続かない など11シナリオ</div>
+      </div>
+      <div class="scene-banner-arrow">›</div>
+    </div>
     <div class="search-wrap">
       <div class="search-icon"></div>
       <input class="search-input" type="text" placeholder="苦手なプレーを入力…" id="searchInput" oninput="onSearch()">
@@ -323,15 +392,47 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
     </div>
     <div id="resultList"></div>
     <div class="empty-state" id="emptyState">
-      <div id="emptyMsg">🎾 該当する練習メニューが見つかりませんでした</div>
+      <div id="emptyMsg">該当する練習メニューが見つかりませんでした</div>
     </div>
   </div>
   <div class="screen-body detail-view" id="detailScreen"></div>
+  <div class="screen-body" id="todayScreen">
+    <div id="todayWizard" class="today-section">
+      <div class="today-section-title">今日の練習を組み立てよう</div>
+      <div class="today-section-sub">3つ答えるだけで、今日のメニューが決まる。</div>
+
+      <div class="today-q-label">① 今日の練習時間は？</div>
+      <div class="today-chip-row" data-q="time">
+        <span class="today-chip" data-v="15">15分</span>
+        <span class="today-chip" data-v="30">30分</span>
+        <span class="today-chip" data-v="60">60分以上</span>
+      </div>
+
+      <div class="today-q-label">② 重点的に練習したいのは？</div>
+      <div class="today-chip-row" data-q="focus">
+        <span class="today-chip" data-v="stroke">ストローク</span>
+        <span class="today-chip" data-v="volley">ボレー</span>
+        <span class="today-chip" data-v="service">サービス</span>
+        <span class="today-chip" data-v="receive">レシーブ</span>
+        <span class="today-chip" data-v="omakase">おまかせ</span>
+      </div>
+
+      <div class="today-q-label">③ 今日の状態は？</div>
+      <div class="today-chip-row" data-q="mood">
+        <span class="today-chip" data-v="good">調子いい！</span>
+        <span class="today-chip" data-v="normal">普通</span>
+        <span class="today-chip" data-v="bad">イマイチ</span>
+      </div>
+
+      <button class="today-cta disabled" id="todayCTA" onclick="generateDailyMenu()">今日のメニューを作る ▶</button>
+    </div>
+    <div id="todayResult" style="display:none"></div>
+  </div>
   <div class="screen-body note-screen" id="noteScreen"></div>
   <div class="guide-screen" id="guideScreen" style="display:none">
     <div class="guide-hero">
       <div class="guide-hero-title">上達ガイド</div>
-      <div class="guide-hero-sub">ストローク・ボレー・サービス・レシーブ。<br>各技術の本質を、信頼できる情報源からまとめました。</div>
+      <div class="guide-hero-sub">ストローク・ボレー・サービス・レシーブ。<br>各技術の本質を、競技者・指導者の知見をもとに独自にまとめました。</div>
     </div>
 
     <!-- ストローク -->
@@ -342,15 +443,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
         <span class="guide-article-arrow">▾</span>
       </div>
       <div class="guide-article-body">
-        <p>ストロークが安定しない人の大半は「腕の使い方」を直そうとする。しかし上級者がボールに力を乗せられる本当の理由は腕にない。体重移動——正確には「軸の移動」——こそがストロークの根幹だ。複数の指導者・競技者が口をそろえてこの点を最重要と挙げている。</p>
+        <p>ストロークが安定しない方の多くは「腕の使い方」を直そうとしがちです。しかし上級者がボールに力を乗せられる本当の理由は腕にありません。体重移動——正確には「軸の移動」——がストロークの根幹になります。</p>
         <h3>① 「体重移動」の本当の意味</h3>
-        <div class="point">足で地面を蹴るだけでは体重移動にならない。打つ前と打った後で<strong>頭の位置（重心）が前に移動すること</strong>が本質。腕の振りではなく、軸ごと移動することで全身のパワーが自然にボールへ伝わる。歩きながら打つ練習が体重移動の感覚を身につける最短ルートとして多くの指導者が推奨している。</div>
+        <div class="point">足で地面を蹴るだけでは体重移動になりません。打つ前と打った後で<strong>重心（身体の軸そのもの）が打球方向へ移動すること</strong>が本質です。腕の振りではなく、身体ごと前に出ることで全身のパワーが自然にボールへ伝わります。打つ瞬間に「軸が前に出ているか」を一つの確認基準にしてみてください。</div>
         <h3>② ムチの動きは「結果」であって「原因」ではない</h3>
-        <div class="point">ラケットヘッドが遅れて出てくる「ムチのしなり」は、体重移動と股関節の内転が正しく連動したときに<strong>自然に生まれる動き</strong>だ。腕だけでムチを再現しようとすると逆に力が抜けてしまう。インパクト直前にヘソの向きが変わること（股関節の内転）を意識すると連動しやすくなる。</div>
+        <div class="point">ラケットヘッドが遅れて出てくる「ムチのしなり」は、体重移動と骨盤の回転が正しく連動したときに<strong>自然に生まれる動き</strong>です。腕だけでムチを再現しようとすると逆に力が抜けてしまいます。骨盤が打球方向へ向くタイミングとインパクトを合わせる意識を持つと、連動が起きやすくなります。</div>
         <h3>③ フォームを固めることは目的ではない</h3>
-        <div class="point">「どんなボールも同じフォームで打てれば安定する」という考え方は間違い。ボールの高さ・速さ・バウンドは毎回異なる。<strong>フォームに執着するより、ボールとのタイミングを合わせる感覚を磨くこと</strong>が上達を加速させる。手首は固定しすぎも使いすぎも両方NG。</div>
+        <div class="point">「どんなボールも同じフォームで打てれば安定する」という考え方は、実際には当てはまらないことが多いです。ボールの高さ・速さ・バウンドは毎回異なります。<strong>フォームに執着するより、ボールとのタイミングを合わせる感覚を磨くこと</strong>が上達を加速させます。手首は固定しすぎも使いすぎも、どちらも避けたいところです。</div>
         <h3>試合で崩れるのはフォームではなくフットワーク</h3>
-        <p>練習では打てるのに試合になると打てなくなる場合、大半の原因はフットワーク——ボールへの入り方——にある。打点に余裕を持って入れれば体重移動は自然についてくる。スプリットステップを踏んで常に動き続ける習慣が、ストロークの安定を根本から変える。</p>
+        <p>練習では打てるのに試合になると打てなくなる場合、多くの原因はフットワーク——ボールへの入り方——にあります。打点に余裕を持って入れれば体重移動は自然についてきます。スプリットステップを踏んで常に動き続ける習慣が、ストロークの安定を根本から変えてくれます。</p>
       </div>
     </article>
 
@@ -362,17 +463,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
         <span class="guide-article-arrow">▾</span>
       </div>
       <div class="guide-article-body">
-        <p>ボレーが上手く弾けない人の多くは「ラケットの振り方」を変えようとする。しかし複数の上級者・指導者の意見を集約すると、ボレーで最も重要なのは「タイミング」と「足」だという結論に一致する。腕はあくまで面を合わせる役割に過ぎない。</p>
-        <h3>① 超基本：タイミング・面・スイングの三原則</h3>
-        <div class="point"><strong>タイミングよく・まっすぐな面で・まっすぐ振れば、ボールはまっすぐ飛ぶ。</strong>ボレーが弾けない原因は必ずこの三つのどれかにある。手の平でボールを押し出すように弾くイメージを持つと、面・タイミング・スイングが自然に整いやすい。ラケットを使わず手の平でボールを弾く練習が上達を加速させると多くの指導者が推薦している。</div>
+        <p>ボレーが上手く弾けない方の多くは「ラケットの振り方」を変えようとしがちです。しかしボレーの質を決めるのは「足」と「タイミング」の2点に集約されます。腕はあくまでも面を合わせるための添え物に過ぎません。</p>
+        <h3>① ボレーのミスは3つに分類できる</h3>
+        <div class="point">ボールがまっすぐ飛ばないとき、原因は必ず「接触タイミングのズレ」「ラケット面の傾き」「スイング軌道のブレ」のいずれかです。この3つを一つずつ確認していくと、修正すべき点が素早く特定できます。まずラケットを持たず手のひらでボールを弾く感覚から始めると、3要素の関係が体で理解しやすくなります。</div>
         <h3>② ボレーは足で弾く</h3>
-        <div class="point">踏み込み2歩目をかかとから大きく入れることで全身の体重がボールに乗る。腰が後ろに残ったまま打つと腕だけの軽いボレーになってしまう。<strong>腰ごと前に押し出す意識</strong>で踏み込むと弾きが格段に変わる。フォア・バックともに「送り足」のフットワークが威力の源だ。</div>
+        <div class="point">踏み込み2歩目をかかとから大きく入れることで全身の体重がボールに乗ります。腰が後ろに残ったまま打つと腕だけの軽いボレーになってしまいます。<strong>腰ごと前に押し出す意識</strong>で踏み込むと弾きが格段に変わります。フォア・バックともに「送り足」のフットワークが威力の源になります。</div>
         <h3>③ テイクバックは最小限、グリップはインパクトの瞬間だけ</h3>
-        <div class="point">相手の球速が速いほどテイクバックは小さくていい。引きすぎると面が崩れてタイミングが取れなくなる。グリップは常に握り続けず、<strong>インパクトの瞬間だけギュッと締める</strong>。脱力→締める→脱力のリズムが面の安定と弾きを両立させる。</div>
+        <div class="point">相手の球速が速いほどテイクバックは小さくて構いません。引きすぎると面が崩れてタイミングが取れなくなります。グリップは常に握り続けず、<strong>インパクトの瞬間だけギュッと締める</strong>ようにしましょう。脱力→締める→脱力のリズムが面の安定と弾きを両立させてくれます。</div>
         <h3>④ 前衛の構え：常にラケットを高く</h3>
-        <div class="point">試合中はラケットを常に上半身より上に構えておく。低いと反応が遅れてボレーのチャンスを逃す。<strong>静止→スプリットステップ→3歩フットワーク（左・右大きく・左）</strong>の流れを反射的に出せるようにすることがポーチの成功率を上げる。</div>
-        <h3>抜かれても動き続けることが前衛の仕事</h3>
-        <p>ポーチを恐れて動かない前衛は相手へのプレッシャーがゼロになる。多少抜かれても動き続けることで相手後衛にプレッシャーをかけ続けることが、長期的に試合を有利に進める本質だ。ボレーが上手くならない人は、まず「手の平でのボレー練習」から始めることを強く勧める。</p>
+        <div class="point">試合中はラケットを常に上半身より上に構えておきましょう。低いと反応が遅れてボレーのチャンスを逃します。<strong>静止→スプリットステップ→3歩フットワーク（左・右大きく・左）</strong>の流れを反射的に出せるようになると、ポーチの成功率が上がります。</div>
+        <h3>前衛の本質：「動く意図」と「止まる意図」を使い分ける</h3>
+        <p>ポーチを恐れて動けない前衛は、相手へのプレッシャーがゼロになります。多少抜かれても動き続けることで相手後衛にプレッシャーをかけ続けられます。ただし「動き続けること」だけが正解ではありません。常に動いている前衛は動きのリズムを読まれ、相手にパターンを利用されることがあります。だからこそ「<strong>意図的に止まる</strong>」選択も重要です。どっしり構えたまま動かず、相手後衛の打ち方・視線・身体の向きを観察する。いつも動いていた前衛が突然止まると、打つ側は「どこを狙えばいい？」と迷いが生まれます。プレッシャーの種類が変わるのです。動き続ける意識と、意図して止まる意識——この両方を状況に応じて使い分けることが、試合を支配する前衛への近道です。</p>
       </div>
     </article>
 
@@ -384,17 +485,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
         <span class="guide-article-arrow">▾</span>
       </div>
       <div class="guide-article-body">
-        <p>サーブはソフトテニスで唯一「相手の動きに関係なく自分のリズムで打てるショット」だ。それゆえ強い選手ほどサーブを徹底的に磨く。ダブルフォルトは相手のミスを待たずに自分でポイントを失う行為であり、サービスゲームを支配するには「確率」を最優先に考えることが全ての出発点になる。</p>
+        <p>サーブはソフトテニスで唯一「相手の動きに関係なく自分のリズムで打てるショット」です。それゆえ強い選手ほどサーブを徹底的に磨きます。ダブルフォルトは相手のミスを待たずに自分でポイントを失う行為です。サービスゲームを支配するには「確率」を最優先に考えることが全ての出発点になります。</p>
         <h3>① サーブ最大の課題はトスの安定</h3>
-        <div class="point">「サーブが入らない」原因の大半はトスのブレにある。毎回ほぼ同じ位置・同じ高さに上げる技術が、スピードやコースより先に必要なスキルだ。<strong>指先にそっと乗せて腕全体で押し上げ、目の高さでボールを離す</strong>イメージで練習すると安定しやすい。身長の2倍程度の高さが適切とされており、高すぎると風の影響も受けやすくなる。</div>
+        <div class="point">「サーブが入らない」原因の大半はトスのブレにあります。毎回ほぼ同じ位置・同じ高さに上げる技術が、スピードやコースより先に必要なスキルです。<strong>指先にそっと乗せて腕全体で押し上げ、目の高さでボールを離す</strong>イメージで練習すると安定しやすくなります。高すぎると風の影響も受けやすくなるので注意しましょう。</div>
         <h3>② タメを作る：膝の曲げ＋上半身のひねり</h3>
-        <div class="point">少ない力で速いサーブを打つには「タメ」が不可欠だ。前足の膝を充分に曲げながら上半身をひねり、力を蓄える。そこから<strong>ギリギリまでラケットを振り出さず我慢すると、伸ばされた筋肉が縮もうとする反動（伸張反射）が加わり</strong>スイングスピードが劇的に速くなる。タメを深く作るほど速い球が少ない力で打てる。グリップはイースタン（包丁持ち）が最も力を伝えやすい。</div>
+        <div class="point">少ない力で速いサーブを打つには「タメ」が不可欠です。前足の膝を充分に曲げながら上半身をひねり、力を蓄えましょう。そこから<strong>ギリギリまでラケットを振り出さず我慢すると、引き伸ばされた筋肉の反発力でスイングスピードが劇的に速くなります</strong>。タメを深く作るほど速い球が少ない力で打てます。グリップはイースタン（包丁持ち）が最も力を伝えやすいとされています。</div>
         <h3>③ ルーティンが確率を安定させる</h3>
-        <div class="point">打つ前に毎回同じ動作（ボールをつく・ガットを直す・深呼吸など）を行うルーティンを決めることで、呼吸・リズム・集中が整う。<strong>練習から必ずルーティンを行う習慣</strong>をつけることで、試合の緊張した場面でも同じパフォーマンスを再現しやすくなる。フォロースルーでは肘を高く保つと自然なドライブ回転がかかり確率が上がる。</div>
+        <div class="point">打つ前に毎回同じ動作（ボールをつく・ガットを直す・深呼吸など）を行うルーティンを決めることで、呼吸・リズム・集中が整います。<strong>練習からルーティンを行う習慣</strong>をつけることで、試合の緊張した場面でも同じパフォーマンスを再現しやすくなります。フォロースルーでは肘を高く保つと自然なドライブ回転がかかり確率が上がります。</div>
         <h3>④ カットサーブは「回転量」が全て</h3>
-        <div class="point">カットサーブの変化量を決めるのは回転量だ。グリップはイースタンで短めに持ち、テイクバックは小さく。インパクトでボールを<strong>できる限り薄くカット</strong>し、手首を返さずフォロースルーを止める。コースを狙う前に、まずバウンド後に低く飛ばない「確率の高いカットサーブ」を完成させることが先決だ。</div>
+        <div class="point">カットサーブの変化量を決めるのは回転量です。グリップはイースタンで短めに持ち、テイクバックは小さめにしましょう。インパクトでボールを<strong>できる限り薄くカット</strong>し、手首を返さずフォロースルーを止めます。コースを狙う前に、まずバウンド後に低く飛ぶ「確率の高いカットサーブ」を完成させることが先決です。</div>
         <h3>上達の順番：確率→深さ→コース→スピード</h3>
-        <p>多くの選手がコースやスピードから練習しようとして確率が下がる。まず「入れること」に集中し、次に深さ、その後にコース打ち分け、最後にスピードアップというステップが最も効率的な上達ルートだ。自分のサーブがどちらに曲がるクセがあるかを把握し、スタンスの向きで調整するのがシンプルで再現性が高い。</p>
+        <p>コースやスピードから練習しようとして確率が下がるのは、よくある失敗パターンです。まず「入れること」に集中し、次に深さ、その後にコース打ち分け、最後にスピードアップというステップが最も効率的な上達ルートになります。自分のサーブがどちらに曲がるクセがあるかを把握し、スタンスの向きで調整するのがシンプルで再現性の高いアプローチです。</p>
       </div>
     </article>
 
@@ -406,17 +507,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
         <span class="guide-article-arrow">▾</span>
       </div>
       <div class="guide-article-body">
-        <p>すべてのラリーはサーブとレシーブから始まる。レシーブが安定すれば相手のサーブに対して主導権を持てるようになり、試合の流れを変える力になる。技術的なコツより前に「考え方」と「準備」を正しく整えることが、レシーブ上達の最短ルートだ。</p>
+        <p>すべてのラリーはサーブとレシーブから始まります。レシーブが安定すれば相手のサーブに対して主導権を持てるようになり、試合の流れを変える力になります。技術的なコツより前に「考え方」と「準備」を正しく整えることが、レシーブ上達の出発点です。</p>
         <h3>① スプリットステップ：全ての土台</h3>
-        <div class="point">相手のインパクトの瞬間に軽く飛んで着地することで、どの方向へも素早く踏み出せる状態を作る。重要なのは<strong>「高く跳ぶ」のではなく「沈む」イメージ</strong>で着地すること。高く跳ぶと滞空時間が長くなり一歩目が遅れる。スプリットステップを習慣化するだけで、テイクバックの早さと打点への移動スピードが格段に変わる。</div>
+        <div class="point">相手のインパクトの瞬間に軽く飛んで着地することで、どの方向へも素早く踏み出せる状態を作れます。重要なのは<strong>「高く跳ぶ」のではなく「沈む」イメージ</strong>で着地することです。高く跳ぶと滞空時間が長くなり一歩目が遅れてしまいます。スプリットステップを習慣化するだけで、テイクバックの早さと打点への移動スピードが格段に変わります。</div>
         <h3>② ファーストレシーブは「守り」、セカンドレシーブは「攻め」</h3>
-        <div class="point">ファーストは相手が有利な場面なのでリスクを抑えた返球が基本。深いロブをベースライン付近に返すだけで相手の攻撃角度を消せる。セカンドは逆に<strong>「攻めるべき」場面</strong>だ。セカンドで攻めない選手は「この相手のセカンドは怖くない」と認識され、相手はファーストをより強く打てるようになる。セカンドへの積極性が試合全体のサーブの質を左右する。</div>
+        <div class="point">ファーストは相手が有利な場面なのでリスクを抑えた返球が基本です。深いロブをベースライン付近に返すだけで相手の攻撃角度を消せます。セカンドは逆に<strong>積極的に打ちにいく場面</strong>です。セカンドで待ちの返球を続ける選手は「このセカンドは脅威ではない」と認識され、相手はファーストをより強く打てるようになります。セカンドへの積極性が試合全体のサーブの質を左右します。</div>
         <h3>③ 打点は高く・テイクバックは早く</h3>
-        <div class="point">打点が低いほどボールのコントロールは難しくなる。できるだけ<strong>高い打点でボールを捉える</strong>ために、早めに移動して余裕を持って構えることが重要だ。テイクバックが遅れるとどんなコツも活かせない。スプリットステップ→一歩目の踏み出し→早いテイクバック、この流れを体に染み込ませることが安定への近道だ。</div>
+        <div class="point">打点が低いほどボールのコントロールは難しくなります。できるだけ<strong>高い打点でボールを捉える</strong>ために、早めに移動して余裕を持って構えることが大切です。テイクバックが遅れるとどんなコツも活かせません。スプリットステップ→一歩目の踏み出し→早いテイクバック、この流れを体に染み込ませることが安定への近道になります。</div>
         <h3>④ カットサーブのレシーブは「ライジングで早めに捉える」</h3>
-        <div class="point">カットサーブは低くバウンドして変化するため、普通のレシーブと同じタイミングで待つと打点が低くなりすぎてコントロールが難しくなる。<strong>バウンド直後のライジングのタイミングで早めに捉える</strong>ことで、変化が大きくなる前にボールを叩ける。低い体勢で準備しながら早いタイミングで入ることが鍵だ。</div>
+        <div class="point">カットサーブは低くバウンドして変化するため、普通のレシーブと同じタイミングで待つと打点が低くなりすぎてコントロールが難しくなります。<strong>バウンド直後のライジングのタイミングで早めに捉える</strong>ことで、変化が大きくなる前にボールを叩けます。低い体勢で準備しながら早いタイミングで入ることがポイントです。</div>
         <h3>コースより先に「深さ」と「センター」</h3>
-        <p>広角に打ち分けようとしてミスが増えるのはレシーブ上達の典型的な失敗パターンだ。まずセンター（ミドル）に確実に深く返すことを徹底する。センターへの返球は相手の角度を消しミスを誘いやすい。入れること→深さ→センター→コース打ち分けの順で磨くのが最も効率的な上達の道だ。</p>
+        <p>広角に打ち分けようとしてミスが増えるのは、レシーブ上達でよくある失敗パターンです。まずセンター（ミドル）に確実に深く返すことを徹底しましょう。センターへの返球は相手の角度を消しミスを誘いやすくなります。入れること→深さ→センター→コース打ち分けの順で磨いていくのが、最も効率的な上達の道です。</p>
       </div>
     </article>
   </div>
@@ -426,10 +527,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
   </div>
   <a class="footer-link" href="/privacy.html" target="_blank">プライバシーポリシー</a>
   <div class="bottom-nav">
-    <div class="bnav-item active" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span>練習を探す</span></div>
-    <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span>場面から探す</span></div>
-    <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span>ノート</span></div>
-    <div class="bnav-item" id="bnav-guide" onclick="switchTab('guide')"><div class="bnav-dot"></div><span>ガイド</span></div>
+    <div class="bnav-item active" id="bnav-today" onclick="switchTab('today')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="3" y="4" width="14" height="13" rx="2"/><line x1="3" y1="8" x2="17" y2="8"/><line x1="7" y1="2" x2="7" y2="5"/><line x1="13" y1="2" x2="13" y2="5"/><line x1="7" y1="12" x2="7" y2="14"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="13" y1="12" x2="13" y2="14"/></svg></span><span>今日</span></div>
+    <div class="bnav-item" id="bnav-search" onclick="switchTab('search')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg></span><span>探す</span></div>
+    <div class="bnav-item" id="bnav-symptom" onclick="switchTab('symptom')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="10,2 18,10 10,18 2,10"/></svg></span><span>場面</span></div>
+    <div class="bnav-item" id="bnav-note" onclick="switchTab('note')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="4" y="3" width="12" height="14" rx="1.5"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="13" x2="10" y2="13"/></svg></span><span>ノート</span></div>
+    <div class="bnav-item" id="bnav-guide" onclick="switchTab('guide')"><div class="bnav-dot"></div><span class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M10 5 C10 5 7 4 4 4.5 L4 16 C7 15.5 10 16.5 10 16.5 C10 16.5 13 15.5 16 16 L16 4.5 C13 4 10 5 10 5 Z"/><line x1="10" y1="5" x2="10" y2="16.5"/></svg></span><span>ガイド</span></div>
   </div>
 </div>
 <script>
@@ -648,17 +750,17 @@ const STEP_NEXT={
 const SUB_CATS={stroke:[{key:'all_s',label:'すべて'},{key:'fore',label:'フォア'},{key:'back',label:'バック'},{key:'course',label:'コース'},{key:'quality',label:'球質'},{key:'special',label:'特殊ショット'}],volley:[{key:'all_v',label:'すべて'},{key:'shot',label:'ショット'},{key:'poach',label:'ポーチ'}],service:[{key:'all_sv',label:'すべて'},{key:'normal',label:'通常サーブ'},{key:'cut',label:'カットサーブ'}],receive:[{key:'all_r',label:'すべて'},{key:'normal_receive',label:'通常サーブ'},{key:'cut_receive',label:'カットサーブ'}]};
 
 const SCENARIOS=[
-  {id:'s1',role:'back',icon:'😫',title:'前衛に捕まる',body:'ボールが前衛に届いてしまう。高いロブか、低いシュートか、揺さぶりが必要。',menus:[11,12,13,14,15]},
-  {id:'s2',role:'back',icon:'😤',title:'ラリーが続かない',body:'ミスが多くてラリーが安定しない。フォームと打点の安定が先決。',menus:[2,5,7]},
-  {id:'s3',role:'back',icon:'😣',title:'チャンスボールを決め切れない',body:'甘いボールが来ても決められない。打点と攻撃力を鍛えよう。',menus:[1,4,13]},
-  {id:'s4',role:'back',icon:'😕',title:'コースを打ち分けられない',body:'いつも同じコースになってしまう。コース別の打点と体の向きを覚えよう。',menus:[7,8,9,10]},
-  {id:'s5',role:'fore',icon:'🦘',title:'ポーチに出られない',body:'出るタイミングが掴めない・届かない。1歩目の速さとフットワークが全て。',menus:[21,22]},
-  {id:'s6',role:'fore',icon:'😰',title:'ボレーでミスが多い',body:'ネットする・アウトする。面の作り方と体の使い方を整理しよう。',menus:[16,17,18]},
-  {id:'s7',role:'fore',icon:'😓',title:'スマッシュが決まらない',body:'空振りする・アウトが多い。下がり方と打点の位置が鍵。',menus:[20,19]},
-  {id:'s8',role:'both',icon:'🎾',title:'サーブが安定しない',body:'ダブルフォルトが多い・入れるだけになる。トスとフォームを固めよう。',menus:[23,26]},
-  {id:'s9',role:'both',icon:'💥',title:'サーブで相手を崩せない',body:'入るけど攻撃的なサーブが打てない。コースとスピードを武器にしよう。',menus:[24,25,27]},
-  {id:'s10',role:'both',icon:'😱',title:'ファーストレシーブが返らない',body:'速いサーブへの反応が遅れる。スプリットステップとブロックリターンが基本。',menus:[28,30,3,6]},
-  {id:'s11',role:'both',icon:'⚔️',title:'セカンドレシーブで攻めたい',body:'返すだけになってしまう。踏み込んで積極的に打ち込もう。',menus:[29,1,4,13]},
+  {id:'s1',role:'back',title:'前衛に捕まる',body:'ボールが前衛に届いてしまう。高いロブか、低いシュートか、揺さぶりが必要。',menus:[11,12,13,14,15]},
+  {id:'s2',role:'back',title:'ラリーが続かない',body:'ミスが多くてラリーが安定しない。フォームと打点の安定が先決。',menus:[2,5,7]},
+  {id:'s3',role:'back',title:'チャンスボールを決め切れない',body:'甘いボールが来ても決められない。打点と攻撃力を鍛えよう。',menus:[1,4,13]},
+  {id:'s4',role:'back',title:'コースを打ち分けられない',body:'いつも同じコースになってしまう。コース別の打点と体の向きを覚えよう。',menus:[7,8,9,10]},
+  {id:'s5',role:'fore',title:'ポーチに出られない',body:'出るタイミングが掴めない・届かない。1歩目の速さとフットワークが全て。',menus:[21,22]},
+  {id:'s6',role:'fore',title:'ボレーでミスが多い',body:'ネットする・アウトする。面の作り方と体の使い方を整理しよう。',menus:[16,17,18]},
+  {id:'s7',role:'fore',title:'スマッシュが決まらない',body:'空振りする・アウトが多い。下がり方と打点の位置が鍵。',menus:[20,19]},
+  {id:'s8',role:'both',title:'サーブが安定しない',body:'ダブルフォルトが多い・入れるだけになる。トスとフォームを固めよう。',menus:[23,26]},
+  {id:'s9',role:'both',title:'サーブで相手を崩せない',body:'入るけど攻撃的なサーブが打てない。コースとスピードを武器にしよう。',menus:[24,25,27]},
+  {id:'s10',role:'both',title:'ファーストレシーブが返らない',body:'速いサーブへの反応が遅れる。スプリットステップとブロックリターンが基本。',menus:[28,30,3,6]},
+  {id:'s11',role:'both',title:'セカンドレシーブで攻めたい',body:'返すだけになってしまう。踏み込んで積極的に打ち込もう。',menus:[29,1,4,13]},
 ];
 
 let currentCat='all',currentSubCat=null,currentRole='all';
@@ -756,7 +858,7 @@ function renderList(items){
     list.innerHTML='';empty.style.display='block';
     const posLabel={all:'すべて',back:'後衛向け',fore:'前衛向け'}[currentRole];
     const catLabel={all:'すべて',stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'}[currentCat]||'';
-    let hint='🎾 該当する練習メニューが見つかりませんでした';
+    let hint='該当する練習メニューが見つかりませんでした';
     if(currentRole==='back'&&currentCat==='volley') hint='「後衛向け」にボレーメニューはありません。<br>ポジションを「すべて」に変えると前衛のボレーも見られます。';
     else if(currentRole==='fore'&&currentCat==='stroke') hint='「前衛向け」にストロークメニューはありません。<br>ポジションを「すべて」に変えるとストロークも見られます。';
     else if(currentRole!=='all'&&currentCat!=='all') hint=`「${posLabel}×${catLabel}」の組み合わせは現在準備中です。<br>「すべて」に戻して探してみてください。`;
@@ -764,7 +866,17 @@ function renderList(items){
     return;
   }
   empty.style.display='none';
-  list.innerHTML=items.map(d=>`<div class="result-card ${d.featured?'featured':''} fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}</div><div class="result-sub">${d.desc}</div><div>${d.steps.length?'<span class="step-pill s1">Step1</span><span class="step-pill s2">Step2</span><span class="step-pill s3">Step3</span>':'<span style="font-size:11px;color:var(--text-muted)">準備中</span>'}</div></div>`).join('');
+  const mastery=loadMastery();
+  list.innerHTML=items.map(d=>{
+    const doneLevels=mastery[d.id]||[];
+    const uniqueLevels=[...new Set(d.steps.map(s=>s.lv))];
+    const allDone=uniqueLevels.length>0&&uniqueLevels.every(lv=>doneLevels.includes(lv));
+    const anyDone=doneLevels.length>0;
+    const masteredBadge=allDone?'<span class="mastered-badge">⭐ マスター</span>':'';
+    const pipsHTML=anyDone?getMasteryPipsHTML(d.id):'';
+    const extraClass=(d.featured?'featured ':'')+(allDone?'mastered ':'');
+    return `<div class="result-card ${extraClass}fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}${masteredBadge}</div><div class="result-sub">${d.desc}</div><div>${d.steps.length?'<span class="step-pill s1">Step1</span><span class="step-pill s2">Step2</span><span class="step-pill s3">Step3</span>':'<span style="font-size:11px;color:var(--text-muted)">準備中</span>'}</div>${pipsHTML}</div>`;
+  }).join('');
 }
 
 function selectPos(el,role){
@@ -819,6 +931,7 @@ function showDetail(id){
   };
   document.getElementById('menuJsonLd').textContent=JSON.stringify(howto);
   const criteria=STEP_NEXT[d.id]||[];
+  const detailMastery=loadMastery();
   const stepsHTML=d.steps.length?d.steps.map((s,i)=>{
     const vids=(YT[s.vk]||[]).filter(v=>s.lv>=(v.minLv||1));
     const isLast=i===d.steps.length-1;
@@ -827,10 +940,16 @@ function showDetail(id){
       ?`<div class="step-crit mastery">✓ 習得の目安：${crit}</div>`
       :`<div class="step-crit next">→ 次へ進む目安：${crit}</div>`
     ):'';
-    return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div>${critHTML}</div>`;
+    const isDone=(detailMastery[d.id]||[]).includes(s.lv);
+    const doneBtn=`<button class="step-done-btn ${isDone?'done':''}" onclick="event.stopPropagation();toggleStepDone(${d.id},${s.lv},this)">${isDone?'✓ 完了':'完了マーク'}</button>`;
+    return `<div class="step-card fade-in"><div class="step-header"><span class="step-badge s${s.lv}">${s.label}</span><span class="step-name">${s.name}</span></div><div class="step-meta">👥 ${s.players}</div><div class="step-body">${s.body}</div><div class="video-row">${vids.length?vids.map(v=>`<a class="video-chip" href="${v.url}" target="_blank" rel="noopener"><div class="yt-icon"><div class="yt-tri"></div></div>${v.label}</a>`).join(''):'<span class="no-video">動画は順次追加予定</span>'}</div>${critHTML}${doneBtn}</div>`;
   }).join(''):'<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">準備中</div>';
   document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in"><div class="kanjo-label">POINT — 勘所</div>${d.points.map(p=>`<div class="kanjo-item">・${p}</div>`).join('')}</div><div class="section-label">PRACTICE MENU</div>${stepsHTML}`;
   document.getElementById('homeScreen').style.display='none';
+  document.getElementById('todayScreen').style.display='none';
+  document.getElementById('symptomScreen').style.display='none';
+  document.getElementById('noteScreen').style.display='none';
+  document.getElementById('guideScreen').style.display='none';
   document.getElementById('detailScreen').style.display='block';
   document.getElementById('navHome').style.display='none';
   document.getElementById('navFb').style.display='none';
@@ -841,10 +960,12 @@ function showDetail(id){
 
 function showHome(){
   const activeTab=document.querySelector('.bnav-item.active');
-  const tab=activeTab?activeTab.id.replace('bnav-',''):'search';
+  const tab=activeTab?activeTab.id.replace('bnav-',''):'today';
   document.getElementById('homeScreen').style.display=tab==='search'?'block':'none';
+  document.getElementById('todayScreen').style.display=tab==='today'?'block':'none';
   document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
   document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
+  document.getElementById('guideScreen').style.display=tab==='guide'?'block':'none';
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('navHome').style.display='block';
   document.getElementById('navFb').style.display='';
@@ -864,14 +985,14 @@ function toggleSymptomGroup(el){
 
 function renderScenarioList(){
   const groups=[
-    {label:'後衛の場面',role:'back',icon:'🏃',open:true},
-    {label:'前衛の場面',role:'fore',icon:'🏅',open:false},
-    {label:'共通の場面',role:'both',icon:'🎾',open:false},
+    {label:'後衛の場面',role:'back',open:true},
+    {label:'前衛の場面',role:'fore',open:false},
+    {label:'共通の場面',role:'both',open:false},
   ];
   const html=groups.map(g=>{
     const items=SCENARIOS.filter(s=>s.role===g.role);
-    const cards=items.map(s=>`<div class="result-card fade-in" onclick="showScenarioDetail('${s.id}')"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:20px">${s.icon}</span><div class="result-title">${s.title}</div></div><div class="result-sub">${s.body}</div><div style="font-size:11px;color:var(--gold-dark);margin-top:5px">関連練習 ${s.menus.length}メニュー →</div></div>`).join('');
-    return `<div class="symptom-group-label" onclick="toggleSymptomGroup(this)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">${g.icon} ${g.label}<span class="symptom-arrow">${g.open?'▼':'▶'}</span></div><div style="display:${g.open?'block':'none'}">${cards}</div>`;
+    const cards=items.map((s,i)=>`<div class="result-card fade-in" onclick="showScenarioDetail('${s.id}')"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px"><div class="scenario-num">${String(i+1).padStart(2,'0')}</div><div class="result-title">${s.title}</div></div><div class="result-sub">${s.body}</div><div style="font-size:11px;color:var(--gold-dark);margin-top:5px">関連練習 ${s.menus.length}メニュー →</div></div>`).join('');
+    return `<div class="symptom-group-label" onclick="toggleSymptomGroup(this)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">${g.label}<span class="symptom-arrow">${g.open?'▼':'▶'}</span></div><div style="display:${g.open?'block':'none'}">${cards}</div>`;
   }).join('');
   document.getElementById('symptomList').innerHTML=html;
 }
@@ -881,7 +1002,7 @@ function showScenarioDetail(sid){
   gtag('event','view_scenario',{scenario_id:sid,scenario_title:s.title});
   const menus=s.menus.map(id=>DB.find(d=>d.id===id)).filter(Boolean);
   const menuHTML=menus.map(d=>`<div class="result-card fade-in" onclick="showDetail(${d.id})"><div class="result-tag">${d.label}</div><div class="result-title">${d.title}</div><div class="result-sub">${d.desc}</div></div>`).join('');
-  document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in" style="margin-bottom:16px"><div style="font-size:26px;margin-bottom:6px">${s.icon}</div><div class="kanjo-label">${s.title}</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-top:4px">${s.body}</div></div><div class="section-label">この場面に効く練習メニュー</div>${menuHTML}`;
+  document.getElementById('detailScreen').innerHTML=`<div class="kanjo-box fade-in" style="margin-bottom:16px"><div class="kanjo-label">${s.title}</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-top:4px">${s.body}</div></div><div class="section-label">この場面に効く練習メニュー</div>${menuHTML}`;
   document.getElementById('symptomScreen').style.display='none';
   document.getElementById('detailScreen').style.display='block';
   document.getElementById('navHome').style.display='none';
@@ -1051,7 +1172,7 @@ function renderNoteScreen(){
   const hiddenCount=useLimit?allNotes.filter(n=>n.date<cutoffStr).length:0;
 
   if(!allNotes.length){
-    screen.innerHTML=addBtn+calHTML+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう！🎾</div>`;
+    screen.innerHTML=addBtn+calHTML+`<div class="note-empty">まだ練習ログがありません。<br>今日の練習を記録してみよう。</div>`;
     return;
   }
   const byDate={};
@@ -1163,15 +1284,24 @@ function switchTab(tab){
   document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('bnav-'+tab).classList.add('active');
   document.getElementById('homeScreen').style.display=tab==='search'?'block':'none';
+  document.getElementById('todayScreen').style.display=tab==='today'?'block':'none';
   document.getElementById('detailScreen').style.display='none';
   document.getElementById('noteScreen').style.display=tab==='note'?'block':'none';
   document.getElementById('symptomScreen').style.display=tab==='symptom'?'block':'none';
   document.getElementById('guideScreen').style.display=tab==='guide'?'block':'none';
   document.getElementById('navHome').style.display='block';
+  document.getElementById('navFb').style.display='';
   document.getElementById('navBack').style.display='none';
+  if(location.hash) history.replaceState({},'',location.pathname);
   gtag('event','switch_tab',{tab_name:tab});
   if(tab==='symptom') renderScenarioList();
   if(tab==='note') renderNoteScreen();
+  if(tab==='today') renderTodayTab();
+}
+
+function onSceneBannerTap(){
+  gtag('event','scene_banner_tap',{from:'search_top'});
+  switchTab('symptom');
 }
 
 function toggleGuide(id){
@@ -1180,6 +1310,339 @@ function toggleGuide(id){
   el.classList.toggle('open');
   gtag('event','view_guide',{article_id:id});
 }
+
+// ── マスタリー（Step達成記録） ──────────────────
+const MASTERY_KEY='stl_mastery_v1'; // 凍結キー。変更不可。
+const PREV_TODAY_KEY='stl_prev_today_v1'; // 昨日の練習フォーカス保存
+
+function loadMastery(){
+  try{return JSON.parse(localStorage.getItem(MASTERY_KEY)||'{}');}
+  catch(e){return {};}
+}
+function saveMastery(m){localStorage.setItem(MASTERY_KEY,JSON.stringify(m));}
+
+function toggleStepDone(menuId,stepLv,btnEl){
+  const m=loadMastery();
+  if(!m[menuId])m[menuId]=[];
+  const idx=m[menuId].indexOf(stepLv);
+  const nowDone=idx===-1;
+  if(nowDone){m[menuId].push(stepLv);}else{m[menuId].splice(idx,1);}
+  saveMastery(m);
+  // ボタン更新
+  if(btnEl){
+    btnEl.classList.toggle('done',nowDone);
+    btnEl.innerHTML=nowDone?'✓ 完了':'完了マーク';
+  }
+  // 結果カードのpip更新
+  const pipEls=document.querySelectorAll(`.mastery-pip[data-mid="${menuId}"][data-lv="${stepLv}"]`);
+  pipEls.forEach(p=>p.classList.toggle('done',nowDone));
+  // 全ステップ完了チェック
+  const d=DB.find(x=>x.id===menuId);
+  if(d&&nowDone){
+    const uniqueLevels=[...new Set(d.steps.map(s=>s.lv))];
+    const allDone=uniqueLevels.every(lv=>m[menuId].includes(lv));
+    if(allDone){
+      showTodayToast(`🏆 「${d.title}」をマスターしました！`);
+      gtag('event','menu_mastered',{menu_id:menuId,menu_title:d.title});
+    }else{
+      showTodayToast('✓ ステップを完了しました');
+    }
+  }
+  gtag('event',nowDone?'step_complete':'step_uncomplete',{menu_id:menuId,step_lv:stepLv});
+}
+
+function getMasteryPipsHTML(menuId){
+  const m=loadMastery();
+  const d=DB.find(x=>x.id===menuId);
+  if(!d||!d.steps.length)return '';
+  const doneLevels=m[menuId]||[];
+  if(!doneLevels.length)return '';
+  const uniqueLevels=[...new Set(d.steps.map(s=>s.lv))];
+  const allDone=uniqueLevels.every(lv=>doneLevels.includes(lv));
+  const pips=uniqueLevels.map(lv=>`<div class="mastery-pip ${doneLevels.includes(lv)?'done':''}" data-mid="${menuId}" data-lv="${lv}"></div>`).join('');
+  const doneCount=uniqueLevels.filter(lv=>doneLevels.includes(lv)).length;
+  const label=allDone?`<span class="mastery-pip-label">マスター済み ⭐</span>`:`<span class="mastery-pip-label">${doneCount}/${uniqueLevels.length}</span>`;
+  return `<div class="mastery-pips">${pips}${label}</div>`;
+}
+
+// 今週の練習統計 + 昨日の重点
+function getWizardStats(){
+  const notes=loadNotes();
+  const today=new Date();
+  const weekAgo=new Date(today);weekAgo.setDate(today.getDate()-6);
+  const weekAgoStr=weekAgo.toISOString().slice(0,10);
+  const weekDates=new Set(notes.filter(n=>n.date>=weekAgoStr).map(n=>n.date));
+
+  let prevFocusLabel=null;
+  try{
+    const prev=JSON.parse(localStorage.getItem(PREV_TODAY_KEY)||'null');
+    if(prev&&prev.focus){
+      const fl={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ',omakase:'おまかせ'};
+      prevFocusLabel=fl[prev.focus]||null;
+    }
+  }catch(e){}
+
+  // マスター数
+  const mastery=loadMastery();
+  let masteredCount=0;
+  DB.forEach(d=>{
+    const done=mastery[d.id]||[];
+    const unique=[...new Set(d.steps.map(s=>s.lv))];
+    if(unique.length>0&&unique.every(lv=>done.includes(lv)))masteredCount++;
+  });
+
+  return{weekCount:weekDates.size,prevFocusLabel,masteredCount};
+}
+
+// ── 今日の練習メニュー ──────────────────────
+const TODAY_KEY='stl_today_state_v1';
+const RESHUFFLE_KEY='stl_daily_reshuffle';
+let todayAnswers={time:null,focus:null,mood:null};
+let todayMenu=null;
+
+function getTodayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function loadTodayState(){
+  try{
+    const raw=localStorage.getItem(TODAY_KEY);
+    if(!raw)return null;
+    const s=JSON.parse(raw);
+    if(s.date!==getTodayStr()){
+      // 昨日のフォーカスを保存してから削除
+      if(s.focus){
+        localStorage.setItem(PREV_TODAY_KEY,JSON.stringify({date:s.date,focus:s.focus}));
+      }
+      localStorage.removeItem(TODAY_KEY);
+      localStorage.removeItem(RESHUFFLE_KEY);
+      return null;
+    }
+    return s;
+  }catch(e){return null;}
+}
+
+function saveTodayState(s){
+  localStorage.setItem(TODAY_KEY,JSON.stringify({...s,date:getTodayStr()}));
+}
+
+function todaySeededRandom(seed){
+  let s=seed>>>0;
+  return function(){
+    s=(Math.imul(s,1664525)+1013904223)>>>0;
+    return s/0x100000000;
+  };
+}
+
+function getDailySeedValue(){
+  const d=new Date();
+  const reshuffle=parseInt(localStorage.getItem(RESHUFFLE_KEY)||'0',10);
+  return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()+reshuffle*7919;
+}
+
+function todayMatchPos(menuRole,userPos){
+  if(userPos==='all') return true;
+  return menuRole===userPos||menuRole==='both';
+}
+
+function generateMenuFromAnswers(ans){
+  const count=ans.time==='15'?3:ans.time==='30'?4:6;
+  const pos=localStorage.getItem(POS_KEY)||'all';
+  const candidates=DB.filter(d=>todayMatchPos(d.role,pos)&&d.steps&&d.steps.length);
+  const seed=getDailySeedValue()+(ans.focus||'x').charCodeAt(0)*101+(ans.mood||'x').charCodeAt(0);
+  const rng=todaySeededRandom(seed);
+  function shuf(arr){
+    const a=arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(rng()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+  let mustHave=[],rest=candidates;
+  if(ans.focus&&ans.focus!=='omakase'){
+    mustHave=candidates.filter(c=>c.cat===ans.focus);
+    rest=candidates.filter(c=>c.cat!==ans.focus);
+  }
+  const focusPick=ans.focus==='omakase'?[]:shuf(mustHave).slice(0,Math.min(2,mustHave.length,count));
+  const focusIds=new Set(focusPick.map(m=>m.id));
+  const restPool=ans.focus==='omakase'?candidates:rest;
+  const restPick=shuf(restPool.filter(c=>!focusIds.has(c.id))).slice(0,count-focusPick.length);
+  const finalMenus=focusPick.concat(restPick);
+  const moodPref=ans.mood==='good'?[3,2,1]:ans.mood==='normal'?[2,1,3]:[1,2,3];
+  return finalMenus.map(menu=>{
+    const steps=menu.steps||[];
+    if(!steps.length)return {menu,step:1};
+    for(const lv of moodPref){
+      const matches=steps.filter(s=>s.lv===lv);
+      if(matches.length){
+        const chosen=matches[Math.floor(rng()*matches.length)];
+        return {menu,step:chosen.lv};
+      }
+    }
+    return {menu,step:steps[0].lv};
+  });
+}
+
+function renderTodayTab(){
+  const state=loadTodayState();
+  if(state&&state.generated&&state.time&&state.focus&&state.mood){
+    todayAnswers={time:state.time,focus:state.focus,mood:state.mood};
+    showTodayResult(false);
+  }else{
+    todayAnswers={time:null,focus:null,mood:null};
+    showTodayWizard();
+  }
+}
+
+function showTodayWizard(){
+  document.getElementById('todayWizard').style.display='block';
+  document.getElementById('todayResult').style.display='none';
+  document.querySelectorAll('#todayWizard .today-chip').forEach(c=>c.classList.remove('active'));
+  // スタッツウィジェット（昨日の重点 + 今週の練習日数 + マスター数）
+  const existing=document.getElementById('todayWizardStats');
+  if(existing)existing.remove();
+  const stats=getWizardStats();
+  const cards=[];
+  if(stats.weekCount>0){
+    cards.push(`<div class="today-stat-card"><div class="today-stat-num">${stats.weekCount}</div><div class="today-stat-label">今週の<br>練習日数</div></div>`);
+  }
+  if(stats.prevFocusLabel){
+    cards.push(`<div class="today-stat-card"><div class="today-stat-num" style="font-size:16px;padding-top:4px">${stats.prevFocusLabel}</div><div class="today-stat-label">昨日の<br>重点</div></div>`);
+  }
+  if(stats.masteredCount>0){
+    cards.push(`<div class="today-stat-card"><div class="today-stat-num">${stats.masteredCount}</div><div class="today-stat-label">マスター<br>メニュー</div></div>`);
+  }
+  if(cards.length){
+    const el=document.createElement('div');
+    el.id='todayWizardStats';
+    el.className='today-stats-row';
+    el.innerHTML=cards.join('');
+    const wizard=document.getElementById('todayWizard');
+    wizard.insertBefore(el,wizard.firstChild);
+  }
+  updateTodayCTA();
+  document.getElementById('todayScreen').scrollTop=0;
+}
+
+function showTodayResult(track){
+  const menu=generateMenuFromAnswers(todayAnswers);
+  todayMenu=menu;
+  const pos=localStorage.getItem(POS_KEY)||'all';
+  const posLabel=POS_LABELS[pos]||'どちらも';
+  const today=new Date();
+  const wd=['日','月','火','水','木','金','土'][today.getDay()];
+  const dateLabel=`${today.getMonth()+1}月${today.getDate()}日（${wd}）`;
+  const timeLabel=todayAnswers.time==='60'?'60分以上':`${todayAnswers.time}分`;
+  const todayMastery=loadMastery();
+  const cardsHTML=menu.length?menu.map((item,i)=>{
+    const doneLevels=todayMastery[item.menu.id]||[];
+    const stepDone=doneLevels.includes(item.step);
+    const stepDoneTag=stepDone?`<span style="font-size:10px;color:#2a7a2a;margin-left:6px">✓ 完了済み</span>`:'';
+    const pips=getMasteryPipsHTML(item.menu.id);
+    return `<div class="result-card today-card fade-in" onclick="onTodayCardClick(${item.menu.id})">
+      <div class="today-num">${i+1}</div>
+      <div class="result-tag">${item.menu.label}</div>
+      <div class="result-title">${item.menu.title}</div>
+      <div class="result-sub">${item.menu.subCatLabel}・${item.menu.desc}</div>
+      <div><span class="step-pill s${item.step}">Step ${item.step}</span>${stepDoneTag}</div>
+      ${pips}
+    </div>`;
+  }).join(''):'<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">該当するメニューがありませんでした。<br>条件を変えてもう一度試してください。</div>';
+  document.getElementById('todayResult').innerHTML=`<div class="today-section">
+    <div class="today-result-head">
+      <div class="today-result-title">今日のメニュー</div>
+      <div class="today-result-meta">${dateLabel} ・ ${posLabel}</div>
+      <div class="today-time-badge">⏱ 推定${timeLabel}</div>
+    </div>
+    <hr class="divider">
+    ${cardsHTML}
+    <hr class="divider">
+    <button class="today-save-btn" onclick="saveTodayToNotes()">📝 このメニューをノートに保存</button>
+    <button class="today-reshuffle" onclick="reshuffleTodayMenu()">🔄 メニューを変える</button>
+    <button class="today-reshuffle" onclick="resetTodayWizard()" style="margin-top:2px">↩ 条件をやり直す</button>
+  </div>`;
+  document.getElementById('todayWizard').style.display='none';
+  document.getElementById('todayResult').style.display='block';
+  document.getElementById('todayScreen').scrollTop=0;
+  if(track){
+    gtag('event','view_today_menu',{position:pos,time:todayAnswers.time,focus:todayAnswers.focus,mood:todayAnswers.mood});
+  }
+}
+
+function updateTodayCTA(){
+  const btn=document.getElementById('todayCTA');
+  if(!btn)return;
+  const ok=todayAnswers.time&&todayAnswers.focus&&todayAnswers.mood;
+  btn.classList.toggle('disabled',!ok);
+}
+
+function generateDailyMenu(){
+  if(!(todayAnswers.time&&todayAnswers.focus&&todayAnswers.mood))return;
+  localStorage.removeItem(RESHUFFLE_KEY);
+  saveTodayState({time:todayAnswers.time,focus:todayAnswers.focus,mood:todayAnswers.mood,generated:true});
+  showTodayResult(true);
+}
+
+function reshuffleTodayMenu(){
+  const cur=parseInt(localStorage.getItem(RESHUFFLE_KEY)||'0',10);
+  localStorage.setItem(RESHUFFLE_KEY,String(cur+1));
+  gtag('event','today_menu_reshuffle',{count:cur+1});
+  showTodayResult(false);
+}
+
+function resetTodayWizard(){
+  localStorage.removeItem(TODAY_KEY);
+  localStorage.removeItem(RESHUFFLE_KEY);
+  todayAnswers={time:null,focus:null,mood:null};
+  todayMenu=null;
+  showTodayWizard();
+}
+
+function onTodayCardClick(id){
+  const m=DB.find(d=>d.id===id);
+  gtag('event','today_menu_click',{menu_id:id,menu_title:m?m.title:''});
+  showDetail(id);
+}
+
+function saveTodayToNotes(){
+  if(!todayMenu||!todayMenu.length){showTodayToast('保存できるメニューがありません');return;}
+  const notes=loadNotes();
+  const today=getTodayStr();
+  const base=Date.now();
+  todayMenu.forEach((item,i)=>{
+    notes.push({id:base+i,date:today,menuId:item.menu.id,step:item.step,memo:'',tag:'mae'});
+  });
+  saveNotes(notes);
+  gtag('event','today_menu_save',{count:todayMenu.length});
+  showTodayToast('ノートに保存しました ✓');
+}
+
+function showTodayToast(msg){
+  const existing=document.querySelector('.today-toast');
+  if(existing)existing.remove();
+  const t=document.createElement('div');
+  t.className='today-toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{if(t.parentNode)t.remove();},2000);
+}
+
+// チップ選択（イベント委譲）
+document.getElementById('todayScreen').addEventListener('click',function(e){
+  const chip=e.target.closest('.today-chip');
+  if(!chip||!chip.parentElement.classList.contains('today-chip-row'))return;
+  const row=chip.parentElement;
+  const q=row.dataset.q;
+  if(!q)return;
+  row.querySelectorAll('.today-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  todayAnswers[q]=chip.dataset.v;
+  updateTodayCTA();
+});
+
+renderTodayTab();
 </script>
 </body>
 </html>
