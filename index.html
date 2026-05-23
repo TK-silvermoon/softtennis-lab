@@ -89,7 +89,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
 .bnav-item.active{color:var(--gold-dark)}
 .bnav-dot{width:4px;height:4px;border-radius:50%;background:transparent}
 .bnav-item.active .bnav-dot{background:var(--gold)}
-.note-screen{display:none;padding:16px}
+.note-screen{display:block;padding:16px 16px 100px}
 .footer-link{display:block;text-align:center;font-size:10px;color:var(--text-muted);padding:10px 0 4px;text-decoration:none}
 .footer-link:hover{color:var(--gold-dark)}
 .note-coming{text-align:center;padding:60px 20px}
@@ -288,8 +288,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--warm-gray);min-heigh
       <div id="emptyMsg">該当する練習メニューが見つかりませんでした</div>
     </div>
   </div>
-  <div class="screen-body detail-view" id="detailScreen"></div>
-  <div class="screen-body note-screen" id="noteScreen"></div>
+  <div class="screen-body detail-view" id="detailScreen" style="display:none"></div>
+  <div class="screen-body note-screen" id="noteScreen" style="display:block"></div>
   <div class="guide-screen" id="guideScreen" style="display:none">
     <div class="guide-hero">
       <div class="guide-hero-title">上達ガイド</div>
@@ -645,8 +645,17 @@ window.addEventListener('popstate',()=>{
 //     localStorage.removeItem('stl_notes_v1');
 //   }
 function migrateLocalStorage() {
-  // v1 は現行バージョン。移行不要。
-  // 将来 v2 が必要になった時にここに処理を追加する。
+  // stl_notes_v1（旧キー）→ stl_diary_v1（現行キー）移行
+  const oldNotes = localStorage.getItem('stl_notes_v1');
+  if (oldNotes && !localStorage.getItem('stl_diary_v1')) {
+    try {
+      const parsed = JSON.parse(oldNotes);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        localStorage.setItem('stl_diary_v1', oldNotes);
+        localStorage.removeItem('stl_notes_v1');
+      }
+    } catch(e) { /* parse error: skip */ }
+  }
 }
 migrateLocalStorage();
 
@@ -658,6 +667,10 @@ handleHash();
 
 renderList(DB);
 switchTab('note');
+// ノート画面の確実な初期化
+if(document.getElementById('noteScreen').style.display!=='none'){
+  try{renderNoteScreen();}catch(e){console.error('renderNoteScreen error:',e);}
+}
 
 function renderList(items){
   const list=document.getElementById('resultList'),empty=document.getElementById('emptyState');
@@ -1026,6 +1039,20 @@ function toggleGuide(id){
   if(!el)return;
   el.classList.toggle('open');
   gtag('event','view_guide',{article_id:id});
+}
+
+// ── トースト通知 ──────────────────────────────
+let _toastTimer=null;
+function showTodayToast(msg){
+  let t=document.getElementById('_stlToast');
+  if(!t){
+    t=document.createElement('div');t.id='_stlToast';
+    t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:"Noto Sans JP",sans-serif;z-index:999;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>{t.style.opacity='0';},2200);
 }
 
 // ── マスタリー（Step達成記録） ──────────────────
