@@ -659,6 +659,16 @@ function migrateLocalStorage() {
 }
 migrateLocalStorage();
 
+// ── ノート機能（定数・変数を初期化コードより前に宣言） ──────────────────────────
+const DIARY_KEY='stl_diary_v1';
+const CAT_LABELS={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'};
+const CAT_COLORS={stroke:{bg:'#EAF4FB',color:'#1a6fa0',border:'#b0d4ec'},volley:{bg:'#FDF8EE',color:'#9a7520',border:'#ddc878'},service:{bg:'#FEF0F0',color:'#b03030',border:'#e8b0b0'},receive:{bg:'#EAF7EA',color:'#2a7a2a',border:'#90d090'}};
+let noteActiveCat=null;
+let showAllNotes=false;
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth();
+let calSelectedDate=null;
+
 // ── ポジション記憶機能 ───────────────────────
 
 currentRole='all';
@@ -824,17 +834,9 @@ function showScenarioDetail(sid){
 }
 
 // ── ノート機能 ──────────────────────────
-const DIARY_KEY='stl_diary_v1';
+// DIARY_KEY / CAT_LABELS / CAT_COLORS / noteActiveCat 等は初期化ブロック前に宣言済み
 function loadDiary(){try{return JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');}catch(e){return[];}}
 function saveDiary(d){localStorage.setItem(DIARY_KEY,JSON.stringify(d));}
-
-const CAT_LABELS={stroke:'ストローク',volley:'ボレー',service:'サービス',receive:'レシーブ'};
-const CAT_COLORS={stroke:{bg:'#EAF4FB',color:'#1a6fa0',border:'#b0d4ec'},volley:{bg:'#FDF8EE',color:'#9a7520',border:'#ddc878'},service:{bg:'#FEF0F0',color:'#b03030',border:'#e8b0b0'},receive:{bg:'#EAF7EA',color:'#2a7a2a',border:'#90d090'}};
-let noteActiveCat=null;
-let showAllNotes=false;
-let calYear=new Date().getFullYear();
-let calMonth=new Date().getMonth();
-let calSelectedDate=null;
 
 function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}calSelectedDate=null;renderNoteScreen();}
 function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}calSelectedDate=null;renderNoteScreen();}
